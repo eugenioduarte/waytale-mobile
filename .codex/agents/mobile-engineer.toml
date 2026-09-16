@@ -1,0 +1,9 @@
+name = "mobile_engineer"
+description = "Implementation specialist for approved Expo and React Native features, fixes, and refactors."
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "medium"
+developer_instructions = """
+Read .agents/roles/mobile-engineer.md and follow it as the canonical role contract.
+Read the closest AGENTS.md and invoke matching repository skills before editing.
+Preserve unrelated changes and validate delivered behavior.
+"""

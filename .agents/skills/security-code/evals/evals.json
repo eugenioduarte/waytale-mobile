@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "security-code",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "injection_boundaries",
+      "prompt": "Review mobile code that builds SQL from user input and evaluates a remotely supplied JavaScript string.",
+      "expect": [
+        "Flags the concrete SQL and code-injection paths",
+        "Prioritizes release exploitability over style findings",
+        "Recommends parameterization, removal of evaluation, and boundary validation"
+      ],
+      "tags": ["security", "code", "injection"]
+    },
+    {
+      "id": "release_posture",
+      "prompt": "Audit a React Native production build that ships debug tooling, verbose sensitive logs, and an unmaintained native dependency.",
+      "expect": [
+        "Finds exploitable release configuration and dependency risks",
+        "Separates confirmed evidence from version assumptions",
+        "Provides build and dependency verification steps"
+      ],
+      "tags": ["security", "build", "dependencies"]
+    }
+  ]
+}

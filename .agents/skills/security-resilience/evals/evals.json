@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "security-resilience",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "critical_app_hardening",
+      "prompt": "Review a high-sensitivity mobile flow with no attestation, root or jailbreak signal, anti-debugging, or obfuscation posture.",
+      "expect": [
+        "Calibrates findings to the high-sensitivity threat model",
+        "Explains that client resistance is bypassable",
+        "Prioritizes server-backed controls and measurable hardening"
+      ],
+      "tags": ["security", "resilience", "hardening"]
+    },
+    {
+      "id": "low_sensitivity_calibration",
+      "prompt": "Assess the same resilience controls for a public restaurant menu app with no privileged local data.",
+      "expect": [
+        "Avoids overstating absent anti-tampering controls",
+        "Explains proportional cost and benefit",
+        "Focuses on actual server and data trust boundaries"
+      ],
+      "tags": ["security", "resilience", "risk"]
+    }
+  ]
+}

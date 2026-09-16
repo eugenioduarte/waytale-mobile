@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Platform"
+  short_description: "Audit deep links WebViews and native surfaces"
+  default_prompt: "Use $security-platform to review this mobile platform integration."

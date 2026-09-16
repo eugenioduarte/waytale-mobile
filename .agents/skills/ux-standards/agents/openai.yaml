@@ -1,0 +1,4 @@
+interface:
+  display_name: "UX Standards"
+  short_description: "Build accessible state-complete mobile UI"
+  default_prompt: "Use $ux-standards to review this mobile interface and its states."

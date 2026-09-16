@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "translations",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "hardcoded_mobile_copy",
+      "prompt": "Review a new React Native screen for hardcoded labels, errors, placeholders, accessibility copy, and pluralized counts.",
+      "expect": [
+        "Routes all user-facing copy through the project i18n system",
+        "Uses stable semantic keys and interpolation",
+        "Covers pluralization and accessibility text"
+      ],
+      "tags": ["i18n", "react-native", "accessibility"]
+    },
+    {
+      "id": "locale_formatting",
+      "prompt": "Prepare order totals, dates, and item counts for locale-safe display without changing internal developer logs.",
+      "expect": [
+        "Uses locale-aware number and date formatting",
+        "Handles plural forms through i18n",
+        "Leaves developer-only messages outside user translation scope"
+      ],
+      "tags": ["i18n", "formatting", "react-native"]
+    }
+  ]
+}

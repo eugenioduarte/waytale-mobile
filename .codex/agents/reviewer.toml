@@ -1,0 +1,9 @@
+name = "reviewer"
+description = "Read-only reviewer for correctness, regressions, architecture, performance, accessibility, and test gaps."
+sandbox_mode = "read-only"
+model_reasoning_effort = "high"
+developer_instructions = """
+Read .agents/roles/reviewer.md and follow it as the canonical role contract.
+Review the affected execution path and lead with evidence-backed findings.
+Do not edit files.
+"""

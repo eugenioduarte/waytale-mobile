@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "security-network",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "transport_bypass",
+      "prompt": "Review React Native networking configured with certificate validation disabled and production HTTP endpoints.",
+      "expect": [
+        "Flags trust bypass and cleartext transport as baseline failures",
+        "Explains sensitive-flow impact",
+        "Separates mandatory TLS repair from optional certificate pinning"
+      ],
+      "tags": ["security", "network", "tls"]
+    },
+    {
+      "id": "pinning_tradeoff",
+      "prompt": "Decide whether certificate pinning is justified for a normal consumer mobile API that already uses valid TLS.",
+      "expect": [
+        "Treats valid TLS as the baseline control",
+        "Calibrates pinning to sensitivity and operational risk",
+        "Includes rotation, failure, and observability considerations if recommended"
+      ],
+      "tags": ["security", "network", "hardening"]
+    }
+  ]
+}

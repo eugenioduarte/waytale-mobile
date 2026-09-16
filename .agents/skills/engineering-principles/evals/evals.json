@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "engineering-principles",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "shortcut_tradeoff",
+      "prompt": "A screen could call an API client directly to ship faster. Resolve the trade-off using the repository engineering principles.",
+      "expect": [
+        "Protects the model-service-query-hook-screen boundary",
+        "Explains concrete cost and benefit rather than citing dogma",
+        "Chooses the simplest testable compliant option"
+      ],
+      "tags": ["tradeoff", "architecture", "react-native"]
+    },
+    {
+      "id": "shared_component_state",
+      "prompt": "Two features share a component whose internal state is tightly coupled to both feature workflows. Recommend a direction.",
+      "expect": [
+        "Prioritizes explicit contracts and isolation",
+        "Avoids a universal abstraction with feature-specific branches",
+        "Describes a low-risk migration and verification path"
+      ],
+      "tags": ["tradeoff", "components", "maintainability"]
+    }
+  ]
+}

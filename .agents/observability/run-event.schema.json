@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vendor-neutral agent run event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "provider",
+    "model",
+    "agent",
+    "task_type",
+    "status",
+    "retries",
+    "token_usage"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "event_id": { "type": "string" },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "run_id": { "type": "string" },
+    "provider": { "type": "string" },
+    "model": { "type": "string" },
+    "agent": { "type": "string" },
+    "task_type": { "type": "string" },
+    "status": { "enum": ["completed", "failed", "blocked", "stopped"] },
+    "duration_ms": { "type": ["integer", "null"], "minimum": 0 },
+    "retries": { "type": "integer", "minimum": 0 },
+    "token_usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input", "output", "cache_read", "total"],
+      "properties": {
+        "input": { "type": "integer", "minimum": 0 },
+        "output": { "type": "integer", "minimum": 0 },
+        "cache_read": { "type": "integer", "minimum": 0 },
+        "total": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "cost_usd": { "type": ["number", "null"], "minimum": 0 },
+    "eval": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["skill", "case_id", "score", "passed"],
+      "properties": {
+        "skill": { "type": "string" },
+        "case_id": { "type": "string" },
+        "score": { "type": "number", "minimum": 0, "maximum": 100 },
+        "passed": { "type": "boolean" }
+      }
+    }
+  }
+}

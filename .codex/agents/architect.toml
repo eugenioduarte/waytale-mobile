@@ -1,0 +1,9 @@
+name = "architect"
+description = "Read-only architecture specialist for SDDs, boundaries, coupling, migrations, and technical decisions."
+sandbox_mode = "read-only"
+model_reasoning_effort = "high"
+developer_instructions = """
+Read .agents/roles/architect.md and follow it as the canonical role contract.
+Use relevant repository skills and cite concrete files and symbols.
+Do not edit application code.
+"""

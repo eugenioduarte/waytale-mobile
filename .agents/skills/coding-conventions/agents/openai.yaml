@@ -1,0 +1,4 @@
+interface:
+  display_name: "Coding Conventions"
+  short_description: "Apply repository naming and structure rules"
+  default_prompt: "Use $coding-conventions while creating or reviewing these project files."

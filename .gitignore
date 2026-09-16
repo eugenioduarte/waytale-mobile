@@ -30,6 +30,9 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# local agent tool settings (machine-specific, may hold secrets)
+.claude/settings.local.json
+
 # local env files
 .env*.local
 

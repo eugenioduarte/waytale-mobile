@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "security-crypto",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "weak_otp_crypto",
+      "prompt": "Review mobile code that hashes secrets with SHA-1 and generates OTP values with Math.random.",
+      "expect": [
+        "Flags weak secret hashing and insecure randomness",
+        "Distinguishes checksums from security controls",
+        "Suggests maintained React Native-compatible primitives and key handling"
+      ],
+      "tags": ["security", "crypto", "randomness"]
+    },
+    {
+      "id": "hardcoded_encryption_key",
+      "prompt": "Audit an offline cache encrypted with AES using a key committed in the JavaScript bundle.",
+      "expect": [
+        "Explains why bundled client keys are recoverable",
+        "Evaluates whether encryption meets the actual threat model",
+        "Uses platform keystore or server-backed alternatives where appropriate"
+      ],
+      "tags": ["security", "crypto", "storage"]
+    }
+  ]
+}

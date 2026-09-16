@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "security-auth",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "public_client_oauth",
+      "prompt": "Review a React Native OAuth flow that embeds a client secret, omits PKCE, and trusts client-side authorization state.",
+      "expect": [
+        "Flags public-client secret exposure and missing PKCE",
+        "Separates authentication, authorization, and backend validation gaps",
+        "Provides platform-compatible remediation and verification"
+      ],
+      "tags": ["security", "auth", "oauth"]
+    },
+    {
+      "id": "session_lifecycle",
+      "prompt": "Audit a mobile session flow with long-lived access tokens, no rotation, and logout that only clears in-memory state.",
+      "expect": [
+        "Finds token lifecycle and persistent-session risks",
+        "Distinguishes client cleanup from server revocation",
+        "Covers expiry, refresh, logout, and compromised-device behavior"
+      ],
+      "tags": ["security", "auth", "session"]
+    }
+  ]
+}

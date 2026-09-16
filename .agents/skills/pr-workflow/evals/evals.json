@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "pr-workflow",
+  "rubric": "delivery-workflow-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "prepare_pr_without_merge",
+      "prompt": "Prepare a pull request from the current branch, including scope review, checks, and a concise description, but do not merge it.",
+      "expect": [
+        "Confirms the diff and excludes unrelated changes",
+        "Runs proportionate checks and reports failures honestly",
+        "Keeps merge behind an explicit authorization gate"
+      ],
+      "tags": ["git", "pull-request", "delivery"]
+    },
+    {
+      "id": "ci_failure_triage",
+      "prompt": "Summarize actionable CI failures for an existing pull request and propose the smallest repair sequence.",
+      "expect": [
+        "Uses actual check and log evidence",
+        "Separates product, test, and environment failures",
+        "Does not push, merge, or broaden scope without authority"
+      ],
+      "tags": ["git", "ci", "review"]
+    }
+  ]
+}

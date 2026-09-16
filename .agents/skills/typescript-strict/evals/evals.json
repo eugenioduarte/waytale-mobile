@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "typescript-strict",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "unknown_api_boundary",
+      "prompt": "Review a React Native API hook that casts response.data as UserDto and returns it directly to the screen.",
+      "expect": [
+        "Treats external data as unknown and validates it at runtime",
+        "Prevents DTO leakage into the hook and screen",
+        "Uses explicit typed exports without unsafe assertions"
+      ],
+      "tags": ["typescript", "api", "react-native"]
+    },
+    {
+      "id": "exhaustive_state",
+      "prompt": "Refine a reducer and screen state model that uses optional booleans for loading, success, empty, and error states.",
+      "expect": [
+        "Uses a discriminated union for valid states",
+        "Requires exhaustive branching",
+        "Prevents impossible combinations and unsafe fallback rendering"
+      ],
+      "tags": ["typescript", "state", "ui"]
+    }
+  ]
+}

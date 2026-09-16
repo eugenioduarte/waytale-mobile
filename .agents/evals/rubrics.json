@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "rubrics": {
+    "repository-skill-v1": [
+      {
+        "id": "task_correctness",
+        "description": "Satisfies the case expectations without inventing repository facts.",
+        "weight": 50,
+        "critical": true
+      },
+      {
+        "id": "repository_alignment",
+        "description": "Uses the active repository architecture, instructions, and relevant skill boundaries.",
+        "weight": 30,
+        "critical": false
+      },
+      {
+        "id": "evidence_and_efficiency",
+        "description": "Provides focused evidence or verification and avoids unnecessary context, work, and tokens.",
+        "weight": 20,
+        "critical": false
+      }
+    ],
+    "security-review-v1": [
+      {
+        "id": "finding_accuracy",
+        "description": "Identifies the relevant exploitable findings and avoids unsupported claims.",
+        "weight": 50,
+        "critical": true
+      },
+      {
+        "id": "risk_calibration",
+        "description": "Calibrates severity to the mobile threat model and separates client and backend responsibility.",
+        "weight": 25,
+        "critical": true
+      },
+      {
+        "id": "actionable_remediation",
+        "description": "Provides React Native-compatible remediation and a way to verify it.",
+        "weight": 25,
+        "critical": false
+      }
+    ],
+    "delivery-workflow-v1": [
+      {
+        "id": "scope_and_outcome",
+        "description": "Meets the requested outcome while preserving scope and unrelated work.",
+        "weight": 45,
+        "critical": true
+      },
+      {
+        "id": "delivery_loop",
+        "description": "Uses bounded checkpoints, classifies failures, and does not loop without a new hypothesis.",
+        "weight": 30,
+        "critical": true
+      },
+      {
+        "id": "verification_evidence",
+        "description": "Returns proportionate static, test, and runtime evidence with residual risks.",
+        "weight": 25,
+        "critical": false
+      }
+    ]
+  }
+}

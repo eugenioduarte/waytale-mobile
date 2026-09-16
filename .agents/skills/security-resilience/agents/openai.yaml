@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Resilience"
+  short_description: "Audit mobile tampering and integrity posture"
+  default_prompt: "Use $security-resilience to review release hardening for this threat model."

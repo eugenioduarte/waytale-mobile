@@ -1,0 +1,4 @@
+interface:
+  display_name: "TypeScript Strict"
+  short_description: "Enforce safe strict TypeScript boundaries"
+  default_prompt: "Use $typescript-strict to review this TypeScript boundary for unsafe states."

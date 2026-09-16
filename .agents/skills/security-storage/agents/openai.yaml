@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Storage"
+  short_description: "Audit storage logs backups and local exposure"
+  default_prompt: "Use $security-storage to review this persistence or sensitive-data flow."

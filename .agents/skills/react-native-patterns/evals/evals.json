@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "react-native-patterns",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "lifecycle_cleanup",
+      "prompt": "Review a React Native screen that starts listeners and async work on focus but never cancels or unsubscribes them.",
+      "expect": [
+        "Identifies stale update and subscription leak risks",
+        "Uses navigation and React lifecycle-safe cleanup",
+        "Includes focused tests or simulator evidence"
+      ],
+      "tags": ["react-native", "lifecycle", "runtime"]
+    },
+    {
+      "id": "large_list_accessibility",
+      "prompt": "Improve a large interactive mobile list that re-renders every row, uses nested scroll views, and has unlabeled icon buttons.",
+      "expect": [
+        "Addresses list virtualization and stable render inputs",
+        "Restores accessible labels, roles, and touch targets",
+        "Verifies behavior on relevant mobile platforms"
+      ],
+      "tags": ["react-native", "performance", "accessibility"]
+    }
+  ]
+}

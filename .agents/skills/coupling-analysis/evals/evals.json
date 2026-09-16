@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "coupling-analysis",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "pre_refactor_graph",
+      "prompt": "Analyze imports before moving shared React Native feature logic and identify high fan-in, high fan-out, cycles, and layer violations.",
+      "expect": [
+        "Uses import evidence rather than intuition",
+        "Separates fan-in, fan-out, cycles, and layering findings",
+        "Explains migration risk without editing code"
+      ],
+      "tags": ["architecture", "coupling", "refactor"]
+    },
+    {
+      "id": "god_module",
+      "prompt": "Assess a shared mobile module imported by most features that owns networking, storage, navigation, and formatting.",
+      "expect": [
+        "Identifies responsibility and dependency concentration",
+        "Explains blast radius and cycle risk",
+        "Suggests incremental boundaries and verification"
+      ],
+      "tags": ["architecture", "shared", "review"]
+    }
+  ]
+}

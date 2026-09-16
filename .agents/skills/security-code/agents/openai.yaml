@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Code"
+  short_description: "Audit dependency build and code risks"
+  default_prompt: "Use $security-code to review exploitable code and release risks."
