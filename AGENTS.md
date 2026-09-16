@@ -10,7 +10,7 @@ screen, attention on the city rather than the phone. Full product context lives 
 1. Read `.agents_local/project.md` (product/domain) and `.agents_local/stack.md` (tech stack,
    what's already scaffolded vs. pending) before writing code.
 2. Read `.agents_local/agentic.md` for current runtime facts and design-source status.
-3. Read the relevant epic under `.user_stories/epics/` for the feature you're building — each has
+3. Read the relevant epic under `.user_stories/` for the feature you're building — each has
    its own stories, acceptance criteria, and estimate.
 4. Read `.agents/README.md` for how this repository's agent system (`.agents/`, `.claude/`,
    `.codex/`) is laid out, and the closest `AGENTS.md` for the path you're editing.
@@ -36,5 +36,5 @@ typescript) shared across packages. Read the closest `AGENTS.md` for the path yo
 
 - `main` is protected — no direct pushes, only merges via pull request.
 - Work happens on `develop` or feature branches off it.
-- New epics/stories start as markdown under `.user_stories/epics/`, then become GitHub Issues
+- New epics/stories start as markdown under `.user_stories/`, then become GitHub Issues
   (labels `epic`/`story`/`task`/`bug`, templates under `.github/ISSUE_TEMPLATE/`).

@@ -20,7 +20,7 @@ tooling/
 ```
 
 Gestor de pacotes: **pnpm** workspaces + **Turborepo**. Ver `.agents_local/stack.md` para o
-estado detalhado (o que já está montado vs. o que falta) e `.user_stories/epics/` para o backlog.
+estado detalhado (o que já está montado vs. o que falta) e `.user_stories/` para o backlog.
 
 ## Comandos
 
@@ -37,4 +37,4 @@ pnpm --filter mobile start   # só o app mobile (equivalente a expo start)
 
 1. `AGENTS.md` — instruções e princípios do repositório.
 2. `.agents_local/` — produto, stack e estado atual.
-3. `.user_stories/epics/` — backlog, um ficheiro por épico.
+3. `.user_stories/` — backlog, um ficheiro por épico.

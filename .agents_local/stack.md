@@ -1,6 +1,6 @@
 # Waytale — Stack Técnico
 
-Fonte formal do plano: `../.user_stories/epics/EPIC-01-setup-projeto/EPIC-01-setup-projeto.md`. Este ficheiro reflete o
+Fonte formal do plano: `../.user_stories/EPIC-01-setup-projeto/EPIC-01-setup-projeto.md`. Este ficheiro reflete o
 que já está montado no repositório vs. o que ainda falta instalar/configurar.
 
 ## App Mobile
@@ -64,7 +64,7 @@ stores/          zustand stores globais
 ## Notas / decisões pendentes
 
 - **TanStack Query**: mencionado nas notas iniciais do backlog (hoje absorvidas pelos épicos em
-  `.user_stories/epics/`) mas fora do stack formal do EPIC-01, que só define Zustand para estado.
+  `.user_stories/`) mas fora do stack formal do EPIC-01, que só define Zustand para estado.
   Confirmar se entra antes de decidir a camada de dados.
 - **Supabase**: sem projeto criado ainda. Não referenciar nenhum `project_ref` real até existir —
   ver `agentic.md` e `.codex/config.toml`.

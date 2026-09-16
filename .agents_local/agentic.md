@@ -18,7 +18,7 @@ This file holds project-specific facts that may change independently from the po
 - Shared MCP server name: `claude_design`.
 - Authentication is interactive through Claude Code `/design-login`; credentials must not be stored in the repository.
 - Until the project is imported through the authenticated MCP, do not invent screens/components —
-  build only from `../description.md`, `../.user_stories/epics/`, and explicit user instructions.
+  build only from `../description.md`, `../.user_stories/`, and explicit user instructions.
 
 ## Checkpoint policy
 
