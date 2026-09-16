@@ -11,7 +11,7 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Navegação | `expo-router` (file-based, typed routes) | ✅ scaffolded |
 | Estado cliente | Zustand — stores por domínio + `persist` | ⬜ a instalar |
 | Base local | SQLite (`expo-sqlite`) com Drizzle ORM e migrações versionadas | ⬜ a instalar |
-| Backend | Supabase (Postgres, Auth, Storage, Edge Functions, RLS) | ⬜ a configurar (sem projeto Supabase ainda) |
+| Backend | Supabase (Postgres, Auth, Storage, Edge Functions, RLS) | 🟡 projeto criado (`iqmnbzgsqmmalqzdyxjg`), MCP ligado; schema/auth/RLS por implementar (EPIC-01.5) |
 | Sync | Offline-first: escrita local → outbox → push/pull para Supabase | ⬜ a implementar (EPIC-01.6) |
 | Estilo | NativeWind (Tailwind CSS para React Native) | ⬜ a instalar |
 | i18n | i18next + `react-i18next` + `expo-localization` | ⬜ a instalar |
@@ -66,7 +66,8 @@ stores/          zustand stores globais
 - **TanStack Query**: mencionado nas notas iniciais do backlog (hoje absorvidas pelos épicos em
   `.user_stories/`) mas fora do stack formal do EPIC-01, que só define Zustand para estado.
   Confirmar se entra antes de decidir a camada de dados.
-- **Supabase**: sem projeto criado ainda. Não referenciar nenhum `project_ref` real até existir —
-  ver `agentic.md` e `.codex/config.toml`.
+- **Supabase**: projeto criado, MCP (`.mcp.json`, `.codex/config.toml`) já aponta para
+  `iqmnbzgsqmmalqzdyxjg`. Falta autenticar o MCP por máquina (`claude /mcp` num terminal normal)
+  e implementar schema/auth/RLS (EPIC-01.5). Ver `agentic.md` › Backend / Supabase.
 - **iOS**: CD (EAS Submit) cobre só Android no MVP (EPIC-01.13); iOS fica para quando houver conta
   de developer Apple — não assumir distribuição iOS em nenhum outro épico entretanto.

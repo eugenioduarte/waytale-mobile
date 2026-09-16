@@ -9,6 +9,19 @@ This file holds project-specific facts that may change independently from the po
 - Expo MCP remains disabled until the project is upgraded to a supported SDK and OAuth is configured
   (see `.codex/config.toml`).
 
+## Backend / Supabase
+
+- Project ref: `iqmnbzgsqmmalqzdyxjg`. Used in `.mcp.json` (Claude Code) and
+  `.codex/config.toml` (`mcp_servers.supabase`) — both point at the real Waytale project now,
+  not a placeholder.
+- MCP scopes enabled: `docs`, `account`, `database`, `debugging`, `development`, `functions`,
+  `branching`.
+- Authentication is per-machine/session, not stored in the repo: run `claude /mcp` in a regular
+  terminal (not an IDE extension) and authenticate the `supabase` server there.
+- Client env vars (`EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`) and the service
+  role key/DB password are separate from the MCP server — see EPIC-01.5's subtask for what each
+  is for and which ones must never enter the repo or chat.
+
 ## Design source
 
 - Claude Design project id: **TBD** — not yet confirmed for this repo, do not reuse an id from

@@ -10,11 +10,8 @@ url = "https://stitch.googleapis.com/mcp"
 env_http_headers = { "X-Goog-Api-Key" = "STITCH_API_KEY" }
 default_tools_approval_mode = "writes"
 
-# Enable once the Waytale Supabase project exists and its project_ref is known.
-# The previous value here (ptxidytfhhvhwtivvwrr) belonged to a different project — never reuse it.
 [mcp_servers.supabase]
-url = "https://mcp.supabase.com/mcp?project_ref=REPLACE_WITH_WAYTALE_PROJECT_REF"
-enabled = false
+url = "https://mcp.supabase.com/mcp?project_ref=iqmnbzgsqmmalqzdyxjg&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching"
 default_tools_approval_mode = "writes"
 
 # Enable after the Expo SDK upgrade and Expo OAuth setup are complete.
