@@ -1,6 +1,6 @@
 # Waytale — Stack Técnico
 
-Fonte formal do plano: `../.user_stories/epics/EPIC-01-setup-projeto.md`. Este ficheiro reflete o
+Fonte formal do plano: `../.user_stories/epics/EPIC-01-setup-projeto/EPIC-01-setup-projeto.md`. Este ficheiro reflete o
 que já está montado no repositório vs. o que ainda falta instalar/configurar.
 
 ## App Mobile
