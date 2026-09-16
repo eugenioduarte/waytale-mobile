@@ -46,30 +46,31 @@
 ## Como rodar
 
 ```bash
-npm test              # todas as camadas
-npm run test:unit     # apenas unit (quando os scripts existirem — ver stack.md)
-npm run test:cov      # com cobertura
-npx maestro test .maestro/journey.yaml
+pnpm test                        # turbo run test — todas as camadas, todo o monorepo
+pnpm --filter mobile test        # apenas apps/mobile
+pnpm --filter mobile test:cov    # com cobertura (quando o script existir — ver stack.md)
+npx maestro test apps/mobile/.maestro/journey.yaml
 ```
 
-Os scripts `test`, `test:unit`, `test:cov` ainda não existem em `package.json` — criar em
-EPIC-01.8 junto com a instalação de Jest/RNTL/Maestro.
+O script `test` já existe em `apps/mobile/package.json` (`jest`, via `@waytale/jest-config`);
+`test:cov` e os fluxos Maestro ainda faltam — criar em EPIC-01.8 junto com RNTL/Maestro.
 
 ## Estrutura de arquivos
 
 ```
-src/features/auth/
-  __tests__/
-    auth.hook.unit.test.ts             ← Unit
-    auth.flow.integration.test.tsx     ← Integration
-src/features/journey/
-  __tests__/
-    journey.store.unit.test.ts         ← Unit
-    journey.flow.integration.test.tsx  ← Integration
-.maestro/
-  onboarding.yaml                      ← E2E
-  auth.yaml                            ← E2E
-  journey.yaml                         ← E2E
+apps/mobile/
+  src/features/auth/
+    __tests__/
+      auth.hook.unit.test.ts             ← Unit
+      auth.flow.integration.test.tsx     ← Integration
+  src/features/journey/
+    __tests__/
+      journey.store.unit.test.ts         ← Unit
+      journey.flow.integration.test.tsx  ← Integration
+  .maestro/
+    onboarding.yaml                      ← E2E
+    auth.yaml                            ← E2E
+    journey.yaml                         ← E2E
 ```
 
 ## Regras

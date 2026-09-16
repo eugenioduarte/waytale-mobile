@@ -24,6 +24,14 @@ screen, attention on the city rather than the phone. Full product context lives 
 5. **Offline-first** — all UI reads come from local SQLite; network only feeds that local store
    (see `.agents_local/stack.md`).
 
+## Repository layout
+
+Monorepo — pnpm workspaces + Turborepo. `apps/mobile/` is the Expo app; `packages/ui/` is the
+shared design system; `tooling/*` holds configs (eslint, jest, mockoon, prettier, tailwind,
+typescript) shared across packages. Read the closest `AGENTS.md` for the path you're editing
+(e.g. `apps/mobile/AGENTS.md`). Run workspace-wide commands from the repo root (`pnpm lint`,
+`pnpm typecheck`, `pnpm test`); scope to one package with `pnpm --filter <name> <script>`.
+
 ## Workflow
 
 - `main` is protected — no direct pushes, only merges via pull request.

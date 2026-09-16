@@ -1,0 +1,15 @@
+{
+  "name": "@waytale/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "base.js",
+  "exports": {
+    ".": "./base.js",
+    "./expo-app": "./expo-app.js"
+  },
+  "dependencies": {
+    "eslint-config-expo": "^9.2.0",
+    "eslint-config-prettier": "^9.1.0"
+  }
+}

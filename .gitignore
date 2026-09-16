@@ -43,5 +43,8 @@ expo-env.d.ts
 example
 
 # generated native folders
-/ios
-/android
+apps/mobile/ios
+apps/mobile/android
+
+# turborepo cache
+.turbo/

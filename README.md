@@ -1,56 +1,40 @@
-# Welcome to your Expo app 👋
+# Waytale
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+App móvel de passeios a pé guiados por áudio. Ver `description.md` para o produto e
+`.agents_local/project.md` para o contexto orientado a agentes.
 
-## Get started
+## Estrutura (monorepo)
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+apps/
+  mobile/            app Expo (React Native) — ver apps/mobile/README.md
+packages/
+  ui/                design system partilhado (@waytale/ui) — EPIC-02
+tooling/
+  eslint/            config partilhada de lint (@waytale/eslint-config)
+  jest/              preset de testes (@waytale/jest-config)
+  mockoon/           mocks locais de API (@waytale/mockoon-config)
+  prettier/          config de formatação (@waytale/prettier-config)
+  tailwind/          tokens NativeWind/Tailwind (@waytale/tailwind-config)
+  typescript/        tsconfigs partilhados (@waytale/typescript-config)
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Gestor de pacotes: **pnpm** workspaces + **Turborepo**. Ver `.agents_local/stack.md` para o
+estado detalhado (o que já está montado vs. o que falta) e `.user_stories/epics/` para o backlog.
 
-### Other setup steps
+## Comandos
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+pnpm install       # instala tudo (raiz + apps/* + packages/* + tooling/*)
+pnpm dev           # turbo run dev — arranca o(s) app(s) com task "dev"
+pnpm lint          # turbo run lint em todo o workspace
+pnpm typecheck     # turbo run typecheck em todo o workspace
+pnpm test          # turbo run test em todo o workspace
+pnpm --filter mobile start   # só o app mobile (equivalente a expo start)
+```
 
-## Learn more
+## Onde começar
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+1. `AGENTS.md` — instruções e princípios do repositório.
+2. `.agents_local/` — produto, stack e estado atual.
+3. `.user_stories/epics/` — backlog, um ficheiro por épico.

@@ -31,22 +31,28 @@
 ### 01.1 — Bootstrap do repositório
 Como dev, quero um projeto Expo com TypeScript estrito e lint/format automáticos, para começar sem discutir configuração.
 
-- `npx create-expo-app` com template TypeScript; `tsconfig` `strict: true`, paths `@/*`.
-- ESLint + Prettier + import/order; Husky + lint-staged no pre-commit.
+- Monorepo **pnpm workspaces + Turborepo**; `npx create-expo-app` dentro de `apps/mobile`.
+  `tsconfig` `strict: true` (via `tooling/typescript`), paths `@/*`.
+- ESLint + Prettier (via `tooling/eslint`/`tooling/prettier`) + import/order; Husky + lint-staged
+  no pre-commit.
 - Estrutura de pastas:
 ```
-app/                 rotas (expo-router)
-src/features/<dom>/  ui, hooks, store, queries, schema
-src/components/      design system (EPIC-02)
-src/db/              schema drizzle, migrações, seeds
-src/lib/             supabase, sync, audio, location, analytics, http (axios), date
-src/stores/          zustand stores globais
-src/i18n/            locales i18next (pt, en, ...)
-infra/mockoon/       waytale.json — mocks locais de API
-tests/               helpers, factories
-.maestro/            fluxos E2E
+apps/mobile/
+  src/app/             rotas (expo-router)
+  src/features/<dom>/  ui, hooks, store, queries, schema
+  src/components/      primitivos locais (o design system partilhado vive em packages/ui)
+  src/db/              schema drizzle, migrações, seeds
+  src/lib/             supabase, sync, audio, location, analytics, http (axios), date, i18n
+  src/stores/          zustand stores globais
+  src/i18n/            locales i18next (pt, en, ...)
+  tests/               helpers, factories
+  .maestro/            fluxos E2E
+packages/ui/           design system partilhado (EPIC-02)
+tooling/                eslint, jest, mockoon, prettier, tailwind, typescript — configs partilhadas
 ```
-- **Aceitação:** `yarn ios`, `yarn android` e `yarn web` arrancam; `yarn lint`, `yarn typecheck`, `yarn test` passam em CI.
+- **Aceitação:** `pnpm --filter mobile ios`, `pnpm --filter mobile android` e
+  `pnpm --filter mobile web` arrancam; `pnpm lint`, `pnpm typecheck`, `pnpm test` (via turbo)
+  passam em CI.
 
 ### 01.2 — Navegação com expo-router
 Como dev, quero rotas por ficheiro com grupos de layout, para mapear os fluxos do design 1:1.
@@ -122,7 +128,7 @@ Como dev, quero utilitários de estilo consistentes, para implementar o design s
 Como dev, quero um cliente HTTP e mocks locais previsíveis, para desenvolver sem depender do backend estar sempre disponível.
 
 - `axios` como cliente HTTP único (instância com interceptors de auth e erro; nunca `fetch` direto em features).
-- `Mockoon` (`infra/mockoon/waytale.json`) para mocks locais de endpoints ainda sem Edge Function no Supabase.
+- `Mockoon` (`tooling/mockoon/waytale.json`) para mocks locais de endpoints ainda sem Edge Function no Supabase.
 - `date-fns` para toda a manipulação/formatação de datas (duração de rota, "há 2 dias", etc.) — proibido `Date` manual fora de `src/lib/date.ts`.
 - **Aceitação:** a app corre contra o Mockoon só trocando uma env var, sem tocar em código de produção; nenhuma função de data usa `Date`/`Intl` diretamente fora de `src/lib/date.ts`.
 

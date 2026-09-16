@@ -1,0 +1,25 @@
+{
+  "name": "@waytale/ui",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "prettier": "@waytale/prettier-config",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "devDependencies": {
+    "@waytale/eslint-config": "workspace:*",
+    "@waytale/jest-config": "workspace:*",
+    "@waytale/prettier-config": "workspace:*",
+    "@waytale/typescript-config": "workspace:*",
+    "typescript": "~6.0.3"
+  }
+}

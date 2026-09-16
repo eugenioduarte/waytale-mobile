@@ -1,0 +1,7 @@
+{
+  "name": "@waytale/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "base.js"
+}
