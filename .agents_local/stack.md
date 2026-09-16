@@ -13,9 +13,17 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Base local | SQLite (`expo-sqlite`) com Drizzle ORM e migrações versionadas | ⬜ a instalar |
 | Backend | Supabase (Postgres, Auth, Storage, Edge Functions, RLS) | ⬜ a configurar (sem projeto Supabase ainda) |
 | Sync | Offline-first: escrita local → outbox → push/pull para Supabase | ⬜ a implementar (EPIC-01.6) |
+| Estilo | NativeWind (Tailwind CSS para React Native) | ⬜ a instalar |
+| i18n | i18next + `react-i18next` + `expo-localization` | ⬜ a instalar |
+| HTTP client | Axios | ⬜ a instalar |
+| Datas | date-fns | ⬜ a instalar |
+| Mock de API | Mockoon (`infra/mockoon/waytale.json`) | ⬜ a instalar |
+| Crash / Push / Analytics | Firebase — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*`) | ⬜ a instalar |
 | Testes de UI/lógica | React Native Testing Library + Jest | ⬜ a instalar |
 | Testes E2E | Maestro (fluxos em YAML) | ⬜ a instalar |
 | Documentação de componentes | Storybook (react-native + web) | ⬜ a instalar |
+| CI | GitHub Actions — lint/typecheck/testes bloqueantes, SonarQube, Dependabot | ⬜ a configurar |
+| CD | EAS Build + EAS Submit — Android apenas por agora | ⬜ a configurar |
 | Gestor de pacotes | npm | ✅ em uso (ver nota abaixo) |
 
 ## Estrutura atual do repositório
@@ -48,10 +56,10 @@ tests/               helpers, factories
 - **Package manager**: o scaffold atual foi criado com `npm` (`package-lock.json`). O EPIC-01.1
   assume `yarn` nos comandos de aceitação (`yarn ios`, `yarn lint`, ...) — decidir e alinhar antes
   de fechar EPIC-01, ou reescrever os comandos do épico para `npm run <script>`.
-- **TanStack Query**: mencionado nas notas iniciais (`../.user_stories/user_stories_base.md`, hoje
-  em `_user_stories/`) mas fora do stack formal do EPIC-01, que só define Zustand para estado.
+- **TanStack Query**: mencionado nas notas iniciais do backlog (hoje absorvidas pelos épicos em
+  `.user_stories/epics/`) mas fora do stack formal do EPIC-01, que só define Zustand para estado.
   Confirmar se entra antes de decidir a camada de dados.
-- **Observabilidade/analytics** (crash reporting, product analytics): não definidos nos épicos
-  atuais; tratar em EPIC-20 (QA, observabilidade e release).
 - **Supabase**: sem projeto criado ainda. Não referenciar nenhum `project_ref` real até existir —
   ver `agentic.md` e `.codex/config.toml`.
+- **iOS**: CD (EAS Submit) cobre só Android no MVP (EPIC-01.13); iOS fica para quando houver conta
+  de developer Apple — não assumir distribuição iOS em nenhum outro épico entretanto.
