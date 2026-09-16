@@ -12,7 +12,9 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "mockoon": "pnpm --filter @waytale/mockoon-config start"
+    "mockoon": "pnpm --filter @waytale/mockoon-config start",
+    "run:android": "pnpm --filter mobile android",
+    "run:ios": "pnpm --filter mobile ios"
   },
   "devDependencies": {
     "prettier": "^3.4.2",
