@@ -1,0 +1,45 @@
+name: "📌 Story"
+description: A user-facing feature or capability, usually part of an epic
+title: "[STORY] "
+labels: ["story"]
+body:
+  - type: input
+    id: epic
+    attributes:
+      label: Parent epic
+      description: Link the epic this story belongs to (e.g. `#3`)
+      placeholder: "#"
+    validations:
+      required: false
+  - type: textarea
+    id: story
+    attributes:
+      label: User story
+      value: |
+        As a [type of user],
+        I want [goal],
+        so that [reason].
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Design / references
+      description: Link relevant mockups, screens or other design references
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / open questions
+    validations:
+      required: false
