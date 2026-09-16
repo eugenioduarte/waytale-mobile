@@ -37,10 +37,14 @@ Backlog da app organizado em épicos. Ordem de execução recomendada é a numer
 ```
 EPIC-XX-slug/
   EPIC-XX-slug.md     épico: histórias, stack, riscos — a fonte de verdade
+  TASKS.md            checklist (uma checkbox por história) — progresso rápido do épico
   subtasks/
     README.md          convenção de subtask (ver dentro)
     NN.N-slug.md        uma subtask por história/tarefa, quando se começa a implementar
 ```
+
+`TASKS.md` é gerado a partir dos cabeçalhos `### NN.N — Título` do próprio épico — se acrescentares
+ou renomeares uma história aí, atualiza a checkbox correspondente em `TASKS.md` a condizer.
 
 ## De épico a GitHub Issue
 
