@@ -1,11 +1,26 @@
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect } from 'react';
 
 import { Palette } from '@/constants/palette';
-import { SessionProvider, useSession } from '@/features/auth/session';
+import { useStoresHydrated } from '@/stores/hydration';
+import { useHasCompletedOnboarding, useIsAuthenticated } from '@/stores/session.store';
 
-function RootNavigator() {
-  const { isAuthenticated, hasCompletedOnboarding } = useSession();
+// Keep the splash up until the persisted stores rehydrate (see `stores/hydration.ts`).
+void SplashScreen.preventAutoHideAsync();
+
+export default function RootLayout() {
+  const hasHydrated = useStoresHydrated();
+  const isAuthenticated = useIsAuthenticated();
+  const hasCompletedOnboarding = useHasCompletedOnboarding();
+
+  useEffect(() => {
+    if (hasHydrated) void SplashScreen.hideAsync();
+  }, [hasHydrated]);
+
+  // Mounting the guard before hydration would treat a signed-in user as anonymous.
+  if (!hasHydrated) return null;
 
   return (
     <ThemeProvider value={DefaultTheme}>
@@ -34,13 +49,5 @@ function RootNavigator() {
         </Stack.Protected>
       </Stack>
     </ThemeProvider>
-  );
-}
-
-export default function RootLayout() {
-  return (
-    <SessionProvider>
-      <RootNavigator />
-    </SessionProvider>
   );
 }

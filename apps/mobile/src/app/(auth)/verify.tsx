@@ -1,11 +1,11 @@
 import { router } from 'expo-router';
 
 import { Action, Screen } from '@/components/screen';
-import { useSession } from '@/features/auth/session';
 import copy from '@/locales/pt.json';
+import { useSessionActions } from '@/stores/session.store';
 
 export default function VerifyScreen() {
-  const { signIn } = useSession();
+  const { signIn } = useSessionActions();
   return (
     <Screen title={copy.auth.verify} description={copy.auth.verifyDescription}>
       {/* Provisional: signIn() flips the root guard, which unmounts `(auth)` — so going back

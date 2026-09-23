@@ -9,7 +9,7 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | --------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | Runtime                     | Expo SDK ~57 · React Native 0.86 · TypeScript strict                                           | ✅ scaffolded                                                                                       |
 | Navegação                   | `expo-router` (file-based, typed routes)                                                       | ✅ scaffolded                                                                                       |
-| Estado cliente              | Zustand — stores por domínio + `persist`                                                       | ⬜ a instalar                                                                                       |
+| Estado cliente              | Zustand (5 stores globais) + AsyncStorage                                                      | ✅ montado (EPIC-01.3)                                                                              |
 | Base local                  | SQLite (`expo-sqlite`) com Drizzle ORM e migrações versionadas                                 | ⬜ a instalar                                                                                       |
 | Backend                     | Supabase (Postgres, Auth, Storage, Edge Functions, RLS)                                        | 🟡 projeto criado (`iqmnbzgsqmmalqzdyxjg`), MCP ligado; schema/auth/RLS por implementar (EPIC-01.5) |
 | Sync                        | Offline-first: escrita local → outbox → push/pull para Supabase                                | ⬜ a implementar (EPIC-01.6)                                                                        |
@@ -66,9 +66,19 @@ tests/           helpers, factories (EPIC-01.8)
 .maestro/        fluxos E2E (EPIC-01.8)
 ```
 
-`src/features/auth/session.tsx` é a sessão provisória da guarda (01.2) — substituída por
-`sessionStore` (01.3) e Supabase auth (01.5). `src/locales/pt.json` é a copy provisória (01.2),
-sem i18next ainda: 01.9 deve consolidá-la em `src/i18n/`.
+`src/stores/session.store.ts` é a sessão global (Zustand, 01.3), consumida pela guarda de rotas;
+os tokens irão para SecureStore (01.5). `src/locales/pt.json` é a copy provisória (01.2), sem
+i18next ainda: 01.9 deve consolidá-la em `src/i18n/`.
+
+## Estado (Zustand) — decisões e convenções
+
+- **Storage**: `@react-native-async-storage/async-storage` (não MMKV) — funciona em Expo Go e no
+  web (`expo export --platform web`); MMKV é nativo e quebraria o export web. Reavaliar MMKV só se
+  a leitura síncrona for medida como necessária depois de existir dev client.
+- **Tokens**: nunca entram num store persistido — `sessionStore` usa `partialize` (whitelist);
+  tokens vivem em SecureStore (01.5).
+- **Selectors**: consumir sempre hooks granulares (`useIsAuthenticated()`, `useActiveJourney()`, …)
+  e ações via `useXActions()` (com `useShallow`) — nunca a store inteira num componente.
 
 ## Notas / decisões pendentes
 

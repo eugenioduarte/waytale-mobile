@@ -1,11 +1,11 @@
 import { router } from 'expo-router';
 
 import { Action, Notice, Screen } from '@/components/screen';
-import { useSession } from '@/features/auth/session';
 import copy from '@/locales/pt.json';
+import { useSessionActions } from '@/stores/session.store';
 
 export default function LoginScreen() {
-  const { enterPreview } = useSession();
+  const { enterPreview } = useSessionActions();
   return (
     <Screen title={copy.auth.login} description={copy.auth.loginDescription}>
       <Notice>{copy.auth.previewNotice}</Notice>
