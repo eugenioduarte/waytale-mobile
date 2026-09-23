@@ -7,6 +7,7 @@
     "@expo/ui": "~57.0.18",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@waytale/ui": "workspace:*",
+    "drizzle-orm": "^0.45.3",
     "expo": "~57.0.23",
     "expo-constants": "~57.0.18",
     "expo-device": "~57.0.2",
@@ -16,6 +17,7 @@
     "expo-linking": "~57.0.10",
     "expo-router": "~57.0.21",
     "expo-splash-screen": "~57.0.9",
+    "expo-sqlite": "~57.0.3",
     "expo-status-bar": "~57.0.1",
     "expo-symbols": "~57.0.3",
     "expo-system-ui": "~57.0.4",
@@ -38,6 +40,7 @@
     "@waytale/jest-config": "workspace:*",
     "@waytale/prettier-config": "workspace:*",
     "@waytale/typescript-config": "workspace:*",
+    "drizzle-kit": "^0.31.11",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -47,7 +50,8 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "typecheck": "tsc --noEmit",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "db:generate": "drizzle-kit generate && node scripts/bundle-migrations.mjs"
   },
   "prettier": "@waytale/prettier-config"
 }

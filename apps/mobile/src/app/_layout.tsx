@@ -4,23 +4,28 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
 import { Palette } from '@/constants/palette';
+import { useDatabaseReady } from '@/db/client';
 import { useStoresHydrated } from '@/stores/hydration';
 import { useHasCompletedOnboarding, useIsAuthenticated } from '@/stores/session.store';
 
-// Keep the splash up until the persisted stores rehydrate (see `stores/hydration.ts`).
+// Keep the splash up until the persisted stores rehydrate (see `stores/hydration.ts`) and the
+// local database is migrated (see `db/client.ts`).
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const hasHydrated = useStoresHydrated();
+  const isDatabaseReady = useDatabaseReady();
+  const isReady = hasHydrated && isDatabaseReady;
   const isAuthenticated = useIsAuthenticated();
   const hasCompletedOnboarding = useHasCompletedOnboarding();
 
   useEffect(() => {
-    if (hasHydrated) void SplashScreen.hideAsync();
-  }, [hasHydrated]);
+    if (isReady) void SplashScreen.hideAsync();
+  }, [isReady]);
 
-  // Mounting the guard before hydration would treat a signed-in user as anonymous.
-  if (!hasHydrated) return null;
+  // Mounting the guard before hydration would treat a signed-in user as anonymous; mounting
+  // screens before migration would read tables that don't exist yet.
+  if (!isReady) return null;
 
   return (
     <ThemeProvider value={DefaultTheme}>

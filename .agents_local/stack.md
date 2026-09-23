@@ -10,7 +10,7 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Runtime                     | Expo SDK ~57 · React Native 0.86 · TypeScript strict                                           | ✅ scaffolded                                                                                       |
 | Navegação                   | `expo-router` (file-based, typed routes)                                                       | ✅ scaffolded                                                                                       |
 | Estado cliente              | Zustand (5 stores globais) + AsyncStorage                                                      | ✅ montado (EPIC-01.3)                                                                              |
-| Base local                  | SQLite (`expo-sqlite`) com Drizzle ORM e migrações versionadas                                 | ⬜ a instalar                                                                                       |
+| Base local                  | SQLite (`expo-sqlite`) + Drizzle ORM (11 tabelas, migrações, seed)                             | ✅ montado (EPIC-01.4)                                                                              |
 | Backend                     | Supabase (Postgres, Auth, Storage, Edge Functions, RLS)                                        | 🟡 projeto criado (`iqmnbzgsqmmalqzdyxjg`), MCP ligado; schema/auth/RLS por implementar (EPIC-01.5) |
 | Sync                        | Offline-first: escrita local → outbox → push/pull para Supabase                                | ⬜ a implementar (EPIC-01.6)                                                                        |
 | Estilo                      | NativeWind (Tailwind CSS para React Native)                                                    | ⬜ a instalar                                                                                       |
@@ -79,6 +79,22 @@ i18next ainda: 01.9 deve consolidá-la em `src/i18n/`.
   tokens vivem em SecureStore (01.5).
 - **Selectors**: consumir sempre hooks granulares (`useIsAuthenticated()`, `useActiveJourney()`, …)
   e ações via `useXActions()` (com `useShallow`) — nunca a store inteira num componente.
+
+## Base local (SQLite) — decisões
+
+- `expo-sqlite@~57` + `drizzle-orm@0.45`; schema em `src/db/schema.ts` (11 tabelas). Migrações
+  versionadas por `drizzle-kit generate` + `scripts/bundle-migrations.mjs` (empacota o `.sql` num
+  `src/db/migrations/index.ts`, porque o Metro não importa `.sql`). `pnpm db:generate` regera.
+- As chaves das migrações empacotadas têm de ser `m0000`, `m0001`, … (é assim que o
+  `drizzle-orm/expo-sqlite/migrator` as procura); o teste `src/db/__tests__/migrations.test.ts`
+  guarda este contrato.
+- Offline-first: `src/db/client.ts` (`getDatabase`/`migrateDatabase`) é a única porta de leitura da
+  UI; a rede (01.6/01.11) só escreve no SQLite, nunca alimenta a UI diretamente.
+- Cada ligação corre `PRAGMA foreign_keys = ON` (sem isso o SQLite ignora os `onDelete: cascade`)
+  e `journal_mode = WAL`.
+- O layout raiz só monta as rotas depois de `useDatabaseReady()` (migração + seed); o seed de
+  demonstração corre só em `__DEV__`.
+- `expo-sqlite` no web usa wa-sqlite (`.wasm`) — `metro.config.js` adiciona `wasm` a `assetExts`.
 
 ## Notas / decisões pendentes
 
