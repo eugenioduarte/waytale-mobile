@@ -142,6 +142,9 @@ importers:
 
   tooling/eslint:
     dependencies:
+      '@typescript-eslint/parser':
+        specifier: ^8.18.2
+        version: 8.70.0(eslint@9.39.5)(typescript@6.0.3)
       eslint-config-expo:
         specifier: ^9.2.0
         version: 9.2.0(eslint-plugin-import-x@4.17.1(@typescript-eslint/utils@8.70.0(eslint@9.39.5)(typescript@6.0.3))(eslint-import-resolver-node@0.3.10)(eslint@9.39.5))(eslint@9.39.5)(typescript@6.0.3)

@@ -19,10 +19,10 @@
   },
   "lint-staged": {
     "apps/mobile/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+      "pnpm --filter mobile exec eslint --fix"
     ],
-    "packages/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+    "packages/ui/**/*.{js,jsx,ts,tsx}": [
+      "pnpm --filter @waytale/ui exec eslint --fix"
     ],
     "*.{ts,tsx,js,jsx,json,md}": [
       "prettier --write"

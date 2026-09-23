@@ -1,3 +1,4 @@
+const tsParser = require("@typescript-eslint/parser");
 const prettierConfig = require("eslint-config-prettier");
 const importX = require("eslint-plugin-import-x");
 
@@ -11,6 +12,15 @@ const importX = require("eslint-plugin-import-x");
  * — are ordered the same way.
  */
 const importOrderConfig = {
+  // Without `files`, flat config only matches `*.{js,cjs,mjs}` and `packages/ui` would lint nothing.
+  files: ["**/*.{js,jsx,ts,tsx}"],
+
+  languageOptions: {
+    // `eslint-config-expo` already sets this parser for the app; repeating it here lets packages
+    // that don't use the Expo config parse TypeScript.
+    parser: tsParser,
+  },
+
   plugins: {
     "import-x": importX,
   },

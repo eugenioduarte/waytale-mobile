@@ -22,4 +22,3 @@ correm com `pnpm --filter mobile <script>` a partir da raiz.
   `packages/*` com o `node-linker=hoisted` do `.npmrc` da raiz. Não remover.
 - `src/app/` é a raiz de rotas do expo-router; a estrutura completa de `src/`, `tests/` e
   `.maestro/` está documentada em `.agents_local/stack.md`.
-- O `scripts/reset-project.js` do scaffold Expo não é usado neste repositório.
