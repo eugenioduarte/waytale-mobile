@@ -1,0 +1,27 @@
+{
+  "brand": "Waytale",
+  "auth": {
+    "login": "Login",
+    "loginDescription": "Uma nova forma de descobrir a cidade, uma história de cada vez.",
+    "register": "Criar conta",
+    "registerDescription": "Guarde os seus lugares e leve as suas histórias consigo.",
+    "recovery": "Recuperar conta",
+    "recoveryDescription": "Volte a ter acesso à sua conta e às suas descobertas.",
+    "previewNotice": "Por enquanto, pode conhecer o app em modo de demonstração. As contas estarão disponíveis em breve.",
+    "preview": "Explorar demonstração",
+    "backToLogin": "Voltar ao login",
+    "exitPreview": "Sair da demonstração"
+  },
+  "tabs": {
+    "explore": "Explore",
+    "saved": "Saved",
+    "journeys": "Journeys",
+    "profile": "Profile"
+  },
+  "screens": {
+    "explore": "O próximo passeio começa aqui.",
+    "saved": "Os lugares que guardar vão aparecer aqui.",
+    "journeys": "As histórias dos seus passeios vão ficar aqui.",
+    "profile": "Um espaço para si e para as suas preferências."
+  }
+}
