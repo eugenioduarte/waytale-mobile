@@ -53,7 +53,7 @@ bundle sem erros. O pre-commit (`husky` + `lint-staged`) foi validado com um fic
 ## Estrutura dentro de `apps/mobile/` (criada em EPIC-01.1)
 
 ```
-src/app/         rotas expo-router (grupos de layout entram em EPIC-01.2)
+src/app/         rotas expo-router — grupos (auth), (onboarding), (tabs), (journey) e (modals) (EPIC-01.2)
 src/features/<dom>/  ui, hooks, store, queries, schema — por domínio (auth, onboarding, journey, ...)
 src/components/  primitivos locais — o design system partilhado vive em packages/ui (EPIC-02)
 src/constants/   tokens locais (paleta, tema)
@@ -66,8 +66,9 @@ tests/           helpers, factories (EPIC-01.8)
 .maestro/        fluxos E2E (EPIC-01.8)
 ```
 
-`src/features/auth/` e `src/locales/pt.json` vêm do trabalho em curso de 01.2/01.9 (navegação +
-copy provisória, sem i18next ainda): 01.9 deve consolidar a copy em `src/i18n/`.
+`src/features/auth/session.tsx` é a sessão provisória da guarda (01.2) — substituída por
+`sessionStore` (01.3) e Supabase auth (01.5). `src/locales/pt.json` é a copy provisória (01.2),
+sem i18next ainda: 01.9 deve consolidá-la em `src/i18n/`.
 
 ## Notas / decisões pendentes
 

@@ -3,6 +3,10 @@
   "auth": {
     "login": "Login",
     "loginDescription": "Uma nova forma de descobrir a cidade, uma história de cada vez.",
+    "continue": "Continuar",
+    "verify": "Verificar código",
+    "verifyDescription": "Introduza o código que enviámos por SMS.",
+    "verifyAction": "Verificar",
     "register": "Criar conta",
     "registerDescription": "Guarde os seus lugares e leve as suas histórias consigo.",
     "recovery": "Recuperar conta",
@@ -10,13 +14,41 @@
     "previewNotice": "Por enquanto, pode conhecer o app em modo de demonstração. As contas estarão disponíveis em breve.",
     "preview": "Explorar demonstração",
     "backToLogin": "Voltar ao login",
-    "exitPreview": "Sair da demonstração"
+    "signOut": "Terminar sessão"
+  },
+  "onboarding": {
+    "interests": "Interesses",
+    "interestsDescription": "Escolha os temas das histórias que quer ouvir.",
+    "deviations": "Desvios",
+    "deviationsDescription": "Quanto aceita alongar o percurso por algo interessante.",
+    "voice": "Voz",
+    "voiceDescription": "Escolha o narrador e ouça uma prévia.",
+    "permissions": "Permissões",
+    "permissionsDescription": "Localização em segundo plano e notificações, em linguagem simples.",
+    "continue": "Continuar",
+    "back": "Voltar"
   },
   "tabs": {
     "explore": "Explore",
     "saved": "Saved",
     "journeys": "Journeys",
     "profile": "Profile"
+  },
+  "journey": {
+    "walk": "A caminhar",
+    "walkDescription": "Mapa limpo e a próxima indicação.",
+    "finish": "Terminar percurso",
+    "summary": "Resumo do percurso",
+    "summaryDescription": "Distância, tempo, paragens e histórias ouvidas.",
+    "done": "Concluir"
+  },
+  "route": {
+    "detailTitle": "Detalhe da rota",
+    "detailDescription": "Mapa, paragens, duração e prévia de áudio."
+  },
+  "place": {
+    "detailTitle": "Detalhe do local",
+    "detailDescription": "Contexto, imagem e opção de guardar."
   },
   "screens": {
     "explore": "O próximo passeio começa aqui.",

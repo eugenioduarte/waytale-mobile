@@ -2,10 +2,11 @@ import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import { Palette } from '@/constants/palette';
-import { PreviewSessionProvider, usePreviewSession } from '@/features/auth/preview-session';
+import { SessionProvider, useSession } from '@/features/auth/session';
 
 function RootNavigator() {
-  const { isPreviewActive } = usePreviewSession();
+  const { isAuthenticated, hasCompletedOnboarding } = useSession();
+
   return (
     <ThemeProvider value={DefaultTheme}>
       <StatusBar style="dark" />
@@ -15,11 +16,21 @@ function RootNavigator() {
           contentStyle: { backgroundColor: Palette.background },
         }}
       >
-        <Stack.Protected guard={!isPreviewActive}>
+        {/* Anonymous → auth. */}
+        <Stack.Protected guard={!isAuthenticated}>
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
-        <Stack.Protected guard={isPreviewActive}>
+
+        {/* Authenticated but not onboarded → onboarding. */}
+        <Stack.Protected guard={isAuthenticated && !hasCompletedOnboarding}>
+          <Stack.Screen name="(onboarding)" />
+        </Stack.Protected>
+
+        {/* Authenticated + onboarded → main app, the walk flow and its modals. */}
+        <Stack.Protected guard={isAuthenticated && hasCompletedOnboarding}>
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="(journey)" />
+          <Stack.Screen name="(modals)" />
         </Stack.Protected>
       </Stack>
     </ThemeProvider>
@@ -28,8 +39,8 @@ function RootNavigator() {
 
 export default function RootLayout() {
   return (
-    <PreviewSessionProvider>
+    <SessionProvider>
       <RootNavigator />
-    </PreviewSessionProvider>
+    </SessionProvider>
   );
 }
