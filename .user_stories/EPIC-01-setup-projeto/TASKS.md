@@ -2,7 +2,7 @@
 
 Checklist derivada das histórias em [`EPIC-01-setup-projeto.md`](./EPIC-01-setup-projeto.md). Marcar ao terminar (critério de aceitação da história cumprido, testes incluídos).
 
-- [ ] 01.1 — Bootstrap do repositório
+- [ ] 01.1 — Bootstrap do repositório (falta: arranque em simulador/dispositivo e CI de 01.13)
 - [ ] 01.2 — Navegação com expo-router
 - [ ] 01.3 — Estado com Zustand
 - [ ] 01.4 — SQLite local como fonte de verdade

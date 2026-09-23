@@ -14,9 +14,23 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "mockoon": "pnpm --filter @waytale/mockoon-config start",
     "run:android": "pnpm --filter mobile android",
-    "run:ios": "pnpm --filter mobile ios"
+    "run:ios": "pnpm --filter mobile ios",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "apps/mobile/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "packages/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{ts,tsx,js,jsx,json,md}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
     "prettier": "^3.4.2",
     "turbo": "^2.3.3"
   }

@@ -30,8 +30,14 @@ pnpm dev           # turbo run dev — arranca o(s) app(s) com task "dev"
 pnpm lint          # turbo run lint em todo o workspace
 pnpm typecheck     # turbo run typecheck em todo o workspace
 pnpm test          # turbo run test em todo o workspace
+pnpm run:android   # expo start --android (delega em apps/mobile)
+pnpm run:ios       # expo start --ios (delega em apps/mobile)
 pnpm --filter mobile start   # só o app mobile (equivalente a expo start)
 ```
+
+O pre-commit (`husky` + `lint-staged`, configurado no `package.json` da raiz) corre
+`eslint --fix` e `prettier --write` nos ficheiros em staging antes de cada commit; instalar as
+dependências (`pnpm install`) liga os hooks automaticamente.
 
 ## Onde começar
 
