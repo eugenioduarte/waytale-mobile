@@ -1,10 +1,10 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { drizzle } from 'drizzle-orm/sqlite-proxy';
 
-import type { Database } from '../client';
-import migrations from '../migrations';
-import * as schema from '../schema';
-import { seedDemo } from '../seed';
+import type { Database } from '@/db/client';
+import migrations from '@/db/migrations';
+import * as schema from '@/db/schema';
+import { seedDemo } from '@/db/seed';
 
 // `node:sqlite` ships with Node 22.5+; expo-sqlite is native and can't run under Jest.
 type SqliteModule = typeof import('node:sqlite');

@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 
 import { Action, Notice, Screen } from '@/components/screen';
+import { canUsePreviewAuth } from '@/features/auth/preview';
 import copy from '@/locales/pt.json';
 import { useSessionActions } from '@/stores/session.store';
 
@@ -16,7 +17,9 @@ export default function LoginScreen() {
         onPress={() => router.push('/recover-account')}
         secondary
       />
-      <Action label={copy.auth.preview} onPress={enterPreview} secondary />
+      {canUsePreviewAuth ? (
+        <Action label={copy.auth.preview} onPress={enterPreview} secondary />
+      ) : null}
     </Screen>
   );
 }

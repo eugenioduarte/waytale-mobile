@@ -4,11 +4,12 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { useShallow } from 'zustand/react/shallow';
 
 /**
- * Session store — global auth/session state, consumed by the 01.2 route guard and, later, by the
- * 01.5 Supabase auth.
+ * Session store — global auth/session state, consumed by the 01.2 route guard and fed by the
+ * Supabase auth session (`features/auth/use-supabase-auth-sync.ts`, 01.5).
  *
  * Security contract: tokens never live here. `partialize` is an explicit whitelist, so any future
- * token field is left out of persistence by default — tokens go to SecureStore (01.5).
+ * token field is left out of persistence by default. The Supabase session itself is kept
+ * encrypted by `lib/supabase/secure-session-storage.ts`.
  */
 type SessionUser = {
   id: string;
@@ -23,6 +24,11 @@ type SessionState = {
 type SessionActions = {
   /** Auth success (OTP verified, account created, social) — lands on `(onboarding)`. */
   signIn: () => void;
+  /**
+   * A Supabase session exists for `user`. Onboarding progress survives token refreshes and
+   * re-logins of the same user, but a different user starts onboarding again.
+   */
+  setAuthenticatedUser: (user: SessionUser) => void;
   /** Onboarding finished — lands on `(tabs)`. */
   completeOnboarding: () => void;
   /** Back to anonymous — lands on `(auth)`. */
@@ -40,6 +46,12 @@ export const useSessionStore = create<SessionStore>()(
       hasCompletedOnboarding: false,
       user: null,
       signIn: () => set({ isAuthenticated: true, hasCompletedOnboarding: false }),
+      setAuthenticatedUser: (user) =>
+        set((state) => ({
+          isAuthenticated: true,
+          user,
+          hasCompletedOnboarding: state.user?.id === user.id && state.hasCompletedOnboarding,
+        })),
       completeOnboarding: () => set({ hasCompletedOnboarding: true }),
       signOut: () => set({ isAuthenticated: false, hasCompletedOnboarding: false, user: null }),
       enterPreview: () => set({ isAuthenticated: true, hasCompletedOnboarding: true }),
@@ -47,7 +59,7 @@ export const useSessionStore = create<SessionStore>()(
     {
       name: 'waytale-session',
       storage: createJSONStorage(() => AsyncStorage),
-      // Whitelist only: tokens (01.5, SecureStore) must never be persisted here.
+      // Whitelist only: tokens must never be persisted here.
       partialize: (state) => ({
         isAuthenticated: state.isAuthenticated,
         hasCompletedOnboarding: state.hasCompletedOnboarding,
@@ -74,6 +86,7 @@ export function useSessionActions() {
   return useSessionStore(
     useShallow((state) => ({
       signIn: state.signIn,
+      setAuthenticatedUser: state.setAuthenticatedUser,
       completeOnboarding: state.completeOnboarding,
       signOut: state.signOut,
       enterPreview: state.enterPreview,

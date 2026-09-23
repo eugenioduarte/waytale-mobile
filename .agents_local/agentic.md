@@ -18,9 +18,14 @@ This file holds project-specific facts that may change independently from the po
   `branching`.
 - Authentication is per-machine/session, not stored in the repo: run `claude /mcp` in a regular
   terminal (not an IDE extension) and authenticate the `supabase` server there.
-- Client env vars (`EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`) and the service
-  role key/DB password are separate from the MCP server — see EPIC-01.5's subtask for what each
-  is for and which ones must never enter the repo or chat.
+- App env vars live in `apps/mobile/.env.local` (gitignored; template `apps/mobile/.env.example`):
+  `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (`sb_publishable_…`, the
+  new key format — not the legacy anon key). Anything `EXPO_PUBLIC_*` ships in the bundle.
+- The secret key (`sb_secret_…`), personal access token (`sbp_…`) and DB password are for the
+  Supabase CLI only (`supabase/.env.local`, gitignored) — never in the app, the repo or chat.
+- Supabase CLI: not installed globally; run it as `pnpm dlx supabase@2.117.0 <command>`.
+  Migrations are in `supabase/migrations/`; `pnpm --filter @waytale/supabase test` checks RLS on
+  a local Postgres (PGlite), no Docker needed.
 
 ## Design source
 

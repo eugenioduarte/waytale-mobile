@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useJourneyStore } from '../journey.store';
-import { usePlayerStore } from '../player.store';
-import { useSessionStore } from '../session.store';
+import { useJourneyStore } from '@/stores/journey.store';
+import { usePlayerStore } from '@/stores/player.store';
+import { useSessionStore } from '@/stores/session.store';
 
 jest.mock('@react-native-async-storage/async-storage', () =>
   jest.requireActual('@react-native-async-storage/async-storage/jest/async-storage-mock'),

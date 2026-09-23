@@ -1,12 +1,12 @@
 import { Action, Screen } from '@/components/screen';
+import { useSignOut } from '@/features/auth/use-sign-out';
 import copy from '@/locales/pt.json';
-import { useSessionActions } from '@/stores/session.store';
 
 export default function ProfileScreen() {
-  const { signOut } = useSessionActions();
+  const signOut = useSignOut();
   return (
     <Screen title={copy.tabs.profile} description={copy.screens.profile}>
-      <Action label={copy.auth.signOut} onPress={signOut} secondary />
+      <Action label={copy.auth.signOut} onPress={() => void signOut()} secondary />
     </Screen>
   );
 }
