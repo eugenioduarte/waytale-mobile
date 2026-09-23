@@ -9,7 +9,9 @@
     "./expo-app": "./expo-app.js"
   },
   "dependencies": {
+    "@typescript-eslint/parser": "^8.18.2",
     "eslint-config-expo": "^9.2.0",
-    "eslint-config-prettier": "^9.1.0"
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import-x": "^4.17.1"
   }
 }

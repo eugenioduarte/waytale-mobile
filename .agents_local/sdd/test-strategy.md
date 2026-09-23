@@ -16,6 +16,7 @@
 ## O que testar em cada camada
 
 ### Unit (Jest + React Native Testing Library)
+
 - **Models**: tipos e validações (zod schemas)
 - **Services**: cada função pública com mocks locais
 - **Hooks**: comportamento isolado (`renderHook`)
@@ -24,24 +25,26 @@
 - **Helpers/Utils**: funções puras (ex.: cálculo de desvio de rota, formatação de duração)
 
 ### Integration (Jest + MSW)
+
 - **Fluxos de tela**: onboarding, auth (OTP), descoberta de rota, journey completo
 - **Estados**: loading, empty, error, success — incluindo "sem histórias por aqui" e offline
 - **Navegação**: transições entre telas (grupos `(auth)`, `(onboarding)`, `(tabs)`, `(journey)`)
 - **Formulários**: validação, submissão, feedback
 
 ### E2E (Maestro)
+
 - **Fluxos críticos**: `onboarding.yaml`, `auth.yaml`, `journey.yaml` (ver EPIC-01.8)
 - **Apenas happy path + 1 variação crítica por fluxo**
 - **Sem mock de API** — usa ambiente dev/staging real
 
 ## Cobertura
 
-| Alvo | Mínimo |
-|------|--------|
-| Global | ≥ 80% |
-| Hooks e Services | ≥ 90% |
-| Screens | ≥ 70% |
-| `src/features` (gate de CI, EPIC-01.8) | ≥ 60% |
+| Alvo                                   | Mínimo |
+| -------------------------------------- | ------ |
+| Global                                 | ≥ 80%  |
+| Hooks e Services                       | ≥ 90%  |
+| Screens                                | ≥ 70%  |
+| `src/features` (gate de CI, EPIC-01.8) | ≥ 60%  |
 
 ## Como rodar
 
@@ -52,7 +55,8 @@ pnpm --filter mobile test:cov    # com cobertura (quando o script existir — ve
 npx maestro test apps/mobile/.maestro/journey.yaml
 ```
 
-O script `test` já existe em `apps/mobile/package.json` (`jest`, via `@waytale/jest-config`);
+O script `test` já existe em `apps/mobile/package.json` (`jest --passWithNoTests`, via
+`@waytale/jest-config`); o `--passWithNoTests` sai em 01.8, quando houver testes para correr;
 `test:cov` e os fluxos Maestro ainda faltam — criar em EPIC-01.8 junto com RNTL/Maestro.
 
 ## Estrutura de arquivos

@@ -1,56 +1,24 @@
-# Welcome to your Expo app 👋
+# Waytale — app mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+App Expo (React Native) do Waytale, dentro do monorepo. Estado do stack, estrutura de pastas e o
+que ainda falta montar: `.agents_local/stack.md`. Instruções para agentes e princípios do
+repositório: `AGENTS.md` na raiz.
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Correr
 
 ```bash
-npm run reset-project
+pnpm install            # na raiz do monorepo — liga também os hooks de pre-commit
+pnpm run:android        # expo start --android (atalho da raiz)
+pnpm run:ios            # expo start --ios (atalho da raiz)
+pnpm --filter mobile web
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Todos os scripts deste pacote (`start`, `android`, `ios`, `web`, `lint`, `typecheck`, `test`)
+correm com `pnpm --filter mobile <script>` a partir da raiz.
 
-### Other setup steps
+## Notas
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `metro.config.js` é obrigatório: faz o Metro ver a raiz do monorepo (`watchFolders`) e resolve
+  `packages/*` com o `node-linker=hoisted` do `.npmrc` da raiz. Não remover.
+- `src/app/` é a raiz de rotas do expo-router; a estrutura completa de `src/`, `tests/` e
+  `.maestro/` está documentada em `.agents_local/stack.md`.
