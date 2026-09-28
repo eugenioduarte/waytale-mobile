@@ -9,7 +9,7 @@ Checklist derivada das histórias em [`EPIC-01-setup-projeto.md`](./EPIC-01-setu
 - [x] 01.5 — Supabase e autenticação (teste de login real, captcha e UI de auth passaram para o EPIC-04)
 - [x] 01.6 — Camada de sincronização
 - [x] 01.7 — Storybook
-- [ ] 01.8 — Testes
+- [x] 01.8 — Testes
 - [ ] 01.9 — Internacionalização (i18n)
 - [ ] 01.10 — Estilo com NativeWind (Tailwind)
 - [ ] 01.11 — Cliente HTTP, mocks e datas
