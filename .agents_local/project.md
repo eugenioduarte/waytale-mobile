@@ -19,9 +19,9 @@ Ver `../description.md` para a descrição de produto completa (funcionalidades,
 
 Produto de utilizador único (sem papéis operador/cliente separados):
 
-| Persona | Acesso | Dispositivo |
-|---|---|---|
-| **Viajante / explorador local** | Registo por telemóvel (OTP) ou Apple/Google | Telemóvel próprio |
+| Persona                         | Acesso                     | Dispositivo       |
+| ------------------------------- | -------------------------- | ----------------- |
+| **Viajante / explorador local** | Email + código (sem senha) | Telemóvel próprio |
 
 Free vs **Premium** é um nível de subscrição, não uma persona diferente.
 

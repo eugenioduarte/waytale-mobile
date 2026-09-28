@@ -16,7 +16,7 @@ const platformStub = `
   create role service_role nologin bypassrls;
 
   create schema auth;
-  create table auth.users (id uuid primary key);
+  create table auth.users (id uuid primary key, encrypted_password varchar(255));
   create function auth.uid() returns uuid language sql stable as $$
     select coalesce(
       nullif(current_setting('request.jwt.claim.sub', true), ''),

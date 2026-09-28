@@ -11,7 +11,7 @@ export default function VerifyScreen() {
     <Screen title={copy.auth.verify} description={copy.auth.verifyDescription}>
       {/* Provisional: signIn() flips the root guard, which unmounts `(auth)` — so going back
           after verifying can never re-enter this screen. */}
-      {/* Fake verification — real OTP entry (authApi.verifyOtp) lands with the auth UI story. */}
+      {/* Fake verification — real code entry (authApi.verifyEmailCode) lands with the auth UI story. */}
       {canUsePreviewAuth ? <Action label={copy.auth.verifyAction} onPress={signIn} /> : null}
       <Action label={copy.auth.backToLogin} onPress={() => router.back()} secondary />
     </Screen>

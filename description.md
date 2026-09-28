@@ -19,7 +19,7 @@ App móvel de passeios a pé guiados por áudio. Em vez de indicar apenas o cami
 
 ### 1. Registo e onboarding
 
-- Registo por telemóvel com verificação por código OTP; Apple e Google como atalhos.
+- Entrada por email com código de 6 dígitos (sem senha); a conta é criada no primeiro login. Google fica para depois.
 - **Interesses**: história, arte, gastronomia, arquitetura, vida local, etc. — definem que histórias entram na rota.
 - **Desvios**: quanto o utilizador aceita alongar o percurso por algo interessante (direto → sem pressa).
 - **Voz**: escolha do narrador (tom, ritmo, género) com pré-escuta.

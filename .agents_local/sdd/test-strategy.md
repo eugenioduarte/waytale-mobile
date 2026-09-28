@@ -26,7 +26,7 @@
 
 ### Integration (Jest + MSW)
 
-- **Fluxos de tela**: onboarding, auth (OTP), descoberta de rota, journey completo
+- **Fluxos de tela**: onboarding, auth (código por email), descoberta de rota, journey completo
 - **Estados**: loading, empty, error, success — incluindo "sem histórias por aqui" e offline
 - **Navegação**: transições entre telas (grupos `(auth)`, `(onboarding)`, `(tabs)`, `(journey)`)
 - **Formulários**: validação, submissão, feedback

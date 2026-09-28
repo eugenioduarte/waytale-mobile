@@ -105,8 +105,20 @@ function launchApp(): Storage {
 
 const SESSION = JSON.stringify({
   access_token: 'eyJhbGciOiJIUzI1NiJ9.secret-access',
+  token_type: 'bearer',
+  expires_in: 3600,
+  expires_at: 1_900_000_000,
   refresh_token: 'secret-refresh',
-  user: { id: 'user-a', user_metadata: { name: 'Inês Conceição' } },
+  user: { id: 'user-a', email: 'ines@mail.pt', user_metadata: { name: 'Inês Conceição' } },
+});
+/** What the next launch reads: only the refresh token and user id, as an expired session. */
+const SESSION_AFTER_RESTART = JSON.stringify({
+  access_token: '',
+  token_type: 'bearer',
+  expires_in: 0,
+  expires_at: 1,
+  refresh_token: 'secret-refresh',
+  user: { id: 'user-a' },
 });
 const KEY = 'sb-iqmnbzgsqmmalqzdyxjg-auth-token';
 
@@ -117,11 +129,37 @@ beforeEach(async () => {
 });
 
 describe('secureSessionStorage', () => {
-  it('round-trips a session, including non-ASCII text', async () => {
+  it('serves the full session for the rest of this app run', async () => {
     const storage = launchApp();
     await storage.setItem(KEY, SESSION);
 
     await expect(storage.getItem(KEY)).resolves.toBe(SESSION);
+  });
+
+  it('keeps only the refresh token and user id across a restart, as an expired session', async () => {
+    await launchApp().setItem(KEY, SESSION);
+
+    await expect(launchApp().getItem(KEY)).resolves.toBe(SESSION_AFTER_RESTART);
+  });
+
+  it('never writes the access token or user profile to disk, even encrypted', async () => {
+    const encrypt = jest.spyOn(
+      jest.requireMock<typeof import('expo-crypto')>('expo-crypto'),
+      'aesEncryptAsync',
+    );
+    await launchApp().setItem(KEY, SESSION);
+
+    const plaintext = Buffer.from(encrypt.mock.calls[0]![0] as Uint8Array).toString('latin1');
+    expect(decodeURIComponent(plaintext)).toBe(
+      JSON.stringify({ refresh_token: 'secret-refresh', user: { id: 'user-a' } }),
+    );
+    encrypt.mockRestore();
+  });
+
+  it('stores other auth entries (not a session) unchanged, including non-ASCII text', async () => {
+    await launchApp().setItem(`${KEY}-code-verifier`, '"vérifier"');
+
+    await expect(launchApp().getItem(`${KEY}-code-verifier`)).resolves.toBe('"vérifier"');
   });
 
   it('never writes the tokens to AsyncStorage in plaintext', async () => {
@@ -139,7 +177,7 @@ describe('secureSessionStorage', () => {
       keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY,
     });
 
-    await expect(launchApp().getItem(KEY)).resolves.toBe(SESSION);
+    await expect(launchApp().getItem(KEY)).resolves.toBe(SESSION_AFTER_RESTART);
     expect(SecureStore.setItemAsync).toHaveBeenCalledTimes(1);
   });
 
@@ -165,14 +203,15 @@ describe('secureSessionStorage', () => {
     jest.mocked(SecureStore.getItemAsync).mockRejectedValueOnce(new Error('keychain locked'));
 
     await expect(launchApp().getItem(KEY)).rejects.toThrow('keychain locked');
-    await expect(launchApp().getItem(KEY)).resolves.toBe(SESSION);
+    await expect(launchApp().getItem(KEY)).resolves.toBe(SESSION_AFTER_RESTART);
   });
 
-  it('removes a session', async () => {
+  it('removes a session from memory and disk', async () => {
     const storage = launchApp();
     await storage.setItem(KEY, SESSION);
     await storage.removeItem(KEY);
 
     await expect(storage.getItem(KEY)).resolves.toBeNull();
+    await expect(launchApp().getItem(KEY)).resolves.toBeNull();
   });
 });

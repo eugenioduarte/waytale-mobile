@@ -21,6 +21,8 @@ This file holds project-specific facts that may change independently from the po
 - App env vars live in `apps/mobile/.env.local` (gitignored; template `apps/mobile/.env.example`):
   `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (`sb_publishable_…`, the
   new key format — not the legacy anon key). Anything `EXPO_PUBLIC_*` ships in the bundle.
+- Sign-in is by email code only (6 digits, no passwords); phone auth is off and Google is
+  deferred. Real users only get the code once a custom SMTP sender is set in the dashboard.
 - The secret key (`sb_secret_…`), personal access token (`sbp_…`) and DB password are for the
   Supabase CLI only (`supabase/.env.local`, gitignored) — never in the app, the repo or chat.
 - Supabase CLI: not installed globally; run it as `pnpm dlx supabase@2.117.0 <command>`.

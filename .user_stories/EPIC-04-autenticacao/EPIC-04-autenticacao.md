@@ -1,75 +1,65 @@
 # EPIC-04 — Autenticação
 
-**Objetivo:** criar conta e entrar com telemóvel + senha, com verificação por código e recuperação de acesso. Logins sociais ficam fora do escopo desta fase.
+**Objetivo:** entrar (e criar conta) com um código de 6 dígitos enviado por email, sem senhas. Conta nova e conta existente usam o mesmo fluxo; não há senha para recuperar. Logins sociais (Google, Apple) ficam fora desta fase.
 
-**Estimativa:** 13 pts · **Telas:** 01B Registro · 01B2 Login · 01B3 Recuperar senha · 01B4 Nova senha · 01C Verificação OTP · **Depende de:** EPIC-01, EPIC-02
+**Estimativa:** 5 pts · **Telas:** 01B2 Login (email) · 01C Verificação do código · **Depende de:** EPIC-01, EPIC-02
+
+> **Decisão 2026-09-28:** o login passou de telemóvel + senha para email + código; Google fica
+> para uma fase seguinte. As telas 01B Registro, 01B3 Recuperar senha e 01B4 Nova senha do design
+> deixam de existir, a 01B2 perde os campos de senha e a 01C passa a falar de email. O design tem
+> de ser revisto antes de importar estes ecrãs.
 
 ## Histórias
 
-### 04.1 — Registo por telemóvel
-Como novo utilizador, quero criar conta com nome e telemóvel, para começar rápido.
+### 04.1 — Entrar com email
 
-- Campos: Nome, Telemóvel (com seletor de indicativo e máscara por região)
-- CTA "Enviar código →" à direita; link "Já tem conta? Entrar"
-- Validação inline: nome ≥ 2 caracteres, número válido para o país escolhido
+Como utilizador, quero entrar só com o meu email, sem inventar mais uma senha.
 
-**Aceitação:** número inválido bloqueia o CTA com mensagem sob o campo; número válido cria utilizador pendente e navega para OTP.
+- Campo email (teclado de email, sem autocorreção), CTA "Enviar código →"
+- Um só fluxo: se a conta não existe, é criada ao verificar o código
 
-### 04.2 — Verificação OTP
-Como utilizador, quero confirmar o meu número, para proteger a conta.
+**Aceitação:** email inválido bloqueia o CTA com mensagem sob o campo; email válido envia o código e navega para a verificação com o email visível.
 
-- 6 caixas, auto-advance, colar do SMS, autofill iOS
-- Reenviar código com contagem de 30s; trocar número volta ao registo
+### 04.2 — Verificação do código
 
-**Aceitação:** código correto autentica e segue para onboarding; errado mostra erro sem limpar o campo; 5 tentativas erradas → bloqueio de 15 min.
+Como utilizador, quero confirmar o código que recebi, para entrar com segurança.
 
-### 04.3 — Definir senha
-Como utilizador, quero uma senha, para entrar sem depender de SMS.
+- 6 caixas, auto-advance, colar do email, autofill do código (Android/iOS)
+- Reenviar código com contagem de 60s; "Trocar email" volta ao ecrã anterior
+- O código expira em 10 minutos
 
-- Mínimo 8 caracteres; indicador de força; campo de confirmação
-- Pode ser definida no fim do registo ou mais tarde no perfil
+**Aceitação:** código correto autentica e segue para onboarding (conta nova) ou para a Home; errado ou expirado mostra erro sem limpar o campo; tentativas em excesso mostram "Tente novamente daqui a pouco" (limite do Supabase).
 
-**Aceitação:** senha aceite conclui a sessão; regras não cumpridas explicam o que falta.
+### 04.3 — Sessão e logout
 
-### 04.4 — Login
-Como utilizador com conta, quero entrar com telemóvel e senha.
-
-- Campos telemóvel + senha com toggle "Ver"
-- Link "Esqueceu a senha?" e "Não tem conta? Criar conta"
-- Opção de entrar por OTP quando a senha não existe
-
-**Aceitação:** credenciais válidas abrem a Home; inválidas mostram erro genérico (sem revelar se o número existe).
-
-### 04.5 — Recuperar senha
-Como utilizador que perdeu a senha, quero recuperar o acesso por código.
-
-- Ecrã 01B3: número associado → "Enviar código"
-- Reutiliza o ecrã de OTP
-- Ecrã 01B4: nova senha + confirmação com feedback "As senhas coincidem"
-
-**Aceitação:** ao guardar, a sessão é iniciada e as outras sessões do dispositivo são invalidadas.
-
-### 04.6 — Sessão e logout
 Como utilizador, quero manter-me ligado e poder sair.
 
-- Tokens em SecureStore, refresh silencioso, biometria opcional para reabrir
-- Logout limpa stores, apaga dados sensíveis e mantém downloads anónimos? → não: apaga downloads do utilizador
+- Login uma vez só: cada arranque abre direto no dashboard (tabs), também offline
+- No dispositivo fica só o refresh token, cifrado (chave no SecureStore); o access token vive em memória e é renovado em silêncio (já feito em 01.5)
+- Biometria opcional para reabrir
+- Logout limpa stores e apaga os dados e downloads do utilizador
 
-**Aceitação:** cold start com sessão válida não mostra ecrãs de auth; logout devolve ao Welcome.
+**Aceitação:** cold start com sessão válida (online ou offline) abre o dashboard sem ecrãs de auth; logout devolve ao Welcome.
 
 ## Estados e casos-limite
 
-- Offline no registo: CTA desativado com banner "Sem ligação — precisamos de rede para enviar o código".
-- SMS não chega: caminho alternativo por chamada de voz (fase 2) documentado, não implementado.
-- Conta já existente no registo: mensagem que propõe ir para login com o número preenchido.
+- Offline no login: CTA desativado com banner "Sem ligação — precisamos de rede para entrar".
+- Email não chega: "Reenviar" e dica para ver o spam; o remetente é um domínio próprio (SMTP configurado, não o do Supabase).
 
 ## Notas técnicas
 
-- Supabase Auth com `signInWithOtp` para telefone e `signInWithPassword` para senha.
-- Rate limiting por número na Edge Function; captcha invisível se abuso detetado.
-- Nunca registar número completo em logs/analytics (hash).
+- Supabase Auth: `signInWithOtp({ email })` + `verifyOtp({ type: 'email' })`. Serviço já pronto em `apps/mobile/src/features/auth/api.ts` (01.5).
+- Os templates de email mostram o código (`{{ .Token }}`), não um link.
+- Captcha (Turnstile/hCaptcha) quando houver abuso: o serviço aceita o token.
+- Nunca registar o email completo em logs/analytics (hash).
+- Google, quando entrar: nativo (`@react-native-google-signin/google-signin` + `signInWithIdToken`, development build). No iOS, a App Store exige "Sign in with Apple" quando há login Google.
+
+## Herdado de 01.5 (obrigatório antes do lançamento)
+
+- **Teste de login real:** `cd apps/mobile && node --env-file=.env.local scripts/auth-smoke.mjs <email>` passa todas as verificações: definições de auth, código recebido pelo Resend, sessão aberta, tabelas lidas como `authenticated`, `generate-route` a recusar pedidos sem JWT e a aceitar o do utilizador. Fecha também o teste A/B de RLS com dois utilizadores reais.
+- **Senhas bloqueadas no projeto real:** com a migração `20260928120000_no_passwords.sql` aplicada, `signInWithPassword` falha sempre, mesmo para uma conta criada com `signUp({ email, password })`.
+- **Captcha** (Turnstile ou hCaptcha) ligado no dashboard **depois** de os formulários enviarem o token (`requestEmailCode(email, captchaToken)`).
 
 ## Métricas
 
-- Taxa de conclusão registo → OTP verificado
-- Pedidos de recuperação por 1 000 sessões
+- Taxa de conclusão email → código verificado

@@ -9,43 +9,55 @@ jest.mock('@/lib/supabase/client', () => ({ getSupabase: jest.fn() }));
 type AuthResponse = { data: unknown; error: Error | null };
 const ok: AuthResponse = { data: {}, error: null };
 
-function createClient() {
+function createDeps() {
   const auth = {
     signInWithOtp: jest.fn(async (): Promise<AuthResponse> => ok),
     verifyOtp: jest.fn(async (): Promise<AuthResponse> => ok),
-    signUp: jest.fn(async (): Promise<AuthResponse> => ok),
-    signInWithPassword: jest.fn(async (): Promise<AuthResponse> => ok),
     signOut: jest.fn(async (): Promise<AuthResponse> => ok),
   };
   return { auth, client: { auth } as unknown as SupabaseClient };
 }
 
-let auth: ReturnType<typeof createClient>['auth'];
+let auth: ReturnType<typeof createDeps>['auth'];
 let api: ReturnType<typeof createAuthApi>;
 
 beforeEach(() => {
-  const created = createClient();
+  const created = createDeps();
   auth = created.auth;
   api = createAuthApi(() => created.client);
 });
 
-describe('requestOtp', () => {
-  it('sends the code to the E.164 number', async () => {
-    await expect(api.requestOtp('912 345 678')).resolves.toEqual({ ok: true });
-    expect(auth.signInWithOtp).toHaveBeenCalledWith({ phone: '+351912345678' });
+describe('requestEmailCode', () => {
+  it('emails the code to the normalized address, creating the account if needed', async () => {
+    await expect(api.requestEmailCode('  Ana@Mail.PT ')).resolves.toEqual({ ok: true });
+    expect(auth.signInWithOtp).toHaveBeenCalledWith({
+      email: 'ana@mail.pt',
+      options: { shouldCreateUser: true },
+    });
   });
 
-  it('rejects an invalid number without calling Supabase', async () => {
-    await expect(api.requestOtp('abc')).resolves.toEqual({ ok: false, error: 'invalid_phone' });
+  it('forwards the captcha token when the UI has one', async () => {
+    await api.requestEmailCode('ana@mail.pt', 'captcha-token');
+    expect(auth.signInWithOtp).toHaveBeenCalledWith({
+      email: 'ana@mail.pt',
+      options: { shouldCreateUser: true, captchaToken: 'captcha-token' },
+    });
+  });
+
+  it('rejects an invalid address without calling Supabase', async () => {
+    await expect(api.requestEmailCode('ana@')).resolves.toEqual({
+      ok: false,
+      error: 'invalid_email',
+    });
     expect(auth.signInWithOtp).not.toHaveBeenCalled();
   });
 
-  it('maps the SMS rate limit', async () => {
+  it('maps the email rate limit', async () => {
     auth.signInWithOtp.mockResolvedValueOnce({
       data: {},
-      error: new AuthApiError('too many', 429, 'over_sms_send_rate_limit'),
+      error: new AuthApiError('too many', 429, 'over_email_send_rate_limit'),
     });
-    await expect(api.requestOtp('+351912345678')).resolves.toEqual({
+    await expect(api.requestEmailCode('ana@mail.pt')).resolves.toEqual({
       ok: false,
       error: 'rate_limited',
     });
@@ -56,62 +68,39 @@ describe('requestOtp', () => {
       data: {},
       error: new AuthRetryableFetchError('offline', 0),
     });
-    await expect(api.requestOtp('+351912345678')).resolves.toEqual({ ok: false, error: 'network' });
+    await expect(api.requestEmailCode('ana@mail.pt')).resolves.toEqual({
+      ok: false,
+      error: 'network',
+    });
   });
 });
 
-describe('verifyOtp', () => {
-  it('verifies an SMS code', async () => {
-    await expect(api.verifyOtp('+351912345678', ' 123456 ')).resolves.toEqual({ ok: true });
+describe('verifyEmailCode', () => {
+  it('verifies the emailed code', async () => {
+    await expect(api.verifyEmailCode('Ana@mail.pt', ' 123456 ')).resolves.toEqual({ ok: true });
     expect(auth.verifyOtp).toHaveBeenCalledWith({
-      phone: '+351912345678',
+      email: 'ana@mail.pt',
       token: '123456',
-      type: 'sms',
+      type: 'email',
     });
   });
 
   it('rejects a malformed code locally', async () => {
-    await expect(api.verifyOtp('+351912345678', '12')).resolves.toEqual({
+    await expect(api.verifyEmailCode('ana@mail.pt', '12')).resolves.toEqual({
       ok: false,
       error: 'invalid_code',
     });
     expect(auth.verifyOtp).not.toHaveBeenCalled();
   });
 
-  it('maps an expired code', async () => {
+  it('maps an expired or wrong code', async () => {
     auth.verifyOtp.mockResolvedValueOnce({
       data: {},
       error: new AuthApiError('expired', 403, 'otp_expired'),
     });
-    await expect(api.verifyOtp('+351912345678', '123456')).resolves.toEqual({
+    await expect(api.verifyEmailCode('ana@mail.pt', '123456')).resolves.toEqual({
       ok: false,
       error: 'invalid_code',
-    });
-  });
-});
-
-describe('phone + password', () => {
-  it('signs up with a normalized phone', async () => {
-    await expect(api.signUpWithPassword('912345678', 'caminhada42')).resolves.toEqual({ ok: true });
-    expect(auth.signUp).toHaveBeenCalledWith({ phone: '+351912345678', password: 'caminhada42' });
-  });
-
-  it('rejects a short password before calling Supabase', async () => {
-    await expect(api.signUpWithPassword('912345678', 'short')).resolves.toEqual({
-      ok: false,
-      error: 'weak_password',
-    });
-    expect(auth.signUp).not.toHaveBeenCalled();
-  });
-
-  it('maps wrong credentials on sign in', async () => {
-    auth.signInWithPassword.mockResolvedValueOnce({
-      data: {},
-      error: new AuthApiError('nope', 400, 'invalid_credentials'),
-    });
-    await expect(api.signInWithPassword('912345678', 'caminhada42')).resolves.toEqual({
-      ok: false,
-      error: 'invalid_credentials',
     });
   });
 });
@@ -133,17 +122,18 @@ describe('signOut', () => {
 
 describe('error mapping', () => {
   it.each([
-    ['phone_exists', 'account_exists'],
-    ['user_already_exists', 'account_exists'],
-    ['sms_send_failed', 'sms_unavailable'],
-    ['phone_provider_disabled', 'sms_unavailable'],
-    ['otp_disabled', 'sms_unavailable'],
-    ['validation_failed', 'invalid_phone'],
-    ['same_password', 'weak_password'],
+    ['email_provider_disabled', 'email_unavailable'],
+    ['otp_disabled', 'email_unavailable'],
+    ['signup_disabled', 'email_unavailable'],
+    ['email_address_not_authorized', 'email_unavailable'],
+    ['email_address_invalid', 'invalid_email'],
+    ['validation_failed', 'invalid_email'],
+    ['over_request_rate_limit', 'rate_limited'],
+    ['captcha_failed', 'captcha_failed'],
     ['something_new', 'unknown'],
   ])('maps %p to %p', async (code, expected) => {
-    auth.signUp.mockResolvedValueOnce({ data: {}, error: new AuthApiError('x', 400, code) });
-    await expect(api.signUpWithPassword('912345678', 'caminhada42')).resolves.toEqual({
+    auth.signInWithOtp.mockResolvedValueOnce({ data: {}, error: new AuthApiError('x', 400, code) });
+    await expect(api.requestEmailCode('ana@mail.pt')).resolves.toEqual({
       ok: false,
       error: expected,
     });
