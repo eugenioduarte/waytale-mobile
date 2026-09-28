@@ -4,6 +4,10 @@ Uma subtask por ficheiro, nomeado `<nº da história>-slug.md` (ex.: `01.1-boots
 para a história 01.1 do épico). Cada subtask parte de uma história já escrita em
 `../EPIC-XX-slug.md` — se a história ainda não existe lá, escrevê-la no épico primeiro.
 
+Quando a subtask fica finalizada (cabeçalho `✅ Finalizada`), o ficheiro passa a
+`<nº da história>-slug.done.md` (ex.: `01.1-bootstrap-repositorio.done.md`), com `git mv`. Uma
+subtask só parcialmente feita (🟡) mantém o nome sem `.done`.
+
 Convenção de conteúdo, por subtask:
 
 - **O quê**: 1-2 frases, âmbito fechado (deve caber numa PR).
