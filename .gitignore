@@ -51,3 +51,6 @@ apps/mobile/android
 
 # turborepo cache
 .turbo/
+
+# Storybook web build (01.7)
+storybook-static/

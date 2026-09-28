@@ -21,5 +21,15 @@ const zustandSelectorConfig = {
   },
 };
 
+/** Generated output: the Storybook web build and the on-device stories index (01.7). */
+const generatedIgnores = {
+  ignores: ["storybook-static/**", ".rnstorybook/storybook.requires.ts"],
+};
+
 /** Extends the Expo flat config with the monorepo's shared rules. Use from `apps/mobile/eslint.config.js`. */
-module.exports = [...expoConfig, ...base, zustandSelectorConfig];
+module.exports = [
+  generatedIgnores,
+  ...expoConfig,
+  ...base,
+  zustandSelectorConfig,
+];

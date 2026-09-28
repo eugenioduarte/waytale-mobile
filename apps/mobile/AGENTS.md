@@ -12,3 +12,8 @@ package.
   `packages/*`.
 - Scripts here run through the root `.npmrc` (`node-linker=hoisted`) — don't add a
   package-local `.npmrc` that changes that.
+- A new reusable component gets a `*.stories.tsx` next to it (CSF, types from
+  `@storybook/react-native`). Global decorators and store mocks (`parameters.stores`) live in
+  `src/storybook/decorators.tsx`; `src/storybook/__tests__/stories.test.tsx` renders every story,
+  so a broken one fails the tests. `pnpm storybook` (on-device, `waytale://storybook`) or
+  `pnpm storybook:web`.

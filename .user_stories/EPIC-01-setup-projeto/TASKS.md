@@ -8,7 +8,7 @@ Checklist derivada das histórias em [`EPIC-01-setup-projeto.md`](./EPIC-01-setu
 - [ ] 01.4 — SQLite local como fonte de verdade (falta: validação em dispositivo/modo avião)
 - [x] 01.5 — Supabase e autenticação (teste de login real, captcha e UI de auth passaram para o EPIC-04)
 - [x] 01.6 — Camada de sincronização
-- [ ] 01.7 — Storybook
+- [ ] 01.7 — Storybook (falta: ligar o GitHub Pages e ver o primeiro link de preview num PR)
 - [ ] 01.8 — Testes
 - [ ] 01.9 — Internacionalização (i18n)
 - [ ] 01.10 — Estilo com NativeWind (Tailwind)

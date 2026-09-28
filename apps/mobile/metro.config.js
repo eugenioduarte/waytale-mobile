@@ -4,6 +4,7 @@
 // https://docs.expo.dev/guides/monorepos/
 const path = require('path');
 
+const { withStorybook } = require('@storybook/react-native/metro/withStorybook');
 const { getDefaultConfig } = require('expo/metro-config');
 
 const projectRoot = __dirname;
@@ -20,4 +21,9 @@ config.resolver.disableHierarchicalLookup = true;
 // expo-sqlite's web backend (wa-sqlite) ships a .wasm binary — Metro must treat it as an asset.
 config.resolver.assetExts.push('wasm');
 
-module.exports = config;
+// On-device Storybook (01.7): generates .rnstorybook/storybook.requires.ts when enabled, and
+// replaces Storybook with empty modules otherwise, so it never ships in a normal build.
+module.exports = withStorybook(config, {
+  enabled: process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === 'true',
+  configPath: path.resolve(projectRoot, '.rnstorybook'),
+});
