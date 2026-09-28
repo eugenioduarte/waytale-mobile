@@ -1,0 +1,41 @@
+# Onboarding (EPIC-01.8): first run after sign-in → interests → deviations → voice → permissions
+# → main app. Preview auth, see auth.yaml.
+appId: com.waytale.app
+name: Onboarding — first run to the main app
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: screen-login
+    timeout: 30000
+- tapOn:
+    id: login-continue
+- tapOn:
+    id: verify-submit
+- tapOn:
+    id: interests-continue
+- tapOn:
+    id: deviations-continue
+# Critical variation: going back keeps the traveller in onboarding.
+- tapOn:
+    id: voice-back
+- assertVisible:
+    id: screen-deviations
+- tapOn:
+    id: deviations-continue
+- tapOn:
+    id: voice-continue
+- tapOn:
+    id: permissions-continue
+- assertVisible:
+    id: screen-explore
+# Onboarded: the next launch opens straight on the tabs.
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: screen-explore
+    timeout: 30000

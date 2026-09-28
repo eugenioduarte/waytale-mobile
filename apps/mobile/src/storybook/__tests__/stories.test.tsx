@@ -17,7 +17,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 
 // composeStories loads `storybook/test`, whose user-event registers an `afterEach` that resets a
 // clipboard stub on `window.navigator`. React Native's Jest environment aliases `window` to the
-// global object, which only has `navigator` from Node 21 on; give Node 20 (.nvmrc, CI) an empty one.
+// global object, which only has `navigator` from Node 21 on; older Node gets an empty one.
 (globalThis as { navigator?: object }).navigator ??= {};
 
 // Global decorators (tokens, safe area, store mocks) exactly as Storybook applies them.

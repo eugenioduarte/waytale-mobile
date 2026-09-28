@@ -5,9 +5,22 @@ import copy from '@/locales/pt.json';
 
 export default function VoiceScreen() {
   return (
-    <Screen title={copy.onboarding.voice} description={copy.onboarding.voiceDescription}>
-      <Action label={copy.onboarding.continue} onPress={() => router.push('/permissions')} />
-      <Action label={copy.onboarding.back} onPress={() => router.back()} secondary />
+    <Screen
+      testID="screen-voice"
+      title={copy.onboarding.voice}
+      description={copy.onboarding.voiceDescription}
+    >
+      <Action
+        testID="voice-continue"
+        label={copy.onboarding.continue}
+        onPress={() => router.push('/permissions')}
+      />
+      <Action
+        testID="voice-back"
+        label={copy.onboarding.back}
+        onPress={() => router.back()}
+        secondary
+      />
     </Screen>
   );
 }

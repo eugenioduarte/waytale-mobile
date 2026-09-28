@@ -5,8 +5,16 @@ import copy from '@/locales/pt.json';
 
 export default function WalkScreen() {
   return (
-    <Screen title={copy.journey.walk} description={copy.journey.walkDescription}>
-      <Action label={copy.journey.finish} onPress={() => router.push('/summary')} />
+    <Screen
+      testID="screen-walk"
+      title={copy.journey.walk}
+      description={copy.journey.walkDescription}
+    >
+      <Action
+        testID="walk-finish"
+        label={copy.journey.finish}
+        onPress={() => router.push('/summary')}
+      />
     </Screen>
   );
 }

@@ -7,6 +7,7 @@ export default function PlaceDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   return (
     <Screen
+      testID="screen-place"
       title={copy.place.detailTitle}
       description={`${copy.place.detailDescription} · ${id}`}
     />

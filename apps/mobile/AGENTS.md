@@ -17,3 +17,7 @@ package.
   `src/storybook/decorators.tsx`; `src/storybook/__tests__/stories.test.tsx` renders every story,
   so a broken one fails the tests. `pnpm storybook` (on-device, `waytale://storybook`) or
   `pnpm storybook:web`.
+- Tests: helpers in `tests/` (import `@tests/render`, `@tests/factories`, `@tests/msw/server`),
+  see `.agents_local/sdd/test-strategy.md`. Interactive elements need a `testID`
+  (`<screen>-<action>`, lint rule `waytale/require-testid`); screens get `screen-<route>`. Never put
+  tests under `src/app/` (expo-router would treat them as routes).

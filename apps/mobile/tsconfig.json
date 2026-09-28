@@ -4,6 +4,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@/assets/*": ["./assets/*"],
+      "@tests/*": ["./tests/*"],
       "@waytale/ui": ["../../packages/ui/src/index.ts"]
     }
   },

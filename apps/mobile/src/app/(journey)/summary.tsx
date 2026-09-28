@@ -5,8 +5,16 @@ import copy from '@/locales/pt.json';
 
 export default function SummaryScreen() {
   return (
-    <Screen title={copy.journey.summary} description={copy.journey.summaryDescription}>
-      <Action label={copy.journey.done} onPress={() => router.dismissTo('/')} />
+    <Screen
+      testID="screen-summary"
+      title={copy.journey.summary}
+      description={copy.journey.summaryDescription}
+    >
+      <Action
+        testID="summary-done"
+        label={copy.journey.done}
+        onPress={() => router.dismissTo('/')}
+      />
     </Screen>
   );
 }

@@ -5,8 +5,16 @@ import copy from '@/locales/pt.json';
 
 export default function InterestsScreen() {
   return (
-    <Screen title={copy.onboarding.interests} description={copy.onboarding.interestsDescription}>
-      <Action label={copy.onboarding.continue} onPress={() => router.push('/deviations')} />
+    <Screen
+      testID="screen-interests"
+      title={copy.onboarding.interests}
+      description={copy.onboarding.interestsDescription}
+    >
+      <Action
+        testID="interests-continue"
+        label={copy.onboarding.continue}
+        onPress={() => router.push('/deviations')}
+      />
     </Screen>
   );
 }

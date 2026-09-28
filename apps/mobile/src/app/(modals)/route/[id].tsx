@@ -8,6 +8,7 @@ export default function RouteDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   return (
     <Screen
+      testID="screen-route"
       title={copy.route.detailTitle}
       description={`${copy.route.detailDescription} · ${id}`}
     />

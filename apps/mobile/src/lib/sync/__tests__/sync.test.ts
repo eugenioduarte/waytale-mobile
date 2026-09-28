@@ -7,8 +7,7 @@ import { PULL_OVERLAP_MS, pullAll, readCursor } from '@/lib/sync/pull';
 import { pushOutbox } from '@/lib/sync/push';
 import type { SqlExecutor } from '@/lib/sync/sql';
 import { clearOtherUsersData, PREVIEW_USER_ID } from '@/lib/sync/user-data';
-
-import { createTestDatabase, FakeRemote, hasSqlite } from '../../../../tests/helpers/sync';
+import { createTestDatabase, FakeRemote, hasSqlite } from '@tests/helpers/sync';
 
 jest.mock('expo-crypto', () => ({
   randomUUID: () => jest.requireActual<typeof import('node:crypto')>('node:crypto').randomUUID(),

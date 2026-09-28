@@ -26,8 +26,8 @@ const importOrderConfig = {
   },
 
   settings: {
-    // `@/...` is the app's internal alias (see `apps/mobile/tsconfig.json`).
-    "import-x/internal-regex": "^@/",
+    // `@/...` and `@tests/...` are the app's internal aliases (see `apps/mobile/tsconfig.json`).
+    "import-x/internal-regex": "^@(tests)?/",
   },
 
   rules: {

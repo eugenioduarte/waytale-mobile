@@ -6,9 +6,14 @@ import copy from '@/locales/pt.json';
 export default function ProfileScreen() {
   const signOut = useSignOut();
   return (
-    <Screen title={copy.tabs.profile} description={copy.screens.profile}>
+    <Screen testID="screen-profile" title={copy.tabs.profile} description={copy.screens.profile}>
       <SyncStatusLine />
-      <Action label={copy.auth.signOut} onPress={() => void signOut()} secondary />
+      <Action
+        testID="profile-sign-out"
+        label={copy.auth.signOut}
+        onPress={() => void signOut()}
+        secondary
+      />
     </Screen>
   );
 }

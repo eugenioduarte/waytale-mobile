@@ -8,8 +8,7 @@ import {
   DEBOUNCE_MS,
   type SyncStatusSink,
 } from '@/lib/sync/engine';
-
-import { createTestDatabase, FakeRemote, hasSqlite } from '../../../../tests/helpers/sync';
+import { createTestDatabase, FakeRemote, hasSqlite } from '@tests/helpers/sync';
 
 jest.mock('expo-crypto', () => ({
   randomUUID: () => jest.requireActual<typeof import('node:crypto')>('node:crypto').randomUUID(),

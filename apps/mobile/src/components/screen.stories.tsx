@@ -22,8 +22,8 @@ export const WithActions: Story = {
   render: (args) => (
     <Screen {...args}>
       <Notice>Por enquanto, pode conhecer o app em modo de demonstração.</Notice>
-      <Action label="Continuar" onPress={fn()} />
-      <Action label="Criar conta" onPress={fn()} secondary />
+      <Action testID="story-continue" label="Continuar" onPress={fn()} />
+      <Action testID="story-register" label="Criar conta" onPress={fn()} secondary />
     </Screen>
   ),
 };

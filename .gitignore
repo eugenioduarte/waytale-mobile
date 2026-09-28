@@ -54,3 +54,6 @@ apps/mobile/android
 
 # Storybook web build (01.7)
 storybook-static/
+
+# Jest coverage (pnpm test:cov)
+coverage/

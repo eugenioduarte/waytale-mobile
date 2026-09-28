@@ -8,14 +8,17 @@ import copy from '@/locales/pt.json';
 export function Screen({
   title,
   description,
+  testID,
   children,
 }: {
   title: string;
   description: string;
+  /** Lets E2E flows (Maestro) wait for this screen: `screen-<route>`. */
+  testID?: string;
   children?: ReactNode;
 }) {
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+    <SafeAreaView testID={testID} style={styles.safeArea} edges={['top', 'left', 'right']}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.brand}>{copy.brand}</Text>
         <View style={styles.heading}>
@@ -33,14 +36,18 @@ export function Screen({
 export function Action({
   label,
   onPress,
+  testID,
   secondary = false,
 }: {
   label: string;
   onPress: () => void;
+  /** Required on every interactive element (`<screen>-<action>`), see `waytale/require-testid`. */
+  testID: string;
   secondary?: boolean;
 }) {
   return (
     <Pressable
+      testID={testID}
       accessibilityRole="button"
       onPress={onPress}
       style={({ pressed }) => [

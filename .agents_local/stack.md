@@ -19,10 +19,10 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Datas                       | date-fns                                                                                       | ⬜ a instalar                                                                                    |
 | Mock de API                 | Mockoon (`tooling/mockoon/waytale.json`)                                                       | 🟡 environment starter criado, `mockoon-cli` não instalado                                       |
 | Crash / Push / Analytics    | Firebase — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*`)                | ⬜ a instalar                                                                                    |
-| Testes de UI/lógica         | React Native Testing Library + Jest                                                            | 🟡 preset em `tooling/jest/` criado, dependências não instaladas ainda                           |
-| Testes E2E                  | Maestro (fluxos em YAML)                                                                       | ⬜ a instalar                                                                                    |
+| Testes de UI/lógica         | React Native Testing Library + Jest                                                            | ✅ montado (EPIC-01.8): RNTL, MSW, `tests/`, gate 60% em `src/features`                          |
+| Testes E2E                  | Maestro (fluxos em YAML)                                                                       | 🟡 fluxos em `.maestro/` (EPIC-01.8); correm no CI com 01.13                                     |
 | Documentação de componentes | Storybook (react-native + web)                                                                 | ✅ montado (EPIC-01.7); preview por PR no GitHub Pages                                           |
-| CI                          | GitHub Actions — lint/typecheck/testes bloqueantes, SonarQube, Dependabot                      | ⬜ a configurar                                                                                  |
+| CI                          | GitHub Actions — lint/typecheck/testes bloqueantes, SonarQube, Dependabot                      | 🟡 lint/typecheck/testes + cobertura (EPIC-01.8); EAS, Maestro e Sonar em 01.13                  |
 | CD                          | EAS Build + EAS Submit — Android apenas por agora                                              | ⬜ a configurar                                                                                  |
 | Monorepo                    | pnpm workspaces + Turborepo                                                                    | ✅ montado                                                                                       |
 | Gestor de pacotes           | pnpm                                                                                           | ✅ em uso                                                                                        |
@@ -62,8 +62,8 @@ src/db/          schema drizzle, migrações, seeds (EPIC-01.4)
 src/lib/         supabase, sync, audio, location, analytics, http (axios), date, i18n
 src/stores/      zustand stores globais (EPIC-01.3)
 src/i18n/        locales i18next (pt, en, ...) (EPIC-01.9)
-tests/           helpers, factories (EPIC-01.8)
-.maestro/        fluxos E2E (EPIC-01.8)
+tests/           render (providers, `renderApp`), factories, msw/ — import `@tests/...` (EPIC-01.8)
+.maestro/        fluxos E2E auth/onboarding/journey por `testID` (EPIC-01.8)
 ```
 
 `src/stores/session.store.ts` é a sessão global (Zustand, 01.3), consumida pela guarda de rotas;

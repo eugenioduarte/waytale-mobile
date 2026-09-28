@@ -8,12 +8,23 @@ import { useSessionActions } from '@/stores/session.store';
 export default function VerifyScreen() {
   const { signIn } = useSessionActions();
   return (
-    <Screen title={copy.auth.verify} description={copy.auth.verifyDescription}>
+    <Screen
+      testID="screen-verify"
+      title={copy.auth.verify}
+      description={copy.auth.verifyDescription}
+    >
       {/* Provisional: signIn() flips the root guard, which unmounts `(auth)` — so going back
           after verifying can never re-enter this screen. */}
       {/* Fake verification — real code entry (authApi.verifyEmailCode) lands with the auth UI story. */}
-      {canUsePreviewAuth ? <Action label={copy.auth.verifyAction} onPress={signIn} /> : null}
-      <Action label={copy.auth.backToLogin} onPress={() => router.back()} secondary />
+      {canUsePreviewAuth ? (
+        <Action testID="verify-submit" label={copy.auth.verifyAction} onPress={signIn} />
+      ) : null}
+      <Action
+        testID="verify-back"
+        label={copy.auth.backToLogin}
+        onPress={() => router.back()}
+        secondary
+      />
     </Screen>
   );
 }

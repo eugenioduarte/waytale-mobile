@@ -22,6 +22,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: copy.tabs.explore,
+          tabBarButtonTestID: 'tab-explore',
           tabBarIcon: ({ color }) => (
             <SymbolView
               name={{ ios: 'safari', android: 'explore', web: 'explore' }}
@@ -35,6 +36,7 @@ export default function TabLayout() {
         name="saved"
         options={{
           title: copy.tabs.saved,
+          tabBarButtonTestID: 'tab-saved',
           tabBarIcon: ({ color }) => (
             <SymbolView
               name={{ ios: 'bookmark', android: 'bookmark', web: 'bookmark' }}
@@ -48,6 +50,7 @@ export default function TabLayout() {
         name="journeys"
         options={{
           title: copy.tabs.journeys,
+          tabBarButtonTestID: 'tab-journeys',
           tabBarIcon: ({ color }) => (
             <SymbolView
               name={{ ios: 'map', android: 'map', web: 'map' }}
@@ -61,6 +64,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: copy.tabs.profile,
+          tabBarButtonTestID: 'tab-profile',
           // Global sync indicator: writes waiting or refused (details on the Profile screen).
           tabBarBadge: syncBadge,
           tabBarIcon: ({ color }) => (

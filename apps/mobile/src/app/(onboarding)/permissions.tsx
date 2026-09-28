@@ -8,11 +8,21 @@ export default function PermissionsScreen() {
   const { completeOnboarding } = useSessionActions();
   return (
     <Screen
+      testID="screen-permissions"
       title={copy.onboarding.permissions}
       description={copy.onboarding.permissionsDescription}
     >
-      <Action label={copy.onboarding.continue} onPress={completeOnboarding} />
-      <Action label={copy.onboarding.back} onPress={() => router.back()} secondary />
+      <Action
+        testID="permissions-continue"
+        label={copy.onboarding.continue}
+        onPress={completeOnboarding}
+      />
+      <Action
+        testID="permissions-back"
+        label={copy.onboarding.back}
+        onPress={() => router.back()}
+        secondary
+      />
     </Screen>
   );
 }
