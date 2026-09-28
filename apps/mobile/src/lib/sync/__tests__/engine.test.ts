@@ -126,6 +126,14 @@ describeWithSqlite('sync engine', () => {
     expect(status.lastError).toBeNull();
   });
 
+  it('counts writes made offline, so the indicator shows them at once', async () => {
+    const { engine, saved, status } = setup({ online: false });
+    await saved.save(ALICE, 'place', PLACE);
+    await engine.syncNow();
+    expect(status.pendingCount).toBe(1);
+    expect(remote.calls).toBe(0);
+  });
+
   it('does nothing without a signed-in user or offline', async () => {
     for (const options of [{ userId: null }, { online: false }]) {
       const { engine } = setup(options);

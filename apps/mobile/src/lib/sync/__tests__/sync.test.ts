@@ -6,7 +6,7 @@ import { countFailed, countPending, enqueue } from '@/lib/sync/outbox';
 import { PULL_OVERLAP_MS, pullAll, readCursor } from '@/lib/sync/pull';
 import { pushOutbox } from '@/lib/sync/push';
 import type { SqlExecutor } from '@/lib/sync/sql';
-import { clearOtherUsersData } from '@/lib/sync/user-data';
+import { clearOtherUsersData, PREVIEW_USER_ID } from '@/lib/sync/user-data';
 
 import { createTestDatabase, FakeRemote, hasSqlite } from '../../../../tests/helpers/sync';
 
@@ -373,6 +373,17 @@ describeWithSqlite('user switch and sign-out', () => {
     expect(await readCursor(phone.db, 'saved_items')).toBeNull();
     expect(await readCursor(phone.db, 'routes')).not.toBeNull();
     expect(phone.raw.prepare('SELECT id FROM routes').all()).toHaveLength(1);
+  });
+
+  it('signed out, keeps only the local preview data', async () => {
+    const phone = device(remote);
+    await phone.saved.save(ALICE, 'place', PLACES[0]!);
+    await phone.saved.save(PREVIEW_USER_ID, 'place', PLACES[1]!);
+
+    await clearOtherUsersData(phone.db, null);
+
+    expect(await phone.saved.list(ALICE)).toHaveLength(0);
+    expect(await phone.saved.list(PREVIEW_USER_ID)).toHaveLength(1);
   });
 
   it('is a no-op when only the current user has data', async () => {

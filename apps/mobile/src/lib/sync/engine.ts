@@ -86,7 +86,11 @@ export function createSyncEngine({
 
   async function cycle(): Promise<void> {
     const userId = getUserId();
-    if (!userId || !isOnline()) return;
+    if (!userId || !isOnline()) {
+      // Still count: an offline write must show up as pending right away.
+      await refreshCounts();
+      return;
+    }
     status.setSyncing(true);
     try {
       const push = await pushOutbox(db, remote, userId);

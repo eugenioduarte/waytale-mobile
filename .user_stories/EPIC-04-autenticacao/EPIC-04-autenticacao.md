@@ -58,6 +58,7 @@ Como utilizador, quero manter-me ligado e poder sair.
 
 - **Teste de login real:** `cd apps/mobile && node --env-file=.env.local scripts/auth-smoke.mjs <email>` passa todas as verificações: definições de auth, código recebido pelo Resend, sessão aberta, tabelas lidas como `authenticated`, `generate-route` a recusar pedidos sem JWT e a aceitar o do utilizador. Fecha também o teste A/B de RLS com dois utilizadores reais.
 - **Senhas bloqueadas no projeto real:** com a migração `20260928120000_no_passwords.sql` aplicada, `signInWithPassword` falha sempre, mesmo para uma conta criada com `signUp({ email, password })`.
+- **Sync contra o projeto real (01.6):** com login real, guardar um local offline, voltar online e confirmar a linha no Supabase; remover e confirmar o `deleted_at`. Até aqui a sync só foi testada com o servidor em memória e as regras SQL no PGlite.
 - **Captcha** (Turnstile ou hCaptcha) ligado no dashboard **depois** de os formulários enviarem o token (`requestEmailCode(email, captchaToken)`).
 
 ## Métricas
