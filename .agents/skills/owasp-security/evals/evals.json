@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "owasp-security",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "mobile_threat_surface",
+      "prompt": "Orchestrate a read-only OWASP MAS-aligned review of a React Native flow using auth tokens, local storage, deep links, and API calls.",
+      "expect": [
+        "Delegates only relevant security domains",
+        "Prioritizes exploitable trust-boundary findings",
+        "Maps remediation and evidence to mobile controls"
+      ],
+      "tags": ["security", "owasp", "react-native"]
+    },
+    {
+      "id": "avoid_blanket_findings",
+      "prompt": "Review a low-sensitivity public-content mobile screen and decide which security domains actually need inspection.",
+      "expect": [
+        "Calibrates scope to data and attack surface",
+        "Avoids irrelevant resilience or crypto findings",
+        "States assumptions and residual risk"
+      ],
+      "tags": ["security", "scope", "review"]
+    }
+  ]
+}

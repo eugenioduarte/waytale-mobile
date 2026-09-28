@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "coding-conventions",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "feature_naming",
+      "prompt": "Review this proposed feature structure: LoginHook.ts, UserService.ts, IUserModel.ts, and loginScreen.tsx.",
+      "expect": [
+        "Applies repository naming to hooks, services, models, and screens",
+        "Follows surrounding feature conventions when legacy code differs",
+        "Avoids broad renames outside the requested scope"
+      ],
+      "tags": ["naming", "structure", "react-native"]
+    },
+    {
+      "id": "store_placement",
+      "prompt": "Describe the file placement and public naming for a new Zustand notifications store used by one mobile feature.",
+      "expect": [
+        "Co-locates feature-specific state",
+        "Uses the repository store and hook naming conventions",
+        "Defines a narrow typed public surface"
+      ],
+      "tags": ["state", "naming", "typescript"]
+    }
+  ]
+}

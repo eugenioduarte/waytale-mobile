@@ -1,0 +1,21 @@
+{
+  "name": "@waytale/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "base.js",
+  "exports": {
+    ".": "./base.js",
+    "./expo-app": "./expo-app.js",
+    "./plugin": "./plugin.js"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^8.18.2",
+    "eslint-config-expo": "^9.2.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import-x": "^4.17.1"
+  },
+  "scripts": {
+    "test": "node --test rules/require-testid.test.js"
+  }
+}

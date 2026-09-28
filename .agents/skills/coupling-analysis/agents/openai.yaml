@@ -1,0 +1,4 @@
+interface:
+  display_name: "Coupling Analysis"
+  short_description: "Find dependency and layering risks"
+  default_prompt: "Use $coupling-analysis to inspect this refactor for coupling and boundary risks."

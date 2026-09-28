@@ -17,6 +17,8 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
+google-services.json
+GoogleService-Info.plist
 
 # Metro
 .metro-health-check*
@@ -30,8 +32,12 @@ yarn-error.*
 .DS_Store
 *.pem
 
+# local agent tool settings (machine-specific, may hold secrets)
+.claude/settings.local.json
+
 # local env files
 .env*.local
+.env.dev
 
 # typescript
 *.tsbuildinfo
@@ -40,5 +46,14 @@ expo-env.d.ts
 example
 
 # generated native folders
-/ios
-/android
+apps/mobile/ios
+apps/mobile/android
+
+# turborepo cache
+.turbo/
+
+# Storybook web build (01.7)
+storybook-static/
+
+# Jest coverage (pnpm test:cov)
+coverage/

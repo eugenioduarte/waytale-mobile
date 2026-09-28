@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Architecture"
+  short_description: "Protect mobile layer and feature boundaries"
+  default_prompt: "Use $project-architecture to design or review these application boundaries."

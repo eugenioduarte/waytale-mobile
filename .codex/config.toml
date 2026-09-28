@@ -1,0 +1,21 @@
+[agents]
+max_concurrent_threads_per_session = 4
+default_subagent_reasoning_effort = "medium"
+
+[shell_environment_policy]
+ignore_default_excludes = false
+
+[mcp_servers.stitch]
+url = "https://stitch.googleapis.com/mcp"
+env_http_headers = { "X-Goog-Api-Key" = "STITCH_API_KEY" }
+default_tools_approval_mode = "writes"
+
+[mcp_servers.supabase]
+url = "https://mcp.supabase.com/mcp?project_ref=iqmnbzgsqmmalqzdyxjg&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching"
+default_tools_approval_mode = "writes"
+
+# Enable after the Expo SDK upgrade and Expo OAuth setup are complete.
+[mcp_servers.expo]
+url = "https://mcp.expo.dev/mcp"
+enabled = false
+default_tools_approval_mode = "writes"

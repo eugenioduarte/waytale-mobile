@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "feature-delivery",
+  "rubric": "delivery-workflow-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "bounded_feature_loop",
+      "prompt": "Deliver an approved multi-file React Native feature using small batches, checkpoints, tests, and final runtime evidence.",
+      "expect": [
+        "Uses the approved SDD and preserves unrelated changes",
+        "Runs bounded validation after coherent batches and classifies failures",
+        "Reports static, test, runtime, and residual-risk evidence"
+      ],
+      "tags": ["delivery", "loop", "react-native"]
+    },
+    {
+      "id": "three_retry_stop",
+      "prompt": "A focused mobile test keeps failing with the same environment error after three evidence-backed attempts. Continue the delivery loop safely.",
+      "expect": [
+        "Stops repeating the unchanged failure",
+        "Returns the blocker, attempts, and evidence",
+        "Does not weaken tests or silently claim completion"
+      ],
+      "tags": ["delivery", "loop", "failure"]
+    }
+  ]
+}

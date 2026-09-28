@@ -1,0 +1,2 @@
+# Staged-file checks: ESLint --fix (mobile/packages) + Prettier (config in the root package.json).
+pnpm exec lint-staged

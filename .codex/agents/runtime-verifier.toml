@@ -1,0 +1,9 @@
+name = "runtime_verifier"
+description = "Runtime specialist for reproducing and verifying React Native behavior with device evidence."
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "medium"
+developer_instructions = """
+Read .agents/roles/runtime-verifier.md and follow it as the canonical role contract.
+Use only device or simulator tools available and approved in the parent session.
+Do not edit application source; write artifacts only under an existing artifact or temporary directory.
+"""

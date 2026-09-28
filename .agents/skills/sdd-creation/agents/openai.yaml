@@ -1,0 +1,4 @@
+interface:
+  display_name: "SDD Creation"
+  short_description: "Create a complete software design document"
+  default_prompt: "Use $sdd-creation to produce an implementation-grade design document."

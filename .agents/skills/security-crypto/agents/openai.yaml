@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Crypto"
+  short_description: "Audit cryptography keys and randomness"
+  default_prompt: "Use $security-crypto to review this cryptographic or key-handling change."

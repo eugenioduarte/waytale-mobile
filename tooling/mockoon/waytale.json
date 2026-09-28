@@ -1,0 +1,66 @@
+{
+  "uuid": "6a34cbc1-8fb7-40a4-8d9c-c8e5f222dc13",
+  "lastMigration": 32,
+  "name": "Waytale API (mock)",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3001,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "ae78c2db-3f57-4050-8721-850390f6be30",
+      "type": "http",
+      "documentation": "Rotas recomendadas para Home/Rotas recomendadas (EPIC-07, EPIC-09)",
+      "method": "get",
+      "endpoint": "routes",
+      "responses": [
+        {
+          "uuid": "3a63f4c7-3614-492c-8e2a-e5578971c92a",
+          "body": "[]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "empty",
+          "headers": [{ "key": "Content-Type", "value": "application/json" }],
+          "bodyType": "INLINE",
+          "default": true
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "8d84e4a0-e06e-4ad1-84f8-fe96aef84c9f",
+      "type": "http",
+      "documentation": "Detalhe de uma rota (EPIC-10)",
+      "method": "get",
+      "endpoint": "routes/:id",
+      "responses": [
+        {
+          "uuid": "7b6c3f3e-6c9f-4a3f-9e6c-9c0e6e0f5a1b",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "not found",
+          "headers": [{ "key": "Content-Type", "value": "application/json" }],
+          "bodyType": "INLINE",
+          "default": true
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    { "type": "route", "uuid": "ae78c2db-3f57-4050-8721-850390f6be30" },
+    { "type": "route", "uuid": "8d84e4a0-e06e-4ad1-84f8-fe96aef84c9f" }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": { "enabled": false, "type": "CERT", "pfxPath": "", "certPath": "", "keyPath": "", "caPath": "", "passphrase": "" },
+  "cors": true,
+  "headers": [],
+  "proxyReqHeaders": [],
+  "proxyResHeaders": [],
+  "data": [],
+  "callbacks": []
+}

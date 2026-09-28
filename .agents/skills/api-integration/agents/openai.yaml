@@ -1,0 +1,4 @@
+interface:
+  display_name: "API Integration"
+  short_description: "Build validated and testable API boundaries"
+  default_prompt: "Use $api-integration to implement or review this API boundary."

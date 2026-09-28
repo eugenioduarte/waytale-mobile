@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Auth"
+  short_description: "Audit authentication and session flows"
+  default_prompt: "Use $security-auth to review this authentication or session change."

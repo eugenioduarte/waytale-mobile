@@ -1,0 +1,4 @@
+interface:
+  display_name: "Translations"
+  short_description: "Apply project i18n and locale conventions"
+  default_prompt: "Use $translations to implement or review this user-facing copy change."

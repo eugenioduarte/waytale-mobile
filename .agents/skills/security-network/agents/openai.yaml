@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Network"
+  short_description: "Audit TLS and sensitive transport flows"
+  default_prompt: "Use $security-network to review this network and transport boundary."

@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "security-platform",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "webview_boundary",
+      "prompt": "Review a React Native WebView that accepts an untrusted URL and injects JavaScript into every loaded origin.",
+      "expect": [
+        "Flags origin trust and script-injection boundaries",
+        "Checks navigation allowlists and bridge exposure",
+        "Suggests platform-compatible containment and verification"
+      ],
+      "tags": ["security", "platform", "webview"]
+    },
+    {
+      "id": "deep_link_input",
+      "prompt": "Audit a deep link that opens privileged screens and passes query parameters directly into navigation and API calls.",
+      "expect": [
+        "Treats the deep link as untrusted external input",
+        "Finds authorization and parameter-validation gaps",
+        "Covers Android and iOS entry-point verification"
+      ],
+      "tags": ["security", "platform", "deep-link"]
+    }
+  ]
+}

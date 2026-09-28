@@ -1,0 +1,11 @@
+{
+  "name": "@waytale/jest-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "expo-app.js",
+  "dependencies": {
+    "jest-expo": "~57.0.0",
+    "@testing-library/react-native": "^13.0.0"
+  }
+}

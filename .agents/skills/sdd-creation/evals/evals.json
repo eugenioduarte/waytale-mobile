@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "sdd-creation",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "migration_design",
+      "prompt": "Create an SDD for migrating a React Native feature flag system without changing runtime behavior.",
+      "expect": [
+        "Defines problem, scope, decisions, and unchanged behavior",
+        "Includes phased rollout, rollback, verification, and risks",
+        "Stores design intent without implementing it"
+      ],
+      "tags": ["sdd", "migration", "react-native"]
+    },
+    {
+      "id": "operational_gaps",
+      "prompt": "Review an SDD that describes components and data types but omits rollout, rollback, observability, and open questions.",
+      "expect": [
+        "Identifies missing operational sections",
+        "Adds measurable acceptance and verification criteria",
+        "Preserves unresolved decisions as explicit open questions"
+      ],
+      "tags": ["sdd", "review", "operations"]
+    }
+  ]
+}

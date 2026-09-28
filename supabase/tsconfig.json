@@ -1,0 +1,17 @@
+{
+  "extends": "@waytale/typescript-config/base.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "es2023",
+    "lib": ["es2023"],
+    "types": ["node"],
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true
+  },
+  // The Edge Function handler (index.ts) runs on Deno with npm:/jsr: imports, so it's checked by
+  // the Supabase runtime; plan.ts is plain TypeScript shared with the Node tests.
+  "include": ["tests/**/*.ts", "functions/generate-route/plan.ts"]
+}

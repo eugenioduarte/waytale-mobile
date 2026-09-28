@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "clean-code",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "mixed_hook_responsibilities",
+      "prompt": "Review a React Native hook that fetches data, formats UI copy, navigates, logs analytics, and renders JSX helpers.",
+      "expect": [
+        "Identifies mixed responsibilities and high cognitive load",
+        "Proposes cohesive boundaries without needless abstractions",
+        "Preserves behavior and recommends focused verification"
+      ],
+      "tags": ["refactor", "hooks", "react-native"]
+    },
+    {
+      "id": "controlled_duplication",
+      "prompt": "Review two similar mobile components and decide whether their duplicated logic should be extracted.",
+      "expect": [
+        "Distinguishes stable shared behavior from coincidental similarity",
+        "Avoids a premature generic component",
+        "Names a small, testable extraction when justified"
+      ],
+      "tags": ["refactor", "components", "review"]
+    }
+  ]
+}

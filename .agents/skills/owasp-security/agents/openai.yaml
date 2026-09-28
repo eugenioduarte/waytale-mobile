@@ -1,0 +1,4 @@
+interface:
+  display_name: "OWASP Mobile Security"
+  short_description: "Coordinate an OWASP MAS mobile review"
+  default_prompt: "Use $owasp-security to coordinate a scoped mobile security audit."

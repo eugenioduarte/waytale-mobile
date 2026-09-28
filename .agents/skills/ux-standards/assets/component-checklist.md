@@ -1,0 +1,6 @@
+- loading state
+- error state
+- empty state
+- touch target
+- safe area
+- feedback state

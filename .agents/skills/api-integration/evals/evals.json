@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "api-integration",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "dto_boundary",
+      "prompt": "Create a service and TanStack Query integration plan for a new endpoint whose response is untrusted.",
+      "expect": [
+        "Validates and normalizes the DTO at the transport boundary",
+        "Keeps DTOs out of hooks and presentation code",
+        "Includes error mapping and focused tests"
+      ],
+      "tags": ["api", "react-native", "architecture"]
+    },
+    {
+      "id": "async_orchestration",
+      "prompt": "Review a React Native screen that calls the API client directly and manually tracks loading state.",
+      "expect": [
+        "Moves transport into service and query boundaries",
+        "Keeps screen orchestration presentation-focused",
+        "Covers loading, error, retry, and cancellation behavior"
+      ],
+      "tags": ["api", "review", "react-native"]
+    }
+  ]
+}

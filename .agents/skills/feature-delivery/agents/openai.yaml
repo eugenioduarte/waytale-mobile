@@ -1,0 +1,4 @@
+interface:
+  display_name: "Feature Delivery"
+  short_description: "Deliver scoped features through validation"
+  default_prompt: "Use $feature-delivery to implement this approved feature end to end."

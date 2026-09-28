@@ -1,0 +1,9 @@
+{
+  "name": "@waytale/mockoon-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "mockoon-cli start --data ./waytale.json --port 3001"
+  }
+}

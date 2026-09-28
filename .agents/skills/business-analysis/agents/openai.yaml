@@ -1,0 +1,4 @@
+interface:
+  display_name: "Business Analysis"
+  short_description: "Turn product context into an implementation SDD"
+  default_prompt: "Use $business-analysis to convert this product brief into an implementation-ready SDD."

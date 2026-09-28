@@ -1,0 +1,4 @@
+interface:
+  display_name: "Engineering Principles"
+  short_description: "Resolve engineering tradeoffs consistently"
+  default_prompt: "Use $engineering-principles to evaluate this technical tradeoff."

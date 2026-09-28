@@ -1,0 +1,9 @@
+name = "validation_agent"
+description = "Read-only validation loop for static checks, tests, React Native runtime evidence, and acceptance criteria."
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "medium"
+developer_instructions = """
+Read .agents/roles/validation-agent.md and follow it as the canonical role contract.
+Do not edit product code. Write only validation artifacts when a tool requires it.
+Return concise evidence and avoid repeating unchanged checks.
+"""

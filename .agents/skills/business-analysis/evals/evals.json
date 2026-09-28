@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "business-analysis",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "preserve_unknowns",
+      "prompt": "Transform a vague React Native feature summary into implementation-grade product requirements without implementing it.",
+      "expect": [
+        "Marks unknown requirements as open questions or TBD",
+        "Defines scope, flows, rules, risks, rollout, and acceptance criteria",
+        "Uses the active vendor-neutral repository architecture"
+      ],
+      "tags": ["requirements", "sdd", "react-native"]
+    },
+    {
+      "id": "avoid_premature_design",
+      "prompt": "Analyze a product idea that has an unclear offline flow, permission model, and success metric.",
+      "expect": [
+        "Separates confirmed facts from assumptions",
+        "Surfaces offline, permission, and measurement decisions",
+        "Does not implement or silently invent requirements"
+      ],
+      "tags": ["requirements", "offline", "scope"]
+    }
+  ]
+}

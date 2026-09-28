@@ -1,0 +1,44 @@
+# CI (EPIC-01.8): lint → typecheck → unit/integration tests with the coverage gate.
+#
+# The "Lint, typecheck, test" check is required on `main` (branch protection), so a red run blocks
+# the merge. EAS preview build + Maestro on an emulator are added by 01.13 (they need EAS set up).
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Lint, typecheck, test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4 # version from package.json "packageManager"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm lint
+
+      - run: pnpm typecheck
+
+      # Every package except the app (Supabase SQL on PGlite, ESLint rules, ui)…
+      - run: pnpm turbo run test --filter=!mobile
+
+      # …and the app with coverage: fails below 60% in src/features.
+      - run: pnpm --filter mobile test:cov

@@ -1,0 +1,4 @@
+interface:
+  display_name: "React Native Patterns"
+  short_description: "Build robust Expo and React Native behavior"
+  default_prompt: "Use $react-native-patterns to review this mobile change for React Native correctness."

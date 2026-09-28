@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "security-storage",
+  "rubric": "security-review-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "plaintext_token",
+      "prompt": "Audit access and refresh tokens persisted in AsyncStorage and copied into verbose production logs.",
+      "expect": [
+        "Finds plaintext persistence and log disclosure",
+        "Distinguishes encrypted storage from hardware-backed key protection",
+        "Covers migration, logout cleanup, backups, and verification"
+      ],
+      "tags": ["security", "storage", "session"]
+    },
+    {
+      "id": "sqlite_privacy",
+      "prompt": "Review an offline SQLite cache containing customer PII with unrestricted backups and no retention policy.",
+      "expect": [
+        "Identifies data-at-rest, backup, and retention exposure",
+        "Calibrates protection to the data classification",
+        "Recommends minimization and React Native-compatible storage controls"
+      ],
+      "tags": ["security", "storage", "privacy"]
+    }
+  ]
+}

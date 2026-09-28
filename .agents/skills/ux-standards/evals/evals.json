@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "ux-standards",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "state_complete_screen",
+      "prompt": "Review a React Native data screen that renders only the success state and uses raw colors outside the design system.",
+      "expect": [
+        "Adds applicable loading, error, empty, disabled, and success states",
+        "Uses existing design tokens and components",
+        "Includes recovery actions and accessible feedback"
+      ],
+      "tags": ["ux", "react-native", "states"]
+    },
+    {
+      "id": "accessible_cta",
+      "prompt": "Review a small icon-only mobile CTA near the safe-area edge with no label, role, feedback, or disabled state.",
+      "expect": [
+        "Fixes touch target, safe-area placement, role, and label",
+        "Adds pressed, disabled, and asynchronous feedback",
+        "Verifies with platform accessibility behavior"
+      ],
+      "tags": ["ux", "accessibility", "react-native"]
+    }
+  ]
+}

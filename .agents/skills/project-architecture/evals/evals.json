@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "project-architecture",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 85,
+  "cases": [
+    {
+      "id": "layer_contract",
+      "prompt": "Review a proposed React Native feature where a screen imports a transport DTO and calls the persistence adapter directly.",
+      "expect": [
+        "Detects DTO leakage and layer violations",
+        "Restores model, service, query, hook, and screen contracts",
+        "Describes data flow and focused migration checks"
+      ],
+      "tags": ["architecture", "layers", "react-native"]
+    },
+    {
+      "id": "offline_boundary",
+      "prompt": "Design the boundary for an offline-capable mobile feature that syncs remote data into SQLite and exposes normalized domain state.",
+      "expect": [
+        "Separates remote DTO, domain model, and persistence representation",
+        "Defines ownership of sync and conflict behavior",
+        "Includes failure, migration, and verification considerations"
+      ],
+      "tags": ["architecture", "offline", "storage"]
+    }
+  ]
+}
