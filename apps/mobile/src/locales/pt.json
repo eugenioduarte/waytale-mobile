@@ -55,5 +55,12 @@
     "saved": "Os lugares que guardar vão aparecer aqui.",
     "journeys": "As histórias dos seus passeios vão ficar aqui.",
     "profile": "Um espaço para si e para as suas preferências."
+  },
+  "sync": {
+    "offline": "Sem ligação. O que fizer fica guardado no telemóvel e é enviado quando voltar a rede.",
+    "syncing": "A sincronizar…",
+    "pending": "Há alterações à espera de ser enviadas.",
+    "error": "Algumas alterações não foram enviadas. Vamos tentar de novo.",
+    "synced": "Tudo sincronizado."
   }
 }

@@ -133,18 +133,29 @@ export const downloads = sqliteTable(
   (table) => [uniqueIndex('downloads_user_item_uq').on(table.userId, table.itemType, table.itemId)],
 );
 
+/**
+ * Local writes waiting to reach Supabase (01.6, `lib/sync/`). Pushed in `created_at` order;
+ * replaying an entry is idempotent (client-generated ids, upserts), so a crash mid-push is safe.
+ */
 export const outbox = sqliteTable(
   'outbox',
   {
     id: text('id').primaryKey(),
+    userId: text('user_id'), // whose write this is — never pushed with another user's session
     operation: text('operation').notNull(), // 'insert' | 'update' | 'delete'
     entityType: text('entity_type').notNull(),
     entityId: text('entity_id').notNull(),
-    payload: text('payload').notNull(), // JSON string
+    payload: text('payload').notNull(), // JSON: full row (insert) or changed fields (update)
     createdAt: text('created_at').notNull(),
-    syncedAt: text('synced_at'), // null until pushed (01.6)
+    syncedAt: text('synced_at'), // null until pushed
+    attempts: integer('attempts').notNull().default(0),
+    lastError: text('last_error'),
+    failedAt: text('failed_at'), // rejected by the server for good (dead letter), no more retries
   },
-  (table) => [index('outbox_synced_idx').on(table.syncedAt)],
+  (table) => [
+    index('outbox_synced_idx').on(table.syncedAt),
+    index('outbox_entity_idx').on(table.entityType, table.entityId),
+  ],
 );
 
 export const meta = sqliteTable('meta', {

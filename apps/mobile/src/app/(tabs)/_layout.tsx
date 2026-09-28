@@ -1,10 +1,12 @@
 import { Tabs } from 'expo-router/js-tabs';
 import { SymbolView } from 'expo-symbols';
 
+import { useSyncBadge } from '@/components/sync-status';
 import { Palette } from '@/constants/palette';
 import copy from '@/locales/pt.json';
 
 export default function TabLayout() {
+  const syncBadge = useSyncBadge();
   return (
     <Tabs
       initialRouteName="index"
@@ -59,6 +61,8 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: copy.tabs.profile,
+          // Global sync indicator: writes waiting or refused (details on the Profile screen).
+          tabBarBadge: syncBadge,
           tabBarIcon: ({ color }) => (
             <SymbolView
               name={{ ios: 'person.crop.circle', android: 'person', web: 'person' }}

@@ -7,7 +7,7 @@ Checklist derivada das histórias em [`EPIC-01-setup-projeto.md`](./EPIC-01-setu
 - [ ] 01.3 — Estado com Zustand (falta: retoma na UI do percurso — validação em dispositivo)
 - [ ] 01.4 — SQLite local como fonte de verdade (falta: validação em dispositivo/modo avião)
 - [x] 01.5 — Supabase e autenticação (teste de login real, captcha e UI de auth passaram para o EPIC-04)
-- [ ] 01.6 — Camada de sincronização
+- [ ] 01.6 — Camada de sincronização (falta: `db push` da migração sync)
 - [ ] 01.7 — Storybook
 - [ ] 01.8 — Testes
 - [ ] 01.9 — Internacionalização (i18n)
