@@ -12,6 +12,16 @@ const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 /** False until `apps/mobile/.env.local` is filled in — the app then stays in preview mode. */
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabasePublishableKey);
 
+/**
+ * Where the backend lives: Supabase, or the Mockoon mock (`pnpm mockoon`) that answers on the same
+ * paths — switching `EXPO_PUBLIC_SUPABASE_URL` moves auth, sync and the HTTP client together.
+ */
+export function getSupabaseConfig(): { url: string; publishableKey: string } | null {
+  return supabaseUrl && supabasePublishableKey
+    ? { url: supabaseUrl, publishableKey: supabasePublishableKey }
+    : null;
+}
+
 let client: SupabaseClient | null = null;
 
 /**

@@ -1,0 +1,18 @@
+{
+  "stops": [
+    {
+      "placeId": "5a1e0000-0000-4000-8000-000000000101",
+      "name": "Praça do Comércio",
+      "position": 0,
+      "walkMeters": 350
+    },
+    {
+      "placeId": "5a1e0000-0000-4000-8000-000000000102",
+      "name": "Chiado",
+      "position": 1,
+      "walkMeters": 850
+    }
+  ],
+  "distanceMeters": 1200,
+  "durationMinutes": 25
+}

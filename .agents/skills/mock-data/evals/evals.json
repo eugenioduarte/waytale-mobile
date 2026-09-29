@@ -1,0 +1,29 @@
+{
+  "$schema": "../../../evals/skill-eval.schema.json",
+  "version": 1,
+  "skill": "mock-data",
+  "rubric": "repository-skill-v1",
+  "minimum_score": 80,
+  "cases": [
+    {
+      "id": "new_endpoint_error_case",
+      "prompt": "A new screen calls an Edge Function that can fail with a 409 conflict. Add the mock and an integration test for both the success and the conflict.",
+      "expect": [
+        "Adds the route to the single Mockoon environment with the real response shape",
+        "Selects the conflict through a rule on the request input recorded in scenarios.json",
+        "Tests start the shared mock and do not define responses inline or intercept requests"
+      ],
+      "tags": ["mocks", "tests", "network"]
+    },
+    {
+      "id": "demo_catalog_change",
+      "prompt": "Add a second demo route in Porto so the app and the tests have more catalog data.",
+      "expect": [
+        "Edits the catalog rows once in the central data files in Supabase row shape",
+        "Keeps seed, mock and tests reading the same rows instead of duplicating them",
+        "Updates tests that count catalog rows without hardcoding copies of the data"
+      ],
+      "tags": ["mocks", "seed", "offline-first"]
+    }
+  ]
+}

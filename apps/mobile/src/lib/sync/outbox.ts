@@ -1,5 +1,7 @@
 import { randomUUID } from 'expo-crypto';
 
+import { nowIso } from '@/lib/date';
+
 import type { SqlExecutor } from './sql';
 
 /**
@@ -47,7 +49,7 @@ export async function enqueue(
       entry.table,
       entry.entityId,
       JSON.stringify(entry.payload),
-      new Date().toISOString(),
+      nowIso(),
     ],
   );
 }
@@ -80,10 +82,7 @@ export async function countFailed(db: SqlExecutor, userId: string): Promise<numb
 }
 
 export function markSynced(db: SqlExecutor, id: string): Promise<void> {
-  return db.run('UPDATE outbox SET synced_at = ?, last_error = NULL WHERE id = ?', [
-    new Date().toISOString(),
-    id,
-  ]);
+  return db.run('UPDATE outbox SET synced_at = ?, last_error = NULL WHERE id = ?', [nowIso(), id]);
 }
 
 /** A transient failure: counted, kept pending, retried with backoff. */
@@ -98,7 +97,7 @@ export function markAttempt(db: SqlExecutor, id: string, error: string): Promise
 export function markFailed(db: SqlExecutor, id: string, error: string): Promise<void> {
   return db.run(
     'UPDATE outbox SET attempts = attempts + 1, last_error = ?, failed_at = ? WHERE id = ?',
-    [error, new Date().toISOString(), id],
+    [error, nowIso(), id],
   );
 }
 

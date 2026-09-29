@@ -1,116 +1,94 @@
+import placeRows from '@waytale/mockoon-config/data/rest/places.json';
+import routeRows from '@waytale/mockoon-config/data/rest/routes.json';
+import stopRows from '@waytale/mockoon-config/data/rest/stops.json';
+import storyRows from '@waytale/mockoon-config/data/rest/stories.json';
+import storyAudioRows from '@waytale/mockoon-config/data/rest/story_audio.json';
+
 import type { Database } from './client';
 import { places, routes, stops, stories, storyAudio } from './schema';
 
-const now = () => new Date().toISOString();
-
 /**
- * Demo seed for dev and Storybook: one Lisbon route with two stops, so the app has offline
- * content to render. Idempotent (`onConflictDoNothing`), so re-running is a no-op. Ids are fixed
- * UUIDs (the `5a1e…` prefix marks demo data), like every synced id.
+ * Demo seed for dev and Storybook: the demo catalog (one Lisbon route, two stops), so the app has
+ * offline content to render. The rows are the mock data the Mockoon mock serves on
+ * `/rest/v1/<table>` (`tooling/mockoon/data/rest/`), so seeded and synced demo content are the same
+ * rows. Idempotent (`onConflictDoNothing`), so re-running is a no-op. Ids are fixed UUIDs (the
+ * `5a1e…` prefix marks demo data), like every synced id.
  *
  * Only runs in development (`initializeDatabase` gates it behind `__DEV__`).
  */
 export async function seedDemo(db: Database): Promise<void> {
-  const timestamp = now();
-
   await db
     .insert(routes)
-    .values([
-      {
-        id: '5a1e0000-0000-4000-8000-000000000001',
-        title: 'Baixa de Lisboa',
-        description: 'Um passeio curto pela história do centro, da Praça do Comércio ao Chiado.',
-        theme: 'história',
-        city: 'Lisboa',
-        durationMinutes: 40,
-        distanceMeters: 2200,
-        createdAt: timestamp,
-        updatedAt: timestamp,
-      },
-    ])
+    .values(
+      routeRows.map((row) => ({
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        theme: row.theme,
+        city: row.city,
+        durationMinutes: row.duration_minutes,
+        distanceMeters: row.distance_meters,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at,
+      })),
+    )
     .onConflictDoNothing();
 
   await db
     .insert(places)
-    .values([
-      {
-        id: '5a1e0000-0000-4000-8000-000000000101',
-        name: 'Praça do Comércio',
-        description: 'A praça que recebia quem chegava a Lisboa pelo Tejo.',
-        city: 'Lisboa',
-        latitude: 38.7078,
-        longitude: -9.1366,
-        createdAt: timestamp,
-      },
-      {
-        id: '5a1e0000-0000-4000-8000-000000000102',
-        name: 'Chiado',
-        description: 'O bairro dos cafés e das livrarias.',
-        city: 'Lisboa',
-        latitude: 38.7109,
-        longitude: -9.1409,
-        createdAt: timestamp,
-      },
-    ])
+    .values(
+      placeRows.map((row) => ({
+        id: row.id,
+        name: row.name,
+        description: row.description,
+        city: row.city,
+        latitude: row.latitude,
+        longitude: row.longitude,
+        imageUrl: row.image_url,
+        createdAt: row.created_at,
+      })),
+    )
     .onConflictDoNothing();
 
   await db
     .insert(stops)
-    .values([
-      {
-        id: '5a1e0000-0000-4000-8000-000000000201',
-        routeId: '5a1e0000-0000-4000-8000-000000000001',
-        placeId: '5a1e0000-0000-4000-8000-000000000101',
-        name: 'Praça do Comércio',
-        position: 0,
-      },
-      {
-        id: '5a1e0000-0000-4000-8000-000000000202',
-        routeId: '5a1e0000-0000-4000-8000-000000000001',
-        placeId: '5a1e0000-0000-4000-8000-000000000102',
-        name: 'Chiado',
-        position: 1,
-      },
-    ])
+    .values(
+      stopRows.map((row) => ({
+        id: row.id,
+        routeId: row.route_id,
+        placeId: row.place_id,
+        name: row.name,
+        position: row.position,
+      })),
+    )
     .onConflictDoNothing();
 
   await db
     .insert(stories)
-    .values([
-      {
-        id: '5a1e0000-0000-4000-8000-000000000301',
-        stopId: '5a1e0000-0000-4000-8000-000000000201',
-        title: 'O terreiro que era um porto',
-        body: 'Antes de ser praça, este terreiro recebia os barcos que chegavam do mar.',
-        sources: '["Arquivo Municipal de Lisboa"]',
-        createdAt: timestamp,
-      },
-      {
-        id: '5a1e0000-0000-4000-8000-000000000302',
-        stopId: '5a1e0000-0000-4000-8000-000000000202',
-        title: 'Cafés e poetas',
-        body: 'No Chiado, os cafés foram, durante décadas, o ponto de encontro de escritores.',
-        sources: '["História do Chiado, ed. municipal"]',
-        createdAt: timestamp,
-      },
-    ])
+    .values(
+      storyRows.map((row) => ({
+        id: row.id,
+        stopId: row.stop_id,
+        title: row.title,
+        body: row.body,
+        // `jsonb` on the server, JSON text locally (see `lib/sync/tables.ts`).
+        sources: JSON.stringify(row.sources),
+        createdAt: row.created_at,
+      })),
+    )
     .onConflictDoNothing();
 
   await db
     .insert(storyAudio)
-    .values([
-      {
-        id: '5a1e0000-0000-4000-8000-000000000401',
-        storyId: '5a1e0000-0000-4000-8000-000000000301',
-        language: 'pt',
-        durationMs: 42000,
-      },
-      {
-        id: '5a1e0000-0000-4000-8000-000000000402',
-        storyId: '5a1e0000-0000-4000-8000-000000000302',
-        language: 'pt',
-        durationMs: 36000,
-      },
-    ])
+    .values(
+      storyAudioRows.map((row) => ({
+        id: row.id,
+        storyId: row.story_id,
+        voiceId: row.voice_id,
+        language: row.language,
+        audioKey: row.audio_key,
+        durationMs: row.duration_ms,
+      })),
+    )
     .onConflictDoNothing();
 }

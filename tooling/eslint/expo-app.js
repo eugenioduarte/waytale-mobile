@@ -7,19 +7,75 @@ const waytale = require("./plugin");
  * Zustand stores (`src/stores/*.store.ts`) are consumed through granular selector hooks. Calling a
  * store hook with no selector subscribes to the whole store and re-renders on every change.
  */
-const zustandSelectorConfig = {
+const zustandSelector = {
+  selector: "CallExpression[callee.name=/^use\\w+Store$/][arguments.length=0]",
+  message:
+    "Don't consume a whole Zustand store; use a selector hook (e.g. useIsAuthenticated()) or pass a selector.",
+};
+
+/**
+ * Dates go through `src/lib/date.ts` (EPIC-01.11): one clock, one wire format, one place that
+ * formats per language.
+ */
+const DATE_MESSAGE =
+  "Use src/lib/date.ts (nowIso, parseIso, formatDate, …) instead of Date/Intl directly.";
+const dateSelectors = [
+  { selector: "NewExpression[callee.name='Date']", message: DATE_MESSAGE },
+  { selector: "MemberExpression[object.name='Date']", message: DATE_MESSAGE },
+  { selector: "MemberExpression[object.name='Intl']", message: DATE_MESSAGE },
+  {
+    selector:
+      "CallExpression[callee.property.name=/^toLocale(Date|Time)?String$/]",
+    message: DATE_MESSAGE,
+  },
+];
+
+// `no-restricted-syntax` is one rule: a later config replaces its whole list, so the Zustand
+// selector is repeated where the date ban is lifted.
+const restrictedSyntaxConfig = {
   files: ["**/*.{js,jsx,ts,tsx}"],
   rules: {
-    "no-restricted-syntax": [
+    "no-restricted-syntax": ["error", zustandSelector, ...dateSelectors],
+  },
+};
+
+/**
+ * Network goes through `src/lib/http.ts` (Axios) or supabase-js (EPIC-01.11) — never `fetch` or
+ * a second Axios instance in features.
+ */
+const networkConfig = {
+  files: ["src/**/*.{js,jsx,ts,tsx}"],
+  rules: {
+    "no-restricted-globals": [
       "error",
+      { name: "fetch", message: "Use getHttp() from src/lib/http.ts." },
       {
-        selector:
-          "CallExpression[callee.name=/^use\\w+Store$/][arguments.length=0]",
-        message:
-          "Don't consume a whole Zustand store; use a selector hook (e.g. useIsAuthenticated()) or pass a selector.",
+        name: "XMLHttpRequest",
+        message: "Use getHttp() from src/lib/http.ts.",
       },
     ],
+    "no-restricted-imports": [
+      "error",
+      { name: "axios", message: "Use getHttp() from src/lib/http.ts." },
+    ],
   },
+};
+
+/** Where the bans don't apply: the modules that own them, tests and tooling scripts. */
+const dateOwnerConfig = {
+  files: [
+    "src/lib/date.ts",
+    "**/__tests__/**",
+    "**/*.test.{js,jsx,ts,tsx}",
+    "tests/**",
+    "scripts/**",
+    "*.config.{js,ts}",
+  ],
+  rules: { "no-restricted-syntax": ["error", zustandSelector] },
+};
+const networkOwnerConfig = {
+  files: ["src/lib/http.ts", "**/__tests__/**", "**/*.test.{js,jsx,ts,tsx}"],
+  rules: { "no-restricted-globals": "off", "no-restricted-imports": "off" },
 };
 
 /**
@@ -68,7 +124,10 @@ module.exports = [
   generatedIgnores,
   ...expoConfig,
   ...base,
-  zustandSelectorConfig,
+  restrictedSyntaxConfig,
+  dateOwnerConfig,
+  networkConfig,
+  networkOwnerConfig,
   testIdConfig,
   i18nConfig,
 ];

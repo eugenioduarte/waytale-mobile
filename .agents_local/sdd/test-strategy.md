@@ -7,7 +7,7 @@
          / \
         / E2E \         Maestro (mobile)
        /────────\
-      /Integration\     Jest + MSW — fluxos completos com API mockada
+      /Integration\     Jest + Mockoon — fluxos completos contra o mock partilhado
      /────────────\
     /  Unit Tests  \    Jest + Testing Library — lógica isolada
    /________________\
@@ -24,7 +24,7 @@
 - **Normalizers**: transformação DTO → Model
 - **Helpers/Utils**: funções puras (ex.: cálculo de desvio de rota, formatação de duração)
 
-### Integration (Jest + MSW)
+### Integration (Jest + Mockoon)
 
 - **Fluxos de tela**: onboarding, auth (código por email), descoberta de rota, journey completo
 - **Estados**: loading, empty, error, success — incluindo "sem histórias por aqui" e offline
@@ -68,13 +68,16 @@ Tudo em `apps/mobile/tests/`, importado com o alias `@tests/...` (só existe no 
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `tests/render.tsx`      | `renderWithProviders(ui, { stores })` — providers + stores repostos; `renderApp(url, { stores })` — o router real de `src/app` (guardas incluídas) |
 | `tests/factories.ts`    | `buildUser`, `buildSession`, `buildSavedItem`, `uuid()`, `isoAt()` — dados válidos, ids determinísticos                                            |
-| `tests/msw/handlers.ts` | handlers do Supabase Auth (caminho feliz) + `authError(status, code)`; URL de teste fixa                                                           |
-| `tests/msw/server.ts`   | `server` — cada ficheiro faz `listen({ onUnhandledRequest: 'error' })` / `resetHandlers` / `close`                                                 |
+| `tests/mockoon.ts`      | `startMockServer()` (Mockoon real, um processo por ficheiro), `scenarios`, `mockFetch`, `UNREACHABLE_URL` (EPIC-01.11)                             |
 | `tests/helpers/sync.ts` | SQLite em memória com as migrações reais + `FakeRemote` (01.6)                                                                                     |
 
-- **Rede**: MSW intercepta o `fetch` do supabase-js real — o teste cria o seu cliente apontado para
-  `SUPABASE_TEST_URL` e passa-o ao serviço (`createAuthApi(() => client)`). Um pedido sem handler
-  falha o teste.
+- **Rede**: o mesmo Mockoon do dev (`tooling/mockoon/`; ver `mock-data.md` e a skill `mock-data`).
+  - O teste arranca-o no `beforeAll`.
+  - Cria o seu cliente real (supabase-js ou `createHttpClient`) apontado para `mock.url`, com
+    `global: { fetch: mockFetch }`.
+  - O cenário escolhe-se pelo input (`scenarios.auth.email.rateLimited`); nenhum teste redefine
+    respostas.
+  - `await mock.requests()` mostra o que chegou ao mock.
 - **Ecrãs e navegação**: `renderApp` monta o root layout real; o teste faz mock local de
   `@/db/client`, `@/lib/sync/use-sync` e `@/features/auth/use-supabase-auth-sync`
   (exemplo: `src/features/auth/__tests__/auth.flow.integration.test.tsx`).
@@ -99,11 +102,15 @@ Tudo em `apps/mobile/tests/`, importado com o alias `@tests/...` (só existe no 
 apps/mobile/
   src/features/auth/__tests__/
     api.test.ts                          ← Unit (mock no boundary)
-    auth.integration.test.ts             ← Integration (supabase-js real + MSW)
+    auth.integration.test.ts             ← Integration (supabase-js real + Mockoon)
     auth.flow.integration.test.tsx       ← Integration (router real: guardas, onboarding, logout)
   src/features/saved/__tests__/
     saved.test.ts                        ← Unit (SQLite em memória)
-  tests/                                 ← render, factories, msw, helpers
+  src/lib/__tests__/
+    http.integration.test.ts             ← Integration (axios real + Mockoon)
+  src/lib/sync/__tests__/
+    sync.mockoon.integration.test.ts     ← Integration (pull real + Mockoon → SQLite)
+  tests/                                 ← render, factories, mockoon, helpers
   .maestro/
     onboarding.yaml                      ← E2E
     auth.yaml                            ← E2E

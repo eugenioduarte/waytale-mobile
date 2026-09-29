@@ -1,3 +1,5 @@
+import { nowIso } from '@/lib/date';
+
 import { markAttempt, markFailed, markSynced, type OutboxEntry, pendingEntries } from './outbox';
 import { type RemoteRow, type SyncRemote, SyncRemoteError } from './remote';
 import { getSyncTable, type SyncTable } from './tables';
@@ -62,7 +64,7 @@ async function pushEntry(remote: SyncRemote, entry: OutboxEntry): Promise<void> 
     }
     case 'delete': {
       if (!table.tombstone) throw invalid(`${table.name} rows can't be removed`);
-      await remote.update(table.name, match, { deleted_at: new Date().toISOString() });
+      await remote.update(table.name, match, { deleted_at: nowIso() });
       return;
     }
     default:

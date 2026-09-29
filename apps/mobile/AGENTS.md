@@ -21,7 +21,11 @@ package.
   `src/storybook/decorators.tsx`; `src/storybook/__tests__/stories.test.tsx` renders every story,
   so a broken one fails the tests. `pnpm storybook` (on-device, `waytale://storybook`) or
   `pnpm storybook:web`.
-- Tests: helpers in `tests/` (import `@tests/render`, `@tests/factories`, `@tests/msw/server`),
+- Network goes through `getHttp()` (`src/lib/http.ts`) or supabase-js; dates through
+  `src/lib/date.ts` — lint rejects `fetch`, `axios`, `Date` and `Intl` elsewhere. Mock data lives
+  only in `tooling/mockoon/` (skill `mock-data`); `pnpm mockoon` + `pnpm start:mock` runs the app
+  against it.
+- Tests: helpers in `tests/` (import `@tests/render`, `@tests/factories`, `@tests/mockoon`),
   see `.agents_local/sdd/test-strategy.md`. Interactive elements need a `testID`
   (`<screen>-<action>`, lint rule `waytale/require-testid`); screens get `screen-<route>`. Never put
   tests under `src/app/` (expo-router would treat them as routes).

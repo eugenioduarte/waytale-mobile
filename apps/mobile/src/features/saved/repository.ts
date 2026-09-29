@@ -1,3 +1,4 @@
+import { nowIso } from '@/lib/date';
 import { enqueue, newId } from '@/lib/sync/outbox';
 import type { SqlExecutor } from '@/lib/sync/sql';
 
@@ -30,7 +31,7 @@ export function createSavedRepository(db: SqlExecutor) {
           user_id: userId,
           item_type: itemType,
           item_id: itemId,
-          created_at: new Date().toISOString(),
+          created_at: nowIso(),
         };
         await tx.run(
           'INSERT INTO saved_items (id, user_id, item_type, item_id, created_at) VALUES (?, ?, ?, ?, ?)',

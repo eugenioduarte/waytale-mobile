@@ -29,8 +29,10 @@ paths:
 - Test full screen flows with mocked API responses
 - Must cover loading, error, and empty states
 - Use Testing Library (React / React Native) — no Enzyme
-- Use MSW for API mocking — handlers in `apps/mobile/tests/msw/handlers.ts`
-- Server in `apps/mobile/tests/msw/server.ts` — `server.listen({ onUnhandledRequest: 'error' })` in `beforeAll`
+- The network is the shared Mockoon mock (`tooling/mockoon/`, skill `mock-data`): `startMockServer()`
+  from `@tests/mockoon` in `beforeAll`, `stop()` in `afterAll`; pass `mockFetch` to clients
+- Pick error/edge cases by request input from `scenarios` — never redefine responses or intercept
+  requests in a test; new mock data goes in `tooling/mockoon/data/`
 - Render with `@tests/render` (`renderWithProviders`, `renderApp`); data from `@tests/factories`
 
 ## E2E tests (Maestro — Mobile)

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "5a1e0000-0000-4000-8000-000000000301",
+    "stop_id": "5a1e0000-0000-4000-8000-000000000201",
+    "title": "O terreiro que era um porto",
+    "body": "Antes de ser praça, este terreiro recebia os barcos que chegavam do mar.",
+    "sources": ["Arquivo Municipal de Lisboa"],
+    "created_at": "2026-01-01T10:00:00.000Z",
+    "updated_at": "2026-01-01T10:00:00.000Z"
+  },
+  {
+    "id": "5a1e0000-0000-4000-8000-000000000302",
+    "stop_id": "5a1e0000-0000-4000-8000-000000000202",
+    "title": "Cafés e poetas",
+    "body": "No Chiado, os cafés foram, durante décadas, o ponto de encontro de escritores.",
+    "sources": ["História do Chiado, ed. municipal"],
+    "created_at": "2026-01-01T10:00:00.000Z",
+    "updated_at": "2026-01-01T10:00:00.000Z"
+  }
+]

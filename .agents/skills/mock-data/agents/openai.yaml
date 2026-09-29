@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mock Data"
+  short_description: "Centralized Mockoon mocks for dev and tests"
+  default_prompt: "Use $mock-data to add or change the mocked API data or test scenario for this change."

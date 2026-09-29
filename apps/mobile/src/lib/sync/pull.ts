@@ -1,3 +1,5 @@
+import { isAfterIso, shiftIso } from '@/lib/date';
+
 import { hasPendingWrites } from './outbox';
 import { NIL_ID, type PullAfter, type RemoteRow, type SyncRemote } from './remote';
 import type { SqlExecutor, SqlValue } from './sql';
@@ -110,7 +112,7 @@ export async function pullAll(db: SqlExecutor, remote: SyncRemote): Promise<numb
   for (const table of SYNC_TABLES) {
     const cursor = await readCursor(db, table.name);
     let after: PullAfter | null = cursor
-      ? { updatedAt: new Date(Date.parse(cursor) - PULL_OVERLAP_MS).toISOString(), id: NIL_ID }
+      ? { updatedAt: shiftIso(cursor, -PULL_OVERLAP_MS), id: NIL_ID }
       : null;
 
     for (;;) {
@@ -121,8 +123,7 @@ export async function pullAll(db: SqlExecutor, remote: SyncRemote): Promise<numb
         for (const row of rows) if (await applyRow(tx, table, row)) applied += 1;
         // Never move a cursor back: the overlap re-read ends before the stored cursor.
         const lastAt = last.updated_at as string;
-        if (!cursor || Date.parse(lastAt) > Date.parse(cursor))
-          await writeCursor(tx, table.name, lastAt);
+        if (!cursor || isAfterIso(lastAt, cursor)) await writeCursor(tx, table.name, lastAt);
       });
       if (rows.length < PULL_PAGE_SIZE) break;
       after = { updatedAt: last.updated_at as string, id: last.id as string };

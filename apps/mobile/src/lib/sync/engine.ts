@@ -1,3 +1,5 @@
+import { nowIso } from '@/lib/date';
+
 import { countFailed, countPending } from './outbox';
 import { pullAll } from './pull';
 import { pushOutbox } from './push';
@@ -102,7 +104,7 @@ export function createSyncEngine({
       await pullAll(db, remote);
       attempt = 0;
       status.setLastError(null);
-      status.setLastSyncedAt(new Date().toISOString());
+      status.setLastSyncedAt(nowIso());
     } catch (error) {
       status.setLastError(error instanceof Error ? error.message : String(error));
       // A failed pull or a local error: retry later too, unless the server refused for good.

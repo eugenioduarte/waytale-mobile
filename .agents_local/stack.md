@@ -15,11 +15,11 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Sync                        | Offline-first: escrita local → outbox → push/pull para Supabase                                | ✅ montado (EPIC-01.6)                                                                           |
 | Estilo                      | NativeWind 4 (Tailwind CSS 3) com o tema gerado dos tokens do EPIC-02                          | ✅ montado (EPIC-01.10)                                                                          |
 | i18n                        | i18next + `react-i18next` + `expo-localization` — pt, en, es                                   | ✅ montado (EPIC-01.9)                                                                           |
-| HTTP client                 | Axios                                                                                          | ⬜ a instalar                                                                                    |
-| Datas                       | date-fns                                                                                       | ⬜ a instalar                                                                                    |
-| Mock de API                 | Mockoon (`tooling/mockoon/waytale.json`)                                                       | 🟡 environment starter criado, `mockoon-cli` não instalado                                       |
+| HTTP client                 | Axios — instância única em `src/lib/http.ts` (Edge Functions)                                  | ✅ montado (EPIC-01.11)                                                                          |
+| Datas                       | date-fns — tudo em `src/lib/date.ts` (lint proíbe `Date`/`Intl` fora dele)                     | ✅ montado (EPIC-01.11)                                                                          |
+| Mock de API                 | Mockoon — fonte única de dados mock, com os caminhos do Supabase; dev e testes                 | ✅ montado (EPIC-01.11): `pnpm mockoon`, `start:mock`, testes contra ele                         |
 | Crash / Push / Analytics    | Firebase — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*`)                | ⬜ a instalar                                                                                    |
-| Testes de UI/lógica         | React Native Testing Library + Jest                                                            | ✅ montado (EPIC-01.8): RNTL, MSW, `tests/`, gate 60% em `src/features`                          |
+| Testes de UI/lógica         | React Native Testing Library + Jest                                                            | ✅ montado (EPIC-01.8): RNTL, Mockoon (01.11), `tests/`, gate 60% em `src/features`              |
 | Testes E2E                  | Maestro (fluxos em YAML)                                                                       | 🟡 fluxos em `.maestro/` (EPIC-01.8); correm no CI com 01.13                                     |
 | Documentação de componentes | Storybook (react-native + web)                                                                 | ✅ montado (EPIC-01.7); preview por PR no GitHub Pages                                           |
 | CI                          | GitHub Actions — lint/typecheck/testes bloqueantes, SonarQube, Dependabot                      | 🟡 lint/typecheck/testes + cobertura (EPIC-01.8); EAS, Maestro e Sonar em 01.13                  |
@@ -39,7 +39,7 @@ packages/
 tooling/
   eslint/            @waytale/eslint-config — base.js + expo-app.js (eslint flat config)
   jest/              @waytale/jest-config — preset expo-app.js
-  mockoon/           @waytale/mockoon-config — waytale.json (2 rotas placeholder)
+  mockoon/           @waytale/mockoon-config — waytale.json + data/ (dados mock centralizados) + startMockServer
   prettier/           @waytale/prettier-config
   tailwind/          @waytale/tailwind-config — tokens.json (tokens do EPIC-02, fonte única) + preset Tailwind gerado dele
   typescript/        @waytale/typescript-config — base.json, expo-app.json, react-library.json
@@ -62,12 +62,35 @@ src/db/          schema drizzle, migrações, seeds (EPIC-01.4)
 src/lib/         supabase, sync, audio, location, analytics, http (axios), date, i18n
 src/stores/      zustand stores globais (EPIC-01.3)
 src/i18n/        copy por idioma: pt.json (fonte das chaves), en.json, es.json (EPIC-01.9)
-tests/           render (providers, `renderApp`), factories, msw/ — import `@tests/...` (EPIC-01.8)
+tests/           render (providers, `renderApp`), factories, mockoon.ts — import `@tests/...` (EPIC-01.8/01.11)
 .maestro/        fluxos E2E auth/onboarding/journey por `testID` (EPIC-01.8)
 ```
 
 `src/stores/session.store.ts` é a sessão global (Zustand, 01.3), consumida pela guarda de rotas;
 a sessão Supabase fica cifrada (01.5, `src/lib/supabase/`).
+
+## HTTP, datas e mocks — decisões (EPIC-01.11)
+
+- **Um só backend configurável:** o Supabase e o mock Mockoon respondem nos mesmos caminhos
+  (`/auth/v1`, `/rest/v1`, `/functions/v1`). Trocar `EXPO_PUBLIC_SUPABASE_URL` move o Auth, o
+  sync e o HTTP juntos (`pnpm mockoon` + `pnpm --filter mobile start:mock`). Detalhes em
+  `sdd/mock-data.md`.
+- **HTTP:** `src/lib/http.ts` tem a instância Axios única (`getHttp()`), com base
+  `<SUPABASE_URL>/functions/v1`.
+  - Interceptor de auth: `apikey` e, com sessão, `Authorization: Bearer <jwt>`.
+  - Interceptor de erro: tudo passa a `HttpError` (`kind`: network, timeout, unauthorized,
+    client ou server, com `retryable`).
+  - O lint proíbe `fetch`, `XMLHttpRequest` e `import axios` fora dele. O supabase-js continua
+    para Auth e PostgREST.
+- **Datas:** `src/lib/date.ts` tem o relógio (`now`, `nowIso`, `nowMs`), o formato de fio (ISO UTC:
+  `parseIso`, `shiftIso`, `isAfterIso`) e a formatação por idioma com date-fns (`formatDuration`,
+  `formatRelative`, `formatDate`; locales pt, en-GB e es). O lint proíbe `new Date`, `Date.*`,
+  `Intl.*` e `toLocale*String` fora dele (testes e scripts ficam de fora).
+- **Mocks centralizados:** `tooling/mockoon/` (environment + `data/` + `scenarios.json`) é a única
+  fonte. O seed de demonstração lê `data/rest/` e os testes arrancam o mesmo mock. O MSW saiu.
+- No Jest, o `fetch` global é o do Expo, sem rede, e o axios resolveria o build `browser`. Por
+  isso o `jest.config.js` aponta o axios para o build Node, e os testes passam `mockFetch` aos
+  clientes.
 
 ## Estilo (NativeWind) — decisões
 
