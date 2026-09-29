@@ -1,23 +1,24 @@
 import { router } from 'expo-router';
 
 import { Action, Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function DeviationsScreen() {
+  const { t } = useTranslation();
   return (
     <Screen
       testID="screen-deviations"
-      title={copy.onboarding.deviations}
-      description={copy.onboarding.deviationsDescription}
+      title={t('onboarding.deviations')}
+      description={t('onboarding.deviationsDescription')}
     >
       <Action
         testID="deviations-continue"
-        label={copy.onboarding.continue}
+        label={t('onboarding.continue')}
         onPress={() => router.push('/voice')}
       />
       <Action
         testID="deviations-back"
-        label={copy.onboarding.back}
+        label={t('onboarding.back')}
         onPress={() => router.back()}
         secondary
       />

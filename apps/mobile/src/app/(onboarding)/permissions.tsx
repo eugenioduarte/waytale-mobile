@@ -1,25 +1,26 @@
 import { router } from 'expo-router';
 
 import { Action, Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 import { useSessionActions } from '@/stores/session.store';
 
 export default function PermissionsScreen() {
+  const { t } = useTranslation();
   const { completeOnboarding } = useSessionActions();
   return (
     <Screen
       testID="screen-permissions"
-      title={copy.onboarding.permissions}
-      description={copy.onboarding.permissionsDescription}
+      title={t('onboarding.permissions')}
+      description={t('onboarding.permissionsDescription')}
     >
       <Action
         testID="permissions-continue"
-        label={copy.onboarding.continue}
+        label={t('onboarding.continue')}
         onPress={completeOnboarding}
       />
       <Action
         testID="permissions-back"
-        label={copy.onboarding.back}
+        label={t('onboarding.back')}
         onPress={() => router.back()}
         secondary
       />

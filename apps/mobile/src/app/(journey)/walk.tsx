@@ -1,18 +1,19 @@
 import { router } from 'expo-router';
 
 import { Action, Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function WalkScreen() {
+  const { t } = useTranslation();
   return (
     <Screen
       testID="screen-walk"
-      title={copy.journey.walk}
-      description={copy.journey.walkDescription}
+      title={t('journey.walk')}
+      description={t('journey.walkDescription')}
     >
       <Action
         testID="walk-finish"
-        label={copy.journey.finish}
+        label={t('journey.finish')}
         onPress={() => router.push('/summary')}
       />
     </Screen>

@@ -1,20 +1,28 @@
 import { StyleSheet, Text } from 'react-native';
 
 import { Palette } from '@/constants/palette';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 import { type SyncStatus, useSyncStatus, useSyncStore } from '@/stores/sync.store';
 
-const MESSAGES: Record<SyncStatus, string> = copy.sync;
+/** i18n key per state; a new `SyncStatus` without copy fails typecheck here. */
+const MESSAGE_KEYS = {
+  offline: 'sync.offline',
+  syncing: 'sync.syncing',
+  pending: 'sync.pending',
+  error: 'sync.error',
+  synced: 'sync.synced',
+} as const satisfies Record<SyncStatus, string>;
 
 /**
  * One line with the sync state, for the Profile screen. Provisional look until the design
  * system (EPIC-02); the wording is what matters.
  */
 export function SyncStatusLine() {
+  const { t } = useTranslation();
   const status = useSyncStatus();
   return (
     <Text accessibilityRole="text" accessibilityLiveRegion="polite" style={styles.line}>
-      {MESSAGES[status]}
+      {t(MESSAGE_KEYS[status])}
     </Text>
   );
 }

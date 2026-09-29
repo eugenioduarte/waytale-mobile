@@ -14,7 +14,7 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Backend                     | Supabase (Postgres, Auth, Storage, Edge Functions, RLS)                                        | 🟡 schema/RLS/storage/Edge Function + cliente prontos (EPIC-01.5); falta email/SMTP no dashboard |
 | Sync                        | Offline-first: escrita local → outbox → push/pull para Supabase                                | ✅ montado (EPIC-01.6)                                                                           |
 | Estilo                      | NativeWind (Tailwind CSS para React Native)                                                    | ⬜ a instalar                                                                                    |
-| i18n                        | i18next + `react-i18next` + `expo-localization`                                                | ⬜ a instalar                                                                                    |
+| i18n                        | i18next + `react-i18next` + `expo-localization` — pt, en, es                                   | ✅ montado (EPIC-01.9)                                                                           |
 | HTTP client                 | Axios                                                                                          | ⬜ a instalar                                                                                    |
 | Datas                       | date-fns                                                                                       | ⬜ a instalar                                                                                    |
 | Mock de API                 | Mockoon (`tooling/mockoon/waytale.json`)                                                       | 🟡 environment starter criado, `mockoon-cli` não instalado                                       |
@@ -61,14 +61,30 @@ src/hooks/       hooks transversais
 src/db/          schema drizzle, migrações, seeds (EPIC-01.4)
 src/lib/         supabase, sync, audio, location, analytics, http (axios), date, i18n
 src/stores/      zustand stores globais (EPIC-01.3)
-src/i18n/        locales i18next (pt, en, ...) (EPIC-01.9)
+src/i18n/        copy por idioma: pt.json (fonte das chaves), en.json, es.json (EPIC-01.9)
 tests/           render (providers, `renderApp`), factories, msw/ — import `@tests/...` (EPIC-01.8)
 .maestro/        fluxos E2E auth/onboarding/journey por `testID` (EPIC-01.8)
 ```
 
 `src/stores/session.store.ts` é a sessão global (Zustand, 01.3), consumida pela guarda de rotas;
-a sessão Supabase fica cifrada (01.5, `src/lib/supabase/`). `src/locales/pt.json` é a copy provisória (01.2), sem
-i18next ainda: 01.9 deve consolidá-la em `src/i18n/`.
+a sessão Supabase fica cifrada (01.5, `src/lib/supabase/`).
+
+## i18n — decisões
+
+- Idiomas: `pt`, `en` e `es` (`SUPPORTED_LANGUAGES` em `src/lib/i18n/languages.ts`). Um idioma
+  novo entra aí, num `src/i18n/<código>.json` e no `supportedLocales` do plugin
+  `expo-localization` em `app.json`.
+- Idioma no ecrã: a escolha em Perfil (`preferencesStore.language`). Com `'system'`, o padrão, é
+  o primeiro idioma do dispositivo que suportamos; se não houver nenhum, inglês.
+- `useLanguageSync()` no layout raiz segue o dispositivo em runtime (`useLocales`), sem reiniciar.
+  No Android o plugin mantém a activity viva quando o idioma muda. O iOS termina a app quando o
+  idioma do sistema muda, por isso aí a mudança só se vê ao reabrir.
+- `t()` vem de `useTranslation` importado de `@/lib/i18n`: importar esse módulo é o que
+  inicializa o i18next. As chaves são tipadas a partir de `pt.json`, e `locales.test.ts` exige as
+  mesmas chaves e placeholders nos outros idiomas.
+- Lint: `waytale/no-literal-ui-string` (`tooling/eslint/rules/`) falha com texto de UI inline em
+  JSX, nas props de copy (`title`, `label`, `accessibilityLabel`, …) e no `Alert.alert`. Testes e
+  stories ficam de fora.
 
 ## Estado (Zustand) — decisões e convenções
 

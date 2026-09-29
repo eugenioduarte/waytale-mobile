@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { Palette } from '@/constants/palette';
 import { useDatabaseReady } from '@/db/client';
 import { useSupabaseAuthSync } from '@/features/auth/use-supabase-auth-sync';
+import { useLanguageSync } from '@/lib/i18n';
 import { useSync } from '@/lib/sync/use-sync';
 import { useStoresHydrated } from '@/stores/hydration';
 import { useHasCompletedOnboarding, useIsAuthenticated } from '@/stores/session.store';
@@ -18,6 +19,8 @@ export default function RootLayout() {
   const hasHydrated = useStoresHydrated();
   const isDatabaseReady = useDatabaseReady();
   const isReady = hasHydrated && isDatabaseReady;
+  // Device language or the Profile choice, live (i18next is initialised on import).
+  useLanguageSync();
   useSupabaseAuthSync(hasHydrated);
   // After migration too: sync writes to the local tables.
   useSync(isReady);

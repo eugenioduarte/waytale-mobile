@@ -35,6 +35,25 @@ const testIdConfig = {
   },
 };
 
+/**
+ * User-facing copy comes from i18n (EPIC-01.9), see `src/i18n/`. Tests and stories pass fixture
+ * copy as props, so they are out of scope.
+ */
+const i18nConfig = {
+  files: ["**/*.{jsx,tsx}"],
+  ignores: [
+    "**/__tests__/**",
+    "**/*.test.{jsx,tsx}",
+    "**/*.stories.{jsx,tsx}",
+    "src/storybook/**",
+    ".rnstorybook/**",
+  ],
+  plugins: { waytale },
+  rules: {
+    "waytale/no-literal-ui-string": "error",
+  },
+};
+
 /** Generated output: the Storybook web build, the on-device stories index (01.7) and coverage (01.8). */
 const generatedIgnores = {
   ignores: [
@@ -51,4 +70,5 @@ module.exports = [
   ...base,
   zustandSelectorConfig,
   testIdConfig,
+  i18nConfig,
 ];

@@ -4,6 +4,8 @@ import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Palette } from '@/constants/palette';
+import { useLanguageSync } from '@/lib/i18n';
+import { usePreferencesStore } from '@/stores/preferences.store';
 import { useSessionStore } from '@/stores/session.store';
 import { useSyncStore } from '@/stores/sync.store';
 
@@ -16,6 +18,7 @@ import { useSyncStore } from '@/stores/sync.store';
 export type StoreMocks = {
   sync?: Partial<ReturnType<typeof useSyncStore.getState>>;
   session?: Partial<ReturnType<typeof useSessionStore.getState>>;
+  preferences?: Partial<ReturnType<typeof usePreferencesStore.getState>>;
 };
 
 /**
@@ -32,6 +35,10 @@ function StoreMocksProvider({
   useState(() => {
     useSyncStore.setState({ ...useSyncStore.getInitialState(), ...stores?.sync }, true);
     useSessionStore.setState({ ...useSessionStore.getInitialState(), ...stores?.session }, true);
+    usePreferencesStore.setState(
+      { ...usePreferencesStore.getInitialState(), ...stores?.preferences },
+      true,
+    );
     return true;
   });
   return children;
@@ -70,5 +77,18 @@ const styles = StyleSheet.create({
   canvas: { flex: 1, backgroundColor: Palette.background, padding: 24 },
 });
 
-// Outermost last: safe area wraps everything, store mocks apply before the story mounts.
-export const decorators: Decorator[] = [withTokens, withStoreMocks, withSafeArea];
+/** Copy follows the device language, or `parameters.stores.preferences.language`, as in the app. */
+function LanguageSync({ children }: { children: React.ReactNode }) {
+  useLanguageSync();
+  return children;
+}
+
+const withLanguage: Decorator = (Story) => (
+  <LanguageSync>
+    <Story />
+  </LanguageSync>
+);
+
+// Outermost last: safe area wraps everything, store mocks apply before the story mounts and
+// before the language follows them.
+export const decorators: Decorator[] = [withTokens, withLanguage, withStoreMocks, withSafeArea];

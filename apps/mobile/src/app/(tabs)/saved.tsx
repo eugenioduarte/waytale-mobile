@@ -1,6 +1,7 @@
 import { Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function SavedScreen() {
-  return <Screen testID="screen-saved" title={copy.tabs.saved} description={copy.screens.saved} />;
+  const { t } = useTranslation();
+  return <Screen testID="screen-saved" title={t('tabs.saved')} description={t('screens.saved')} />;
 }

@@ -125,7 +125,7 @@ Como utilizador, quero a app e a narração no meu idioma, porque viajo em cidad
 
 - `i18next` + `react-i18next` + `expo-localization` (deteção do idioma do dispositivo, override manual em Perfil).
 - Estrutura `src/i18n/<locale>.json`; chaves por feature, nenhuma string solta no código de UI.
-- Idiomas de lançamento: pt e en (mínimo); estrutura pronta para adicionar mais sem refactor.
+- Idiomas de lançamento: pt, en e es; estrutura pronta para adicionar mais sem refactor.
 - **Aceitação:** mudar o idioma do dispositivo reflete-se na interface sem reiniciar a app; lint falha se detetar string de UI fora do i18n.
 
 ### 01.10 — Estilo com NativeWind (Tailwind)

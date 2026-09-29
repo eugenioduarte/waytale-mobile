@@ -36,7 +36,13 @@
         }
       ],
       "expo-secure-store",
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      [
+        "expo-localization",
+        {
+          "supportedLocales": ["pt", "en", "es"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

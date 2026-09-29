@@ -1,0 +1,75 @@
+{
+  "brand": "Waytale",
+  "auth": {
+    "login": "Iniciar sesión",
+    "loginDescription": "Una nueva forma de descubrir la ciudad, una historia cada vez.",
+    "continue": "Continuar",
+    "verify": "Verificar código",
+    "verifyDescription": "Introduce el código que te enviamos por correo.",
+    "verifyAction": "Verificar",
+    "register": "Crear cuenta",
+    "registerDescription": "Guarda tus lugares y lleva tus historias contigo.",
+    "recovery": "Recuperar cuenta",
+    "recoveryDescription": "Vuelve a acceder a tu cuenta y a tus descubrimientos.",
+    "previewNotice": "Por ahora, puedes conocer la app en modo de demostración. Las cuentas llegarán pronto.",
+    "preview": "Explorar la demostración",
+    "backToLogin": "Volver al inicio de sesión",
+    "signOut": "Cerrar sesión"
+  },
+  "onboarding": {
+    "interests": "Intereses",
+    "interestsDescription": "Elige los temas de las historias que quieres escuchar.",
+    "deviations": "Desvíos",
+    "deviationsDescription": "Cuánto aceptas alargar el recorrido por algo interesante.",
+    "voice": "Voz",
+    "voiceDescription": "Elige el narrador y escucha un adelanto.",
+    "permissions": "Permisos",
+    "permissionsDescription": "Ubicación en segundo plano y notificaciones, en lenguaje sencillo.",
+    "continue": "Continuar",
+    "back": "Volver"
+  },
+  "tabs": {
+    "explore": "Explorar",
+    "saved": "Guardados",
+    "journeys": "Recorridos",
+    "profile": "Perfil"
+  },
+  "journey": {
+    "walk": "Caminando",
+    "walkDescription": "Un mapa limpio y la siguiente indicación.",
+    "finish": "Terminar recorrido",
+    "summary": "Resumen del recorrido",
+    "summaryDescription": "Distancia, tiempo, paradas e historias escuchadas.",
+    "done": "Finalizar"
+  },
+  "route": {
+    "detailTitle": "Detalle de la ruta",
+    "detailDescription": "Mapa, paradas, duración y adelanto de audio."
+  },
+  "place": {
+    "detailTitle": "Detalle del lugar",
+    "detailDescription": "Contexto, imagen y opción de guardar."
+  },
+  "screens": {
+    "explore": "El próximo paseo empieza aquí.",
+    "saved": "Los lugares que guardes aparecerán aquí.",
+    "journeys": "Las historias de tus paseos se quedarán aquí.",
+    "profile": "Un espacio para ti y tus preferencias."
+  },
+  "profile": {
+    "language": "Idioma",
+    "languageSystem": "Idioma del dispositivo"
+  },
+  "languages": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  },
+  "sync": {
+    "offline": "Sin conexión. Lo que hagas se guarda en el teléfono y se envía cuando vuelva la red.",
+    "syncing": "Sincronizando…",
+    "pending": "Hay cambios esperando a enviarse.",
+    "error": "Algunos cambios no se enviaron. Lo volveremos a intentar.",
+    "synced": "Todo sincronizado."
+  }
+}

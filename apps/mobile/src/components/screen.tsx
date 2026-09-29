@@ -3,7 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Palette } from '@/constants/palette';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export function Screen({
   title,
@@ -17,10 +17,11 @@ export function Screen({
   testID?: string;
   children?: ReactNode;
 }) {
+  const { t } = useTranslation();
   return (
     <SafeAreaView testID={testID} style={styles.safeArea} edges={['top', 'left', 'right']}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.brand}>{copy.brand}</Text>
+        <Text style={styles.brand}>{t('brand')}</Text>
         <View style={styles.heading}>
           <Text accessibilityRole="header" style={styles.title}>
             {title}

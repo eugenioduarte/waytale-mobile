@@ -3,9 +3,10 @@ import { SymbolView } from 'expo-symbols';
 
 import { useSyncBadge } from '@/components/sync-status';
 import { Palette } from '@/constants/palette';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function TabLayout() {
+  const { t } = useTranslation();
   const syncBadge = useSyncBadge();
   return (
     <Tabs
@@ -21,7 +22,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: copy.tabs.explore,
+          title: t('tabs.explore'),
           tabBarButtonTestID: 'tab-explore',
           tabBarIcon: ({ color }) => (
             <SymbolView
@@ -35,7 +36,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="saved"
         options={{
-          title: copy.tabs.saved,
+          title: t('tabs.saved'),
           tabBarButtonTestID: 'tab-saved',
           tabBarIcon: ({ color }) => (
             <SymbolView
@@ -49,7 +50,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="journeys"
         options={{
-          title: copy.tabs.journeys,
+          title: t('tabs.journeys'),
           tabBarButtonTestID: 'tab-journeys',
           tabBarIcon: ({ color }) => (
             <SymbolView
@@ -63,7 +64,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: copy.tabs.profile,
+          title: t('tabs.profile'),
           tabBarButtonTestID: 'tab-profile',
           // Global sync indicator: writes waiting or refused (details on the Profile screen).
           tabBarBadge: syncBadge,

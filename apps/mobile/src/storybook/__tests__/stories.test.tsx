@@ -7,7 +7,7 @@ import { render } from '@testing-library/react-native';
 import type { ComponentType } from 'react';
 
 import * as syncStatusStories from '@/components/sync-status.stories';
-import copy from '@/locales/pt.json';
+import { i18n } from '@/lib/i18n';
 
 import preview from '../../../.rnstorybook/preview';
 
@@ -54,10 +54,10 @@ describe('store mocks (parameters.stores)', () => {
   it('each SyncStatusLine story shows its own state, with no leak between stories', () => {
     const stories = storiesOf(syncStatusStories);
     for (const [story, message] of [
-      ['Offline', copy.sync.offline],
-      ['Pending', copy.sync.pending],
-      ['Synced', copy.sync.synced],
-      ['Failed', copy.sync.error],
+      ['Offline', i18n.t('sync.offline')],
+      ['Pending', i18n.t('sync.pending')],
+      ['Synced', i18n.t('sync.synced')],
+      ['Failed', i18n.t('sync.error')],
     ] as const) {
       const Story = stories[story]!;
       const { getByText, unmount } = render(<Story />);

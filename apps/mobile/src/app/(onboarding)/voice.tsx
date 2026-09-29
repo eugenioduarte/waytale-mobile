@@ -1,23 +1,24 @@
 import { router } from 'expo-router';
 
 import { Action, Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function VoiceScreen() {
+  const { t } = useTranslation();
   return (
     <Screen
       testID="screen-voice"
-      title={copy.onboarding.voice}
-      description={copy.onboarding.voiceDescription}
+      title={t('onboarding.voice')}
+      description={t('onboarding.voiceDescription')}
     >
       <Action
         testID="voice-continue"
-        label={copy.onboarding.continue}
+        label={t('onboarding.continue')}
         onPress={() => router.push('/permissions')}
       />
       <Action
         testID="voice-back"
-        label={copy.onboarding.back}
+        label={t('onboarding.back')}
         onPress={() => router.back()}
         secondary
       />

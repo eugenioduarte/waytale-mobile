@@ -1,18 +1,19 @@
 import { router } from 'expo-router';
 
 import { Action, Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function InterestsScreen() {
+  const { t } = useTranslation();
   return (
     <Screen
       testID="screen-interests"
-      title={copy.onboarding.interests}
-      description={copy.onboarding.interestsDescription}
+      title={t('onboarding.interests')}
+      description={t('onboarding.interestsDescription')}
     >
       <Action
         testID="interests-continue"
-        label={copy.onboarding.continue}
+        label={t('onboarding.continue')}
         onPress={() => router.push('/deviations')}
       />
     </Screen>

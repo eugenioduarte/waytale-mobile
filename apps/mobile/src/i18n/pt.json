@@ -29,10 +29,10 @@
     "back": "Voltar"
   },
   "tabs": {
-    "explore": "Explore",
-    "saved": "Saved",
-    "journeys": "Journeys",
-    "profile": "Profile"
+    "explore": "Explorar",
+    "saved": "Guardados",
+    "journeys": "Percursos",
+    "profile": "Perfil"
   },
   "journey": {
     "walk": "A caminhar",
@@ -55,6 +55,15 @@
     "saved": "Os lugares que guardar vão aparecer aqui.",
     "journeys": "As histórias dos seus passeios vão ficar aqui.",
     "profile": "Um espaço para si e para as suas preferências."
+  },
+  "profile": {
+    "language": "Idioma",
+    "languageSystem": "Idioma do dispositivo"
+  },
+  "languages": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
   },
   "sync": {
     "offline": "Sem ligação. O que fizer fica guardado no telemóvel e é enviado quando voltar a rede.",
