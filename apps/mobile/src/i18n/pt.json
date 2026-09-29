@@ -58,7 +58,10 @@
   },
   "profile": {
     "language": "Idioma",
-    "languageSystem": "Idioma do dispositivo"
+    "languageSystem": "Idioma do dispositivo",
+    "dataCollection": "Partilhar estatísticas de uso e relatórios de falhas",
+    "dataCollectionDescription": "Ajuda a encontrar falhas e a melhorar a app. Nunca inclui o seu email.",
+    "testCrash": "Testar relatório de falha"
   },
   "languages": {
     "pt": "Português",

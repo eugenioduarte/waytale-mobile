@@ -58,7 +58,10 @@
   },
   "profile": {
     "language": "Language",
-    "languageSystem": "Device language"
+    "languageSystem": "Device language",
+    "dataCollection": "Share usage statistics and crash reports",
+    "dataCollectionDescription": "Helps us find crashes and improve the app. Never includes your email.",
+    "testCrash": "Test crash report"
   },
   "languages": {
     "pt": "Português",

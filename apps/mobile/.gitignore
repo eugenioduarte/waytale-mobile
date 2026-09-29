@@ -4,3 +4,7 @@
 
 expo-env.d.ts
 # @end expo-cli
+# Native projects are generated from app.json / app.config.js (Continuous Native Generation):
+# `expo prebuild` or EAS creates them; never edit or commit them.
+/android
+/ios

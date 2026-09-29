@@ -1,5 +1,6 @@
 import {
   addMilliseconds,
+  differenceInMinutes,
   formatDistanceToNowStrict,
   formatDuration as formatDurationFns,
   hoursToMinutes,
@@ -49,6 +50,11 @@ export function parseIso(iso: IsoTimestamp): Date {
 /** `iso` moved by `ms` (negative goes back), still ISO. */
 export function shiftIso(iso: IsoTimestamp, ms: number): IsoTimestamp {
   return addMilliseconds(parseIso(iso), ms).toISOString();
+}
+
+/** Whole minutes from `iso` until now — e.g. how long a walk took. */
+export function minutesSince(iso: IsoTimestamp): number {
+  return differenceInMinutes(now(), parseIso(iso));
 }
 
 /** Whether `a` is later than `b` (compares instants, not strings: offsets may differ). */

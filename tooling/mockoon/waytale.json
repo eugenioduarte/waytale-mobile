@@ -21,7 +21,10 @@
           "statusCode": 429,
           "body": "{ \"code\": \"over_email_send_rate_limit\", \"message\": \"email rate limit exceeded\" }",
           "headers": [
-            { "key": "x-supabase-api-version", "value": "2024-01-01" }
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
           ],
           "rules": [
             {
@@ -41,7 +44,10 @@
           "statusCode": 400,
           "body": "{ \"code\": \"email_address_not_authorized\", \"message\": \"Email address not authorized\" }",
           "headers": [
-            { "key": "x-supabase-api-version", "value": "2024-01-01" }
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
           ],
           "rules": [
             {
@@ -61,7 +67,10 @@
           "statusCode": 503,
           "body": "{ \"code\": \"unexpected_failure\", \"message\": \"Service unavailable\" }",
           "headers": [
-            { "key": "x-supabase-api-version", "value": "2024-01-01" }
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
           ],
           "rules": [
             {
@@ -97,7 +106,10 @@
           "statusCode": 403,
           "body": "{ \"code\": \"otp_expired\", \"message\": \"Token has expired or is invalid\" }",
           "headers": [
-            { "key": "x-supabase-api-version", "value": "2024-01-01" }
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
           ],
           "rules": [
             {
@@ -237,18 +249,85 @@
           "default": true
         }
       ]
+    },
+    {
+      "uuid": "1495f535-2ad4-43b6-8ef8-cf7480ae8d12",
+      "type": "http",
+      "documentation": "PostgREST — funções RPC (register_push_token, …). Aceita e não guarda; as que devolvem void respondem 204.",
+      "method": "post",
+      "endpoint": "rest/v1/rpc/:fn",
+      "responses": [
+        {
+          "uuid": "8b754d88-ed79-4704-892b-42953c5a5c76",
+          "label": "no content",
+          "statusCode": 204,
+          "body": "",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "aa6e83ba-f75b-413b-acea-48129f7a74d7",
+      "type": "http",
+      "documentation": "PostgREST — delete (ex.: push_tokens ao terminar sessão). Aceita e não guarda.",
+      "method": "delete",
+      "endpoint": "rest/v1/:table",
+      "responses": [
+        {
+          "uuid": "b39c818d-2641-40fa-85f2-41e1270923f5",
+          "label": "deleted",
+          "statusCode": 204,
+          "body": "",
+          "default": true
+        }
+      ]
     }
   ],
   "rootChildren": [
-    { "type": "route", "uuid": "94316c37-c647-45c8-be3d-18144125957e" },
-    { "type": "route", "uuid": "78ba2003-2b3e-4579-926d-50c57c4cea0e" },
-    { "type": "route", "uuid": "6c72bcdd-5a0d-41f7-925a-503551f206d7" },
-    { "type": "route", "uuid": "e8b138cd-08fe-43a6-a5e2-40a458cd9347" },
-    { "type": "route", "uuid": "8f03ea67-72cb-4518-891d-0e3267563a62" },
-    { "type": "route", "uuid": "3b27d351-0f64-4ac5-8ec7-a9af7c0b514d" },
-    { "type": "route", "uuid": "401ee59c-f4be-4951-a11d-a9010e34a2c3" },
-    { "type": "route", "uuid": "7ac6d5e6-4065-4f0e-bdbd-2feb08f47dbb" },
-    { "type": "route", "uuid": "9f34d6ab-9376-4ec7-8ac4-dfffdc4ff43f" }
+    {
+      "type": "route",
+      "uuid": "94316c37-c647-45c8-be3d-18144125957e"
+    },
+    {
+      "type": "route",
+      "uuid": "78ba2003-2b3e-4579-926d-50c57c4cea0e"
+    },
+    {
+      "type": "route",
+      "uuid": "6c72bcdd-5a0d-41f7-925a-503551f206d7"
+    },
+    {
+      "type": "route",
+      "uuid": "e8b138cd-08fe-43a6-a5e2-40a458cd9347"
+    },
+    {
+      "type": "route",
+      "uuid": "8f03ea67-72cb-4518-891d-0e3267563a62"
+    },
+    {
+      "type": "route",
+      "uuid": "3b27d351-0f64-4ac5-8ec7-a9af7c0b514d"
+    },
+    {
+      "type": "route",
+      "uuid": "401ee59c-f4be-4951-a11d-a9010e34a2c3"
+    },
+    {
+      "type": "route",
+      "uuid": "7ac6d5e6-4065-4f0e-bdbd-2feb08f47dbb"
+    },
+    {
+      "type": "route",
+      "uuid": "9f34d6ab-9376-4ec7-8ac4-dfffdc4ff43f"
+    },
+    {
+      "type": "route",
+      "uuid": "1495f535-2ad4-43b6-8ef8-cf7480ae8d12"
+    },
+    {
+      "type": "route",
+      "uuid": "aa6e83ba-f75b-413b-acea-48129f7a74d7"
+    }
   ],
   "proxyMode": false,
   "proxyHost": "",
@@ -263,7 +342,12 @@
     "passphrase": ""
   },
   "cors": true,
-  "headers": [{ "key": "Content-Type", "value": "application/json" }],
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
   "proxyReqHeaders": [],
   "proxyResHeaders": [],
   "data": [],

@@ -5,6 +5,7 @@ import {
   formatDuration,
   formatRelative,
   isAfterIso,
+  minutesSince,
   nowIso,
   nowMs,
   parseIso,
@@ -31,6 +32,10 @@ describe('clock', () => {
 describe('ISO timestamps', () => {
   it('shifts a timestamp and keeps it ISO', () => {
     expect(shiftIso(NOW, -5 * 60_000)).toBe('2026-01-03T09:55:00.000Z');
+  });
+
+  it('counts whole minutes since a timestamp', () => {
+    expect(minutesSince('2026-01-03T09:18:30.000Z')).toBe(41);
   });
 
   it('compares instants, whatever the offset', () => {

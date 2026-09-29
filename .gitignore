@@ -20,6 +20,9 @@ expo-env.d.ts
 google-services.json
 GoogleService-Info.plist
 
+# Scratch folder for files handed over locally (config files, exports) — never committed
+arquivos_temp/
+
 # Metro
 .metro-health-check*
 

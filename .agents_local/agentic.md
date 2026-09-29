@@ -29,6 +29,18 @@ This file holds project-specific facts that may change independently from the po
   Migrations are in `supabase/migrations/`; `pnpm --filter @waytale/supabase test` checks RLS on
   a local Postgres (PGlite), no Docker needed.
 
+## Firebase
+
+- Project: `waytale-36b9f` (sender `205523884817`). Android and iOS apps are both registered as
+  `com.waytale.app`. Only Android is being tested for now; iOS prebuild needs macOS (or EAS).
+- Hand-over folder `arquivos_temp/` (repo root, gitignored): new config files arrive there; move
+  them to `apps/mobile/` and empty the folder.
+- `apps/mobile/google-services.json` / `GoogleService-Info.plist` are gitignored; download them
+  from the Firebase console (Project settings › Your apps). In EAS they come from file env vars
+  (`GOOGLE_SERVICES_JSON`, `GOOGLE_SERVICE_INFO_PLIST`), set up in 01.13.
+- Test push: Firebase console › Messaging › new campaign › "Send test message", with the FCM
+  token printed in the Metro logs (`[push] FCM token:`). App Distribution is 01.13.
+
 ## Design source
 
 - Claude Design project id: **TBD** — not yet confirmed for this repo, do not reuse an id from

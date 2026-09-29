@@ -18,7 +18,7 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | HTTP client                 | Axios — instância única em `src/lib/http.ts` (Edge Functions)                                  | ✅ montado (EPIC-01.11)                                                                          |
 | Datas                       | date-fns — tudo em `src/lib/date.ts` (lint proíbe `Date`/`Intl` fora dele)                     | ✅ montado (EPIC-01.11)                                                                          |
 | Mock de API                 | Mockoon — fonte única de dados mock, com os caminhos do Supabase; dev e testes                 | ✅ montado (EPIC-01.11): `pnpm mockoon`, `start:mock`, testes contra ele                         |
-| Crash / Push / Analytics    | Firebase — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*`)                | ⬜ a instalar                                                                                    |
+| Crash / Push / Analytics    | Firebase — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*` 26)             | ✅ montado (EPIC-01.12) para Android; validação no dispositivo com os testes de UI               |
 | Testes de UI/lógica         | React Native Testing Library + Jest                                                            | ✅ montado (EPIC-01.8): RNTL, Mockoon (01.11), `tests/`, gate 60% em `src/features`              |
 | Testes E2E                  | Maestro (fluxos em YAML)                                                                       | 🟡 fluxos em `.maestro/` (EPIC-01.8); correm no CI com 01.13                                     |
 | Documentação de componentes | Storybook (react-native + web)                                                                 | ✅ montado (EPIC-01.7); preview por PR no GitHub Pages                                           |
@@ -68,6 +68,49 @@ tests/           render (providers, `renderApp`), factories, mockoon.ts — impo
 
 `src/stores/session.store.ts` é a sessão global (Zustand, 01.3), consumida pela guarda de rotas;
 a sessão Supabase fica cifrada (01.5, `src/lib/supabase/`).
+
+## Firebase — decisões (EPIC-01.12)
+
+- **Só Android por agora nos testes:** o package Android e o `bundleIdentifier` iOS são ambos
+  `com.waytale.app`, e as duas apps estão registadas no Firebase. O prebuild iOS precisa de macOS
+  ou do EAS.
+- **Ficheiros de config:** `google-services.json` e `GoogleService-Info.plist` ficam em
+  `apps/mobile/` e estão no `.gitignore`. O `app.config.js` lê-os do disco ou das env vars de
+  ficheiro do EAS (`GOOGLE_SERVICES_JSON`, `GOOGLE_SERVICE_INFO_PLIST`, 01.13). Sem o plist, só o
+  prebuild iOS falha.
+- **Precisa de dev client:** o Expo Go não tem Firebase.
+  - Está instalado o `expo-dev-client`, e os scripts `android`/`ios` são `expo run:*`.
+  - As pastas `android/` e `ios/` são geradas (CNG) e estão no `.gitignore`.
+  - O iOS usa `useFrameworks: static` (`expo-build-properties`).
+- **Consentimento (RGPD, opt-in):**
+  - O `firebase.json` arranca com a recolha do Analytics e do Crashlytics desligada, e sem IDs de
+    publicidade.
+  - O `useFirebase()` (layout raiz) liga-a com `preferencesStore.dataCollection` (o interruptor
+    no Perfil), e sempre em `__DEV__`.
+  - Com consentimento, os eventos levam o id Supabase (pseudónimo), nunca o email.
+- **`src/lib/firebase`:**
+  - `index.native.ts` carrega o RNFB de forma preguiçosa (`require` dentro de `try`) e nunca
+    lança erro. Sem módulo nativo (Jest, Expo Go), tudo é no-op.
+  - `index.ts` é o no-op do web.
+  - Importar sempre de `@/lib/firebase`, nunca diretamente de `@react-native-firebase/*`.
+- **Eventos (`events.ts`, tipados):**
+  - `route_started` e `journey_completed` na store da jornada;
+  - `story_played` na store do player;
+  - `place_saved` no `saveItem`.
+
+  O screen view é registado por caminho do expo-router; o automático está desligado.
+
+- **Push:**
+  - A permissão pede-se no passo "Permissões" do onboarding, nunca no arranque.
+  - `registerThisDevice` guarda o token FCM em `public.push_tokens` através de
+    `rpc('register_push_token')`. A função é `security definer`, e o token muda de dono quando
+    outra pessoa entra no mesmo telemóvel.
+  - O token regista-se no arranque, ao entrar e quando o FCM o roda, e sai ao terminar sessão.
+  - Em dev, o token aparece nos logs do Metro (`[push] FCM token`).
+  - O background handler é registado em `index.ts`, a entrada da app.
+- **Ícone de notificação:** o plugin local `plugins/with-notification-icon.js` cria-o a partir das
+  opções do plugin de messaging. O Expo 57 já não o cria, e o `expo-notifications` entraria em
+  conflito com o serviço FCM do RNFB. O ícone ainda é o do template; a marca vem do EPIC-02.
 
 ## HTTP, datas e mocks — decisões (EPIC-01.11)
 

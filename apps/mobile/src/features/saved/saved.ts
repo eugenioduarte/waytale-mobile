@@ -1,3 +1,4 @@
+import { track } from '@/lib/firebase';
 import { getSyncExecutor, requestSync } from '@/lib/sync/runtime';
 import { PREVIEW_USER_ID } from '@/lib/sync/user-data';
 import { useSessionStore } from '@/stores/session.store';
@@ -10,6 +11,7 @@ const repository = () => createSavedRepository(getSyncExecutor());
 export async function saveItem(itemType: SavedItemType, itemId: string): Promise<void> {
   await repository().save(currentUserId(), itemType, itemId);
   requestSync();
+  if (itemType === 'place') void track('place_saved', { place_id: itemId });
 }
 
 export async function removeSavedItem(itemType: SavedItemType, itemId: string): Promise<void> {

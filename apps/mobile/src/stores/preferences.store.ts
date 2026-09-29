@@ -21,6 +21,11 @@ type PreferencesState = {
   voice: VoicePreference | null;
   /** Manual override from Profile; `'system'` follows the device (see `src/lib/i18n`). */
   language: LanguagePreference;
+  /**
+   * Consent to share usage analytics and crash reports (GDPR opt-in, EPIC-01.12): false until the
+   * traveller turns it on. Persisted stores missing it keep this default.
+   */
+  dataCollection: boolean;
 };
 
 type PreferencesActions = {
@@ -28,6 +33,7 @@ type PreferencesActions = {
   setDeviationTolerance: (tolerance: number) => void;
   setVoice: (voice: VoicePreference | null) => void;
   setLanguage: (language: LanguagePreference) => void;
+  setDataCollection: (enabled: boolean) => void;
 };
 
 type PreferencesStore = PreferencesState & PreferencesActions;
@@ -51,10 +57,12 @@ export const usePreferencesStore = create<PreferencesStore>()(
       deviationTolerance: 0.5,
       voice: null,
       language: 'system',
+      dataCollection: false,
       setInterests: (interests) => set({ interests }),
       setDeviationTolerance: (deviationTolerance) => set({ deviationTolerance }),
       setVoice: (voice) => set({ voice }),
       setLanguage: (language) => set({ language }),
+      setDataCollection: (dataCollection) => set({ dataCollection }),
     }),
     {
       name: 'waytale-preferences',
@@ -81,6 +89,10 @@ export function useLanguagePreference() {
   return usePreferencesStore((state) => state.language);
 }
 
+export function useDataCollectionConsent() {
+  return usePreferencesStore((state) => state.dataCollection);
+}
+
 export function usePreferencesActions() {
   return usePreferencesStore(
     useShallow((state) => ({
@@ -88,6 +100,7 @@ export function usePreferencesActions() {
       setDeviationTolerance: state.setDeviationTolerance,
       setVoice: state.setVoice,
       setLanguage: state.setLanguage,
+      setDataCollection: state.setDataCollection,
     })),
   );
 }

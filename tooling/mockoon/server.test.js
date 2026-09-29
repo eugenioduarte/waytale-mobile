@@ -98,3 +98,17 @@ describe("PostgREST (sync)", () => {
     );
   });
 });
+
+describe("PostgREST writes and RPC (push tokens)", () => {
+  it("accepts an RPC call and a delete", async () => {
+    const rpc = await post("rest/v1/rpc/register_push_token", {
+      push_token: "t",
+      device_platform: "android",
+    });
+    assert.equal(rpc.status, 204);
+    const removed = await fetch(`${mock.url}/rest/v1/push_tokens?token=eq.t`, {
+      method: "DELETE",
+    });
+    assert.equal(removed.status, 204);
+  });
+});

@@ -30,6 +30,8 @@ o Auth, o sync e o cliente HTTP para o mock de uma vez.
 | `POST /auth/v1/logout`              | `204`                                                               |
 | `GET /rest/v1/:table`               | `data/rest/<table>.json`; tabela desconhecida → `404`               |
 | `POST` / `PATCH /rest/v1/:table`    | `201` / `204` (aceita, não guarda)                                  |
+| `DELETE /rest/v1/:table`            | `204` (ex.: `push_tokens` ao terminar sessão)                       |
+| `POST /rest/v1/rpc/:fn`             | `204` (ex.: `register_push_token`)                                  |
 | `POST /functions/v1/generate-route` | `data/functions/generate-route.json`                                |
 
 O pull ignora filtros e paginação. Recebe a tabela inteira numa página curta e pára.

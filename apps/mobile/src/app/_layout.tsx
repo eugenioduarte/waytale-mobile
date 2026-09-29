@@ -9,6 +9,8 @@ import { useEffect } from 'react';
 import { color } from '@/constants/tokens';
 import { useDatabaseReady } from '@/db/client';
 import { useSupabaseAuthSync } from '@/features/auth/use-supabase-auth-sync';
+import { usePushRegistration } from '@/features/push/use-push-registration';
+import { useFirebase } from '@/lib/firebase/use-firebase';
 import { useLanguageSync } from '@/lib/i18n';
 import { useSync } from '@/lib/sync/use-sync';
 import { useStoresHydrated } from '@/stores/hydration';
@@ -25,6 +27,9 @@ export default function RootLayout() {
   // Device language or the Profile choice, live (i18next is initialised on import).
   useLanguageSync();
   useSupabaseAuthSync(hasHydrated);
+  // Analytics/Crashlytics consent, screen views, and this device's push token (01.12).
+  useFirebase();
+  usePushRegistration();
   // After migration too: sync writes to the local tables.
   useSync(isReady);
   const isAuthenticated = useIsAuthenticated();

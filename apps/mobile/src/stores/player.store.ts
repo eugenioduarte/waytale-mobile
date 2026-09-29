@@ -3,6 +3,8 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { useShallow } from 'zustand/react/shallow';
 
+import { track } from '@/lib/firebase';
+
 /**
  * Player store — story audio playback state. Persisted so a killed app resumes the audio
  * position (01.3 acceptance). The audio engine itself lands with the story player (journey epic).
@@ -30,7 +32,11 @@ export const usePlayerStore = create<PlayerStore>()(
       currentAudioId: null,
       positionMs: 0,
       isPlaying: false,
-      playAudio: (currentAudioId) => set({ currentAudioId, positionMs: 0, isPlaying: true }),
+      playAudio: (currentAudioId) => {
+        set({ currentAudioId, positionMs: 0, isPlaying: true });
+        // The `story_played` product event (01.12).
+        void track('story_played', { audio_id: currentAudioId });
+      },
       pause: () => set({ isPlaying: false }),
       resume: () => set({ isPlaying: true }),
       seekTo: (positionMs) => set({ positionMs }),
