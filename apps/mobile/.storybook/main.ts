@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import type { StorybookConfig } from '@storybook/react-native-web-vite';
+import tailwindcss from 'tailwindcss';
 import { mergeConfig } from 'vite';
 
 /**
@@ -16,7 +17,8 @@ const config: StorybookConfig = {
   core: { disableTelemetry: true },
   framework: {
     name: '@storybook/react-native-web-vite',
-    options: {},
+    // NativeWind (01.10): `className` goes through its JSX runtime, as in babel.config.js.
+    options: { pluginReactOptions: { jsxImportSource: 'nativewind' } },
   },
   viteFinal: (viteConfig) =>
     mergeConfig(viteConfig, {
@@ -26,6 +28,15 @@ const config: StorybookConfig = {
           '@/assets': path.resolve(import.meta.dirname, '../assets'),
           '@': path.resolve(import.meta.dirname, '../src'),
           '@waytale/ui': path.resolve(import.meta.dirname, '../../../packages/ui/src/index.ts'),
+        },
+      },
+      // Metro compiles src/global.css through NativeWind; on the web it is plain Tailwind CSS.
+      // Inline here rather than a postcss.config.js, which Expo's web bundler would also pick up.
+      css: {
+        postcss: {
+          plugins: [
+            tailwindcss({ config: path.resolve(import.meta.dirname, '../tailwind.config.js') }),
+          ],
         },
       },
     }),

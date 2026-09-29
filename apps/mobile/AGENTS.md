@@ -7,6 +7,10 @@ package.
   duplicate them here, they'd drift.
 - Routes root is `src/app/` (expo-router). Shared design-system components come from
   `@waytale/ui` (`packages/ui`) once EPIC-02 lands — don't reinvent primitives locally.
+- Style with NativeWind classes built from the design tokens (`bg-surface`, `p-4`, `text-body`);
+  no `StyleSheet` for spacing, colour or type. Brand semantics (button variants, states) belong in
+  design-system components, not repeated class strings. Token values live in
+  `tooling/tailwind/tokens.json`; see `.agents_local/stack.md` › Estilo for the rules.
 - Monorepo resolution depends on `metro.config.js` (watches the workspace root, disables
   hierarchical lookup) — don't remove it or `expo start`/`expo export` will fail to resolve
   `packages/*`.

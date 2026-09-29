@@ -1,9 +1,8 @@
 import type { Decorator } from '@storybook/react-native';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Palette } from '@/constants/palette';
 import { useLanguageSync } from '@/lib/i18n';
 import { usePreferencesStore } from '@/stores/preferences.store';
 import { useSessionStore } from '@/stores/session.store';
@@ -68,14 +67,10 @@ const withTokens: Decorator = (Story, { parameters }) =>
   parameters.layout === 'fullscreen' ? (
     <Story />
   ) : (
-    <View style={styles.canvas}>
+    <View className="flex-1 bg-surface p-6">
       <Story />
     </View>
   );
-
-const styles = StyleSheet.create({
-  canvas: { flex: 1, backgroundColor: Palette.background, padding: 24 },
-});
 
 /** Copy follows the device language, or `parameters.stores.preferences.language`, as in the app. */
 function LanguageSync({ children }: { children: React.ReactNode }) {

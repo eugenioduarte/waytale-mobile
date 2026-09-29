@@ -1,9 +1,12 @@
+// Tailwind layers for NativeWind (01.10); `className` works from here down.
+import '@/global.css';
+
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
-import { Palette } from '@/constants/palette';
+import { color } from '@/constants/tokens';
 import { useDatabaseReady } from '@/db/client';
 import { useSupabaseAuthSync } from '@/features/auth/use-supabase-auth-sync';
 import { useLanguageSync } from '@/lib/i18n';
@@ -41,7 +44,7 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: Palette.background },
+          contentStyle: { backgroundColor: color.surface },
         }}
       >
         {/* Anonymous → auth. */}

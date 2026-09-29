@@ -1,6 +1,5 @@
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 
-import { Palette } from '@/constants/palette';
 import { useTranslation } from '@/lib/i18n';
 import { type SyncStatus, useSyncStatus, useSyncStore } from '@/stores/sync.store';
 
@@ -21,7 +20,11 @@ export function SyncStatusLine() {
   const { t } = useTranslation();
   const status = useSyncStatus();
   return (
-    <Text accessibilityRole="text" accessibilityLiveRegion="polite" style={styles.line}>
+    <Text
+      accessibilityRole="text"
+      accessibilityLiveRegion="polite"
+      className="text-caption text-ink"
+    >
       {t(MESSAGE_KEYS[status])}
     </Text>
   );
@@ -38,7 +41,3 @@ export function useSyncBadge(): string | number | undefined {
   if (pendingCount > 0) return pendingCount;
   return undefined;
 }
-
-const styles = StyleSheet.create({
-  line: { fontSize: 14, lineHeight: 22, color: Palette.secondary },
-});

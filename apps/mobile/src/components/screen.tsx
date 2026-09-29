@@ -1,10 +1,17 @@
+import { cssInterop } from 'nativewind';
 import type { ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Palette } from '@/constants/palette';
 import { useTranslation } from '@/lib/i18n';
 
+// Third-party components need opting in to `className` (React Native's own work out of the box).
+cssInterop(SafeAreaView, { className: 'style' });
+
+/**
+ * Provisional screen shell, styled only with NativeWind classes (01.10). EPIC-02.2 replaces it
+ * with the design system's `Screen`, `Text` and buttons.
+ */
 export function Screen({
   title,
   description,
@@ -19,14 +26,14 @@ export function Screen({
 }) {
   const { t } = useTranslation();
   return (
-    <SafeAreaView testID={testID} style={styles.safeArea} edges={['top', 'left', 'right']}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.brand}>{t('brand')}</Text>
-        <View style={styles.heading}>
-          <Text accessibilityRole="header" style={styles.title}>
+    <SafeAreaView testID={testID} className="flex-1 bg-surface" edges={['top', 'left', 'right']}>
+      <ScrollView contentContainerClassName="grow gap-4 p-6 pb-9">
+        <Text className="mt-4 text-section text-ink">{t('brand')}</Text>
+        <View className="gap-4 pb-6 pt-9">
+          <Text accessibilityRole="header" className="text-display text-ink">
             {title}
           </Text>
-          <Text style={styles.description}>{description}</Text>
+          <Text className="text-body text-ink">{description}</Text>
         </View>
         {children}
       </ScrollView>
@@ -51,51 +58,17 @@ export function Action({
       testID={testID}
       accessibilityRole="button"
       onPress={onPress}
-      style={({ pressed }) => [
-        styles.button,
-        secondary && styles.secondaryButton,
-        pressed && styles.pressed,
-      ]}
+      className={`items-center justify-center rounded-md p-4 active:opacity-60 ${
+        secondary ? 'border border-border bg-surface' : 'bg-ink'
+      }`}
     >
-      <Text style={[styles.buttonText, secondary && styles.secondaryText]}>{label}</Text>
+      <Text className={`text-center text-section ${secondary ? 'text-ink' : 'text-surface'}`}>
+        {label}
+      </Text>
     </Pressable>
   );
 }
 
 export function Notice({ children }: { children: ReactNode }) {
-  return <Text style={styles.notice}>{children}</Text>;
+  return <Text className="mb-4 text-caption text-ink">{children}</Text>;
 }
-
-const styles = StyleSheet.create({
-  safeArea: { flex: 1, backgroundColor: Palette.background },
-  content: {
-    flexGrow: 1,
-    width: '100%',
-    maxWidth: 560,
-    alignSelf: 'center',
-    padding: 28,
-    paddingBottom: 48,
-    gap: 16,
-  },
-  brand: { color: Palette.text, fontSize: 20, fontWeight: '700', marginTop: 16 },
-  heading: { gap: 16, paddingTop: 64, paddingBottom: 24 },
-  title: { fontSize: 36, fontWeight: '700', color: Palette.text },
-  description: { fontSize: 18, lineHeight: 28, color: Palette.secondary },
-  notice: { fontSize: 14, lineHeight: 22, color: Palette.secondary, marginBottom: 16 },
-  button: {
-    minHeight: 52,
-    borderRadius: 14,
-    padding: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Palette.text,
-  },
-  buttonText: { fontSize: 16, fontWeight: '600', color: Palette.surface, textAlign: 'center' },
-  secondaryButton: {
-    backgroundColor: Palette.surface,
-    borderWidth: 1,
-    borderColor: Palette.border,
-  },
-  secondaryText: { color: Palette.text },
-  pressed: { opacity: 0.65 },
-});

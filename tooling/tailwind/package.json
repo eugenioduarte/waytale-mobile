@@ -3,5 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "license": "UNLICENSED",
-  "main": "base.js"
+  "main": "base.js",
+  "exports": {
+    ".": "./base.js",
+    "./tokens.json": "./tokens.json"
+  },
+  "scripts": {
+    "test": "node --test base.test.js"
+  }
 }

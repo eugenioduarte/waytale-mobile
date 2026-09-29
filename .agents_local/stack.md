@@ -13,7 +13,7 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Base local                  | SQLite (`expo-sqlite`) + Drizzle ORM (11 tabelas, migrações, seed)                             | ✅ montado (EPIC-01.4)                                                                           |
 | Backend                     | Supabase (Postgres, Auth, Storage, Edge Functions, RLS)                                        | 🟡 schema/RLS/storage/Edge Function + cliente prontos (EPIC-01.5); falta email/SMTP no dashboard |
 | Sync                        | Offline-first: escrita local → outbox → push/pull para Supabase                                | ✅ montado (EPIC-01.6)                                                                           |
-| Estilo                      | NativeWind (Tailwind CSS para React Native)                                                    | ⬜ a instalar                                                                                    |
+| Estilo                      | NativeWind 4 (Tailwind CSS 3) com o tema gerado dos tokens do EPIC-02                          | ✅ montado (EPIC-01.10)                                                                          |
 | i18n                        | i18next + `react-i18next` + `expo-localization` — pt, en, es                                   | ✅ montado (EPIC-01.9)                                                                           |
 | HTTP client                 | Axios                                                                                          | ⬜ a instalar                                                                                    |
 | Datas                       | date-fns                                                                                       | ⬜ a instalar                                                                                    |
@@ -41,7 +41,7 @@ tooling/
   jest/              @waytale/jest-config — preset expo-app.js
   mockoon/           @waytale/mockoon-config — waytale.json (2 rotas placeholder)
   prettier/           @waytale/prettier-config
-  tailwind/          @waytale/tailwind-config — tokens navy/off-white/card-border confirmados; accent por definir (EPIC-02)
+  tailwind/          @waytale/tailwind-config — tokens.json (tokens do EPIC-02, fonte única) + preset Tailwind gerado dele
   typescript/        @waytale/typescript-config — base.json, expo-app.json, react-library.json
 ```
 
@@ -56,7 +56,7 @@ bundle sem erros. O pre-commit (`husky` + `lint-staged`) foi validado com um fic
 src/app/         rotas expo-router — grupos (auth), (onboarding), (tabs), (journey) e (modals) (EPIC-01.2)
 src/features/<dom>/  ui, hooks, store, queries, schema — por domínio (auth, onboarding, journey, ...)
 src/components/  primitivos locais — o design system partilhado vive em packages/ui (EPIC-02)
-src/constants/   tokens locais (paleta, tema)
+src/constants/   tokens.ts — valores crus dos tokens do design system, para props sem className (EPIC-01.10)
 src/hooks/       hooks transversais
 src/db/          schema drizzle, migrações, seeds (EPIC-01.4)
 src/lib/         supabase, sync, audio, location, analytics, http (axios), date, i18n
@@ -68,6 +68,42 @@ tests/           render (providers, `renderApp`), factories, msw/ — import `@t
 
 `src/stores/session.store.ts` é a sessão global (Zustand, 01.3), consumida pela guarda de rotas;
 a sessão Supabase fica cifrada (01.5, `src/lib/supabase/`).
+
+## Estilo (NativeWind) — decisões
+
+- **Tokens, fonte única:** `tooling/tailwind/tokens.json` guarda os valores do EPIC-02 (cor,
+  espaço, raio, tipo, movimento). A partir dele, `tooling/tailwind/base.js` gera o preset
+  Tailwind, e `src/constants/tokens.ts` expõe os valores crus. Para mudar um valor, muda-se o
+  JSON; nunca se estende o tema na app.
+- O tema **substitui** as escalas do Tailwind:
+  - cores: `ink`, `ink-muted`, `ink-faint`, `accent`, `surface`, `canvas`, `border`,
+    `border-soft`;
+  - espaço: `1`–`10` = 4…80px;
+  - raio: `sm`, `md`, `lg`, `pill` e `full`;
+  - tipo: `text-display`, `text-title`, `text-section`, `text-body`, `text-label`,
+    `text-caption` e `text-mono`, com line-height e letter-spacing já em px.
+
+  Por isso `bg-red-500`, `p-11` e `text-xl` não existem. Os valores arbitrários (`p-[13px]`)
+  ainda compilam; a regra de lint do EPIC-02.1 é que os proíbe nas features.
+
+- Com NativeWind, um `border` sozinho não tem cor, porque o Tailwind a põe num seletor `*` que
+  não existe em nativo. Escreve-se `border border-border`.
+- **Fronteira:** as classes NativeWind servem para layout, espaçamento, cor e tipografia das
+  telas e composições. A semântica de marca (variantes de botão, estados, inputs, cartões) vive
+  nos componentes do design system (EPIC-02, `@waytale/ui`) e não se reinventa com classes soltas
+  numa feature. Se uma combinação de classes se repete, deve passar a componente.
+- Os valores crus (`color.ink`, …) vêm de `@/constants/tokens` e só servem em props que não
+  aceitam `className`: opções de navegação, `tintColor` e animações.
+- Componentes de terceiros precisam de `cssInterop(Componente, { className: 'style' })`, como o
+  `SafeAreaView` em `src/components/screen.tsx`.
+- Tailwind só gera as classes que encontra escritas como string literal. `text-${nome}` não
+  funciona; usa-se um mapa com as classes inteiras.
+- Onde funciona:
+  - Metro: `withNativeWind` em `metro.config.js`, `babel.config.js` com
+    `jsxImportSource: 'nativewind'`, e `src/global.css` importado no layout raiz.
+  - Storybook web: o mesmo JSX e o Tailwind via PostCSS em `.storybook/main.ts`.
+  - Jest: o `.css` é um módulo vazio. `nativewind/test` compila as classes a sério, como em
+    `src/constants/__tests__/nativewind.test.tsx`.
 
 ## i18n — decisões
 

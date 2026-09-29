@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router/js-tabs';
 import { SymbolView } from 'expo-symbols';
 
 import { useSyncBadge } from '@/components/sync-status';
-import { Palette } from '@/constants/palette';
+import { color } from '@/constants/tokens';
 import { useTranslation } from '@/lib/i18n';
 
 export default function TabLayout() {
@@ -14,9 +14,9 @@ export default function TabLayout() {
       backBehavior="initialRoute"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: Palette.text,
-        tabBarInactiveTintColor: Palette.secondary,
-        tabBarStyle: { backgroundColor: Palette.surface, borderTopColor: Palette.border },
+        tabBarActiveTintColor: color.ink,
+        tabBarInactiveTintColor: color.inkMuted,
+        tabBarStyle: { backgroundColor: color.surface, borderTopColor: color.border },
       }}
     >
       <Tabs.Screen
