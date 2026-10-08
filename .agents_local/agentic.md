@@ -69,5 +69,5 @@ This policy keeps context small, makes loops deterministic, and works across Cla
 - Android only, including builds, Maestro and Firebase App Distribution. iOS is deferred in
   `.user_stories/EPIC-01-setup-projeto/subtasks/01.14-pendencias-ios.md`.
 - Local quality command: `pnpm verify` (also Husky pre-commit/pre-push and CI).
-- EAS/Sonar/Firebase provisioning and branch-protection verification are tracked in
+- EAS/Firebase provisioning and branch-protection verification are tracked in
   `.user_stories/EPIC-01-setup-projeto/PENDENCIAS.md`; workflow presence is not remote execution evidence.

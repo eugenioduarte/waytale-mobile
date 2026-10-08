@@ -25,17 +25,10 @@ android --profile preview`) e criar/selecionar o keystore. Depois validar produc
 Referência: [EAS em CI](https://docs.expo.dev/build/building-on-ci/) e
 [configuração eas.json](https://docs.expo.dev/eas/json/).
 
-## 2. SonarQube
+## 2. SonarQube — removido do escopo
 
-- [ ] Criar/importar o projeto no SonarQube Cloud ou Server e ligar ao repositório.
-- [ ] GitHub secret `SONAR_TOKEN`; variables `SONAR_HOST_URL`, `SONAR_PROJECT_KEY` e, para
-      Cloud, `SONAR_ORGANIZATION` (pode ficar vazia no Server).
-- [ ] Configurar quality gate e suporte de análise a PRs/branches `main` e `develop` no plano
-      escolhido. Desligar análise automática do Cloud se estiver ativa: o CI envia LCOV.
-- [ ] Confirmar check `SonarQube` verde e bloqueante; corrigir eventuais findings reais do primeiro
-      scan. O job espera o resultado do quality gate e não ignora falhas.
-
-Referência: [ação oficial SonarQube](https://github.com/SonarSource/sonarqube-scan-action).
+Por decisão do utilizador em 2026-10-08, o projeto não usa SonarQube. Job, configuração e check
+obrigatório removidos. Não há credenciais ou ativação Sonar pendentes.
 
 ## 3. Firebase App Distribution — Android
 
@@ -58,7 +51,7 @@ Referência: [autenticação por service account](https://firebase.google.com/do
       parte deste encerramento local.
 - [x] Em **Settings → Branches / Rulesets**, proteger **main** e **develop**: PR obrigatório,
       checks atualizados, regras aplicadas a admins, sem force-push nem deletion.
-- [x] Exigir os checks `Lint, typecheck, test`, `SonarQube`, `EAS preview`, `Maestro Android` e
+- [x] Exigir os checks `Lint, typecheck, test`, `EAS preview`, `Maestro Android` e
       `EPIC-01 gate`. O gate agregado falha também se uma dependência for saltada/cancelada.
       Configuração de ambas as branches aplicada e confirmada pela API GitHub em 2026-10-08.
 - [ ] Verificar em PR descartável que um teste falhando bloqueia merge; reverter a falha em seguida.
@@ -96,7 +89,7 @@ Referência: [autenticação por service account](https://firebase.google.com/do
 
 ## Evidências desta sessão
 
-A preencher em `CHECKLIST.md` após a validação final. Não marcar build EAS, scan Sonar, distribuição
+A preencher em `CHECKLIST.md` após a validação final. Não marcar build EAS, distribuição
 Firebase ou proteção de branches como concluídos sem executar/verificar nos serviços externos.
 
 - Expo: `@eugenioduarte/waytale`, project ID `3c24ec4a-df76-40d7-b270-c3da7069e19a`.
@@ -107,4 +100,4 @@ Firebase ou proteção de branches como concluídos sem executar/verificar nos s
   registrada. Service account `waytale-github-distribution@waytale-36b9f.iam.gserviceaccount.com`;
   chave transferida diretamente ao secret GitHub, sem ficheiro local com a chave privada.
 - GitHub: proteção de `main`/`develop` confirmada por GET após PUT; environments sem regras de
-  aprovação; variables EAS/Firebase e secret Firebase cadastrados. `EXPO_TOKEN` e Sonar pendentes.
+  aprovação; variables EAS/Firebase e secret Firebase cadastrados. `EXPO_TOKEN` pendente.

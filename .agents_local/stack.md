@@ -22,7 +22,7 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 | Testes de UI/lógica         | React Native Testing Library + Jest                                                            | ✅ montado (EPIC-01.8): RNTL, Mockoon (01.11), `tests/`, gates 60% em telas, componentes, features e restante app |
 | Testes E2E                  | Maestro (fluxos em YAML)                                                                       | 🟡 fluxos e job Android prontos; execução nativa em validação                                                     |
 | Documentação de componentes | Storybook (react-native + web)                                                                 | ✅ montado (EPIC-01.7); preview por PR no GitHub Pages                                                            |
-| CI                          | GitHub Actions — lint/typecheck/testes bloqueantes, SonarQube, Dependabot                      | 🟡 gates, Sonar, EAS e Maestro implementados (01.13); contas pendentes                                            |
+| CI                          | GitHub Actions — lint/typecheck/testes bloqueantes, Dependabot                                 | 🟡 gates, EAS e Maestro implementados (01.13); contas pendentes                                                   |
 | CD                          | EAS Build + Firebase App Distribution — Android apenas                                         | 🟡 implementado (01.13); ativação externa pendente                                                                |
 | Monorepo                    | pnpm workspaces + Turborepo                                                                    | ✅ montado                                                                                                        |
 | Gestor de pacotes           | pnpm                                                                                           | ✅ em uso                                                                                                         |
@@ -237,7 +237,7 @@ a sessão Supabase fica cifrada (01.5, `src/lib/supabase/`).
   por pre-commit (depois de lint-staged), pre-push e GitHub Actions.
 - Jest exige 60% nas quatro métricas, por grupo: `src/app`, `src/components`, `src/features`
   e restante código. Exclui stories, suporte Storybook, declarações e migrações geradas.
-- CI: checks → SonarQube com quality gate → EAS preview APK → Maestro Android → gate agregado.
+- CI: checks → EAS preview APK → Maestro Android → gate agregado.
 - Push após merge em develop distribui preview; em main constrói production e distribui pelo
   Firebase App Distribution. Sem EAS Submit/EAS Update e sem jobs iOS.
 - Perfis EAS em `apps/mobile/eas.json`; contas, secrets, proteção de branches e evidências

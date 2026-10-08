@@ -37,43 +37,9 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  sonar:
-    name: SonarQube
-    needs: checks
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-      SONAR_PROJECT_KEY: ${{ vars.SONAR_PROJECT_KEY }}
-      SONAR_ORGANIZATION: ${{ vars.SONAR_ORGANIZATION }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Validate Sonar configuration
-        run: |
-          for key in SONAR_TOKEN SONAR_HOST_URL SONAR_PROJECT_KEY; do
-            if [ -z "${!key}" ]; then
-              echo "::error::Missing $key; see EPIC-01/PENDENCIAS.md"
-              exit 1
-            fi
-          done
-      - uses: actions/download-artifact@v4
-        with:
-          name: coverage
-          path: apps/mobile/coverage
-      - uses: SonarSource/sonarqube-scan-action@v6
-        with:
-          args: >-
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
-            -Dsonar.qualitygate.wait=true
-            -Dsonar.qualitygate.timeout=300
-
   preview:
     name: EAS preview
-    needs: sonar
+    needs: checks
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
@@ -152,7 +118,7 @@ jobs:
   gate:
     name: EPIC-01 gate
     if: always()
-    needs: [checks, sonar, preview, maestro]
+    needs: [checks, preview, maestro]
     runs-on: ubuntu-latest
     steps:
       - name: Require every check to succeed

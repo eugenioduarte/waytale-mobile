@@ -23,7 +23,7 @@
 | Testes de UI             | **React Native Testing Library** + Jest                                             |
 | Testes E2E               | **Maestro** (fluxos em YAML)                                                        |
 | Documentação             | **Storybook** (react-native + web para revisão de design)                           |
-| CI                       | **GitHub Actions** — lint/typecheck/testes bloqueantes, SonarQube, Dependabot       |
+| CI                       | **GitHub Actions** — lint/typecheck/testes bloqueantes, Dependabot                  |
 | CD                       | **EAS Build** + **Firebase App Distribution** — apenas Android por agora            |
 
 ## Histórias
@@ -158,7 +158,7 @@ Como equipa, quero crashes, notificações e analytics de produto desde o dia 1,
 
 Como equipa, quero um pipeline que bloqueia merges quebrados e distribui builds sem passos manuais.
 
-- **CI** (GitHub Actions, em PR): lint → typecheck → testes unitários/integração (bloqueante — nenhum PR passa com testes vermelhos) → SonarQube (qualidade/segurança de código) → Dependabot (PRs automáticos de dependências).
+- **CI** (GitHub Actions, em PR): lint → typecheck → testes unitários/integração (bloqueante — nenhum PR passa com testes vermelhos) → Dependabot (PRs automáticos de dependências).
 - **CD** (EAS Build + Firebase App Distribution): build automático ao mergear em `main`;
   preview de testes em `develop`. Todo CI/CD é **apenas Android**; iOS permanece pendente
   em 01.14, conforme decisão do utilizador em 2026-10-06.

@@ -1,4 +1,4 @@
-﻿# EPIC-01 — Checklist de encerramento
+# EPIC-01 — Checklist de encerramento
 
 Atualizado em 2026-10-08. Implementação da fundação entregue; ativação de serviços e aceitação
 externa permanecem em [PENDENCIAS.md](PENDENCIAS.md). Os ficheiros `.done.md` conservam os
@@ -27,7 +27,7 @@ registros históricos; não representam evidência nova de execução em disposi
 - [x] **01.11 — HTTP/mocks/datas:** testes de HTTP, datas e rede usando Mockoon partilhado.
 - [x] **01.12 — Firebase:** integração e testes locais existentes; crash/push/DebugView reais
       permanecem pendentes de dispositivo/console.
-- [x] **01.13 — Implementação CI/CD:** hooks, gates, Dependabot, SonarQube, EAS, Maestro e Firebase
+- [x] **01.13 — Implementação CI/CD:** hooks, gates, Dependabot, EAS, Maestro e Firebase
       App Distribution exclusivamente Android. `main` e `develop` com jobs de distribuição.
 - [ ] **01.13 — Ativação/aceitação externa:** credenciais, branch protection, CI remoto verde
       e recebimento do APK por tester. Instruções em PENDENCIAS.md.
@@ -71,10 +71,10 @@ Todos os grupos cumprem o mínimo de 60% nas quatro métricas.
 - Validação após correção: lint e typecheck passaram, 4 testes do pipeline e 31 suites / 220 testes
   da app com gate de cobertura aprovado. Dois testes verificam isolamento do preview com
   credenciais presentes; produção rejeita backend desativado.
-- GitHub: proteção de main/develop com cinco checks e branches atualizadas, admins incluídos,
+- GitHub: proteção de main/develop com quatro checks e branches atualizadas, admins incluídos,
   sem force-push/deletion; environments main/develop criados sem aprovação; alertas Dependabot
   ativados. Configurações confirmadas pela API, não apenas por inspeção dos ficheiros.
 - Firebase: App Distribution/grupo/tester existentes confirmados; service account limitada ao
   projeto e secret GitHub criados. Distribuição e instalação ainda não verificadas.
 - Builds EAS preview e production enviados; conclusão e evidência runtime ainda em validação.
-- `EXPO_TOKEN` e configuração SonarQube aguardam dados/ação do responsável.
+- `EXPO_TOKEN` aguarda cadastro pelo responsável. SonarQube removido por decisão do utilizador.
