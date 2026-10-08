@@ -1,0 +1,189 @@
+﻿name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  HUSKY: "0"
+
+jobs:
+  checks:
+    name: Lint, typecheck, test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: apps/mobile/coverage/lcov.info
+          if-no-files-found: error
+          retention-days: 7
+
+  preview:
+    name: EAS preview
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EAS_PROJECT_ID: ${{ vars.EAS_PROJECT_ID }}
+      EXPO_NO_DOTENV: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Validate EAS configuration
+        run: |
+          test -n "$EXPO_TOKEN" || { echo '::error::Missing EXPO_TOKEN'; exit 1; }
+          test -n "$EAS_PROJECT_ID" || { echo '::error::Missing EAS_PROJECT_ID'; exit 1; }
+      - run: pnpm install --frozen-lockfile
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: 24.11.0
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build standalone preview APK
+        working-directory: apps/mobile
+        run: eas build --platform android --profile preview --non-interactive --wait --json > "$RUNNER_TEMP/preview-build.json"
+      - name: Download the completed APK
+        run: node scripts/download-eas-build.mjs "$RUNNER_TEMP/preview-build.json" "$RUNNER_TEMP/preview.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-preview
+          path: ${{ runner.temp }}/preview.apk
+          if-no-files-found: error
+          retention-days: 7
+
+  maestro:
+    name: Maestro Android
+    needs: preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: actions/download-artifact@v4
+        with:
+          name: android-preview
+          path: artifacts
+      - name: Install Maestro CLI
+        run: |
+          curl --fail --location --retry 3 https://github.com/mobile-dev-inc/Maestro/releases/download/cli-2.11.0/maestro.zip --output "$RUNNER_TEMP/maestro.zip"
+          unzip -q "$RUNNER_TEMP/maestro.zip" -d "$RUNNER_TEMP/maestro-cli"
+          echo "$RUNNER_TEMP/maestro-cli/maestro/bin" >> "$GITHUB_PATH"
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: |
+            adb install artifacts/preview.apk
+            maestro test --format junit --output artifacts/maestro.xml --debug-output artifacts/maestro apps/mobile/.maestro
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: maestro-results
+          path: artifacts/maestro*
+          retention-days: 7
+
+  gate:
+    name: EPIC-01 gate
+    if: always()
+    needs: [checks, preview, maestro]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every check to succeed
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          echo "$RESULTS" | jq -e 'all(.[]; .result == "success")'
+
+  distribute:
+    name: Firebase Android
+    needs: gate
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: ${{ github.ref_name }}
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EAS_PROJECT_ID: ${{ vars.EAS_PROJECT_ID }}
+      EXPO_NO_DOTENV: "1"
+      FIREBASE_APP_ID: ${{ vars.FIREBASE_APP_ID }}
+      FIREBASE_TESTER_GROUPS: ${{ vars.FIREBASE_TESTER_GROUPS }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Validate distribution configuration
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          for key in FIREBASE_APP_ID FIREBASE_TESTER_GROUPS FIREBASE_SERVICE_ACCOUNT; do
+            if [ -z "${!key}" ]; then
+              echo "::error::Missing $key; see EPIC-01/PENDENCIAS.md"
+              exit 1
+            fi
+          done
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+          chmod 600 "$RUNNER_TEMP/firebase-service-account.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
+      - uses: actions/download-artifact@v4
+        if: github.ref == 'refs/heads/develop'
+        with:
+          name: android-preview
+          path: artifacts
+      - run: pnpm install --frozen-lockfile
+        if: github.ref == 'refs/heads/main'
+      - uses: expo/expo-github-action@v8
+        if: github.ref == 'refs/heads/main'
+        with:
+          eas-version: 24.11.0
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build production APK
+        if: github.ref == 'refs/heads/main'
+        working-directory: apps/mobile
+        run: eas build --platform android --profile production --non-interactive --wait --json > "$RUNNER_TEMP/production-build.json"
+      - name: Download production APK
+        if: github.ref == 'refs/heads/main'
+        run: node scripts/download-eas-build.mjs "$RUNNER_TEMP/production-build.json" artifacts/preview.apk
+      - name: Distribute APK to Firebase testers
+        run: >-
+          npx --yes firebase-tools@15.32.1 appdistribution:distribute artifacts/preview.apk
+          --app "$FIREBASE_APP_ID" --groups "$FIREBASE_TESTER_GROUPS"
+          --release-notes "${GITHUB_REF_NAME} ${GITHUB_SHA}" --non-interactive
+      - name: Remove service account file
+        if: always()
+        run: rm -f "$RUNNER_TEMP/firebase-service-account.json"

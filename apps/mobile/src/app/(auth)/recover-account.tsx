@@ -1,13 +1,22 @@
 import { router } from 'expo-router';
 
 import { Action, Notice, Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function RecoverAccountScreen() {
+  const { t } = useTranslation();
   return (
-    <Screen title={copy.auth.recovery} description={copy.auth.recoveryDescription}>
-      <Notice>{copy.auth.previewNotice}</Notice>
-      <Action label={copy.auth.backToLogin} onPress={() => router.dismissTo('/login')} />
+    <Screen
+      testID="screen-recover-account"
+      title={t('auth.recovery')}
+      description={t('auth.recoveryDescription')}
+    >
+      <Notice>{t('auth.previewNotice')}</Notice>
+      <Action
+        testID="recover-account-back"
+        label={t('auth.backToLogin')}
+        onPress={() => router.dismissTo('/login')}
+      />
     </Screen>
   );
 }

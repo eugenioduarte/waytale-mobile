@@ -1,0 +1,15 @@
+{
+  "$comment": "Inputs that make the mock answer a specific case (rules in waytale.json). Tests and the skill read them from here; keep both in sync — scenarios.test.js checks it.",
+  "auth": {
+    "email": {
+      "ok": "viajante@waytale.test",
+      "rateLimited": "rate-limited@waytale.test",
+      "notAuthorized": "not-authorized@waytale.test",
+      "serverError": "server-error@waytale.test"
+    },
+    "code": {
+      "valid": "123456",
+      "expired": "000000"
+    }
+  }
+}

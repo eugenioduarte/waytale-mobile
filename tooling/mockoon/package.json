@@ -3,7 +3,25 @@
   "version": "0.0.0",
   "private": true,
   "license": "UNLICENSED",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./scenarios.json": "./scenarios.json",
+    "./data/*": "./data/*"
+  },
   "scripts": {
-    "start": "mockoon-cli start --data ./waytale.json --port 3001"
+    "start": "mockoon-cli start --data ./waytale.json --port 3001",
+    "test": "node --test server.test.js index.test.js"
+  },
+  "dependencies": {
+    "@mockoon/commons": "9.9.0",
+    "@mockoon/commons-server": "9.9.0"
+  },
+  "devDependencies": {
+    "@mockoon/cli": "9.9.0"
   }
 }

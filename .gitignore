@@ -20,6 +20,9 @@ expo-env.d.ts
 google-services.json
 GoogleService-Info.plist
 
+# Scratch folder for files handed over locally (config files, exports) — never committed
+arquivos_temp/
+
 # Metro
 .metro-health-check*
 
@@ -37,6 +40,7 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env.dev
 
 # typescript
 *.tsbuildinfo
@@ -50,3 +54,9 @@ apps/mobile/android
 
 # turborepo cache
 .turbo/
+
+# Storybook web build (01.7)
+storybook-static/
+
+# Jest coverage (pnpm test:cov)
+coverage/

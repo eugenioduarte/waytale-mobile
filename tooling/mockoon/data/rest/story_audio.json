@@ -1,0 +1,20 @@
+[
+  {
+    "id": "5a1e0000-0000-4000-8000-000000000401",
+    "story_id": "5a1e0000-0000-4000-8000-000000000301",
+    "voice_id": null,
+    "language": "pt",
+    "audio_key": null,
+    "duration_ms": 42000,
+    "updated_at": "2026-01-01T10:00:00.000Z"
+  },
+  {
+    "id": "5a1e0000-0000-4000-8000-000000000402",
+    "story_id": "5a1e0000-0000-4000-8000-000000000302",
+    "voice_id": null,
+    "language": "pt",
+    "audio_key": null,
+    "duration_ms": 36000,
+    "updated_at": "2026-01-01T10:00:00.000Z"
+  }
+]

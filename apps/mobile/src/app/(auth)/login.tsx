@@ -1,21 +1,36 @@
 import { router } from 'expo-router';
 
 import { Action, Notice, Screen } from '@/components/screen';
-import { usePreviewSession } from '@/features/auth/preview-session';
-import copy from '@/locales/pt.json';
+import { canUsePreviewAuth } from '@/features/auth/preview';
+import { useTranslation } from '@/lib/i18n';
+import { useSessionActions } from '@/stores/session.store';
 
 export default function LoginScreen() {
-  const { enterPreview } = usePreviewSession();
+  const { t } = useTranslation();
+  const { enterPreview } = useSessionActions();
   return (
-    <Screen title={copy.auth.login} description={copy.auth.loginDescription}>
-      <Notice>{copy.auth.previewNotice}</Notice>
-      <Action label={copy.auth.preview} onPress={enterPreview} />
-      <Action label={copy.auth.register} onPress={() => router.push('/register')} secondary />
+    <Screen testID="screen-login" title={t('auth.login')} description={t('auth.loginDescription')}>
+      <Notice>{t('auth.previewNotice')}</Notice>
       <Action
-        label={copy.auth.recovery}
+        testID="login-continue"
+        label={t('auth.continue')}
+        onPress={() => router.push('/verify')}
+      />
+      <Action
+        testID="login-register"
+        label={t('auth.register')}
+        onPress={() => router.push('/register')}
+        secondary
+      />
+      <Action
+        testID="login-recover"
+        label={t('auth.recovery')}
         onPress={() => router.push('/recover-account')}
         secondary
       />
+      {canUsePreviewAuth ? (
+        <Action testID="login-preview" label={t('auth.preview')} onPress={enterPreview} secondary />
+      ) : null}
     </Screen>
   );
 }

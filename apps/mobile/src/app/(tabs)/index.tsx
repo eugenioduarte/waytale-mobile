@@ -1,6 +1,9 @@
 import { Screen } from '@/components/screen';
-import copy from '@/locales/pt.json';
+import { useTranslation } from '@/lib/i18n';
 
 export default function ExploreScreen() {
-  return <Screen title={copy.tabs.explore} description={copy.screens.explore} />;
+  const { t } = useTranslation();
+  return (
+    <Screen testID="screen-explore" title={t('tabs.explore')} description={t('screens.explore')} />
+  );
 }

@@ -1,0 +1,31 @@
+# Auth (EPIC-01.8): anonymous → login → verify → signed in (onboarding), then sign out.
+#
+# Uses the preview auth of the placeholder screens: run against a build with backend disabled (see
+# .agents_local/sdd/test-strategy.md). EPIC-04 replaces "verify-submit" with real code entry.
+appId: com.waytale.app
+name: Auth — sign in and sign out
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: screen-login
+    timeout: 30000
+- tapOn:
+    id: login-continue
+- assertVisible:
+    id: screen-verify
+- tapOn:
+    id: verify-submit
+# Signed in, not onboarded yet: the guard lands on onboarding.
+- assertVisible:
+    id: screen-interests
+# Critical variation: the session survives a cold start (no second login).
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: screen-interests
+    timeout: 30000

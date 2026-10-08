@@ -1,0 +1,78 @@
+{
+  "brand": "Waytale",
+  "auth": {
+    "login": "Log in",
+    "loginDescription": "A new way to discover the city, one story at a time.",
+    "continue": "Continue",
+    "verify": "Verify code",
+    "verifyDescription": "Enter the code we sent to your email.",
+    "verifyAction": "Verify",
+    "register": "Create account",
+    "registerDescription": "Save your places and take your stories with you.",
+    "recovery": "Recover account",
+    "recoveryDescription": "Get back into your account and your discoveries.",
+    "previewNotice": "For now, you can try the app in demo mode. Accounts are coming soon.",
+    "preview": "Explore the demo",
+    "backToLogin": "Back to log in",
+    "signOut": "Sign out"
+  },
+  "onboarding": {
+    "interests": "Interests",
+    "interestsDescription": "Choose the topics of the stories you want to hear.",
+    "deviations": "Detours",
+    "deviationsDescription": "How much longer you'd walk for something interesting.",
+    "voice": "Voice",
+    "voiceDescription": "Choose the narrator and listen to a preview.",
+    "permissions": "Permissions",
+    "permissionsDescription": "Background location and notifications, in plain language.",
+    "continue": "Continue",
+    "back": "Back"
+  },
+  "tabs": {
+    "explore": "Explore",
+    "saved": "Saved",
+    "journeys": "Journeys",
+    "profile": "Profile"
+  },
+  "journey": {
+    "walk": "Walking",
+    "walkDescription": "A clean map and the next direction.",
+    "finish": "End walk",
+    "summary": "Walk summary",
+    "summaryDescription": "Distance, time, stops and stories heard.",
+    "done": "Done"
+  },
+  "route": {
+    "detailTitle": "Route details",
+    "detailDescription": "Map, stops, duration and an audio preview."
+  },
+  "place": {
+    "detailTitle": "Place details",
+    "detailDescription": "Context, an image and the option to save."
+  },
+  "screens": {
+    "explore": "Your next walk starts here.",
+    "saved": "The places you save will appear here.",
+    "journeys": "The stories of your walks will live here.",
+    "profile": "A space for you and your preferences."
+  },
+  "profile": {
+    "language": "Language",
+    "languageSystem": "Device language",
+    "dataCollection": "Share usage statistics and crash reports",
+    "dataCollectionDescription": "Helps us find crashes and improve the app. Never includes your email.",
+    "testCrash": "Test crash report"
+  },
+  "languages": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  },
+  "sync": {
+    "offline": "No connection. Whatever you do is kept on your phone and sent once you're back online.",
+    "syncing": "Syncing…",
+    "pending": "Some changes are waiting to be sent.",
+    "error": "Some changes weren't sent. We'll try again.",
+    "synced": "Everything is synced."
+  }
+}

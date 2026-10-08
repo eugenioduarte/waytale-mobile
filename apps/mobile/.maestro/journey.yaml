@@ -1,0 +1,38 @@
+# Journey (EPIC-01.8): main app → walk → summary → back to explore, then sign out from Profile.
+# Preview auth ("login-preview" skips onboarding), see auth.yaml. The walk is opened by deep link
+# until Explore gets its "start" action.
+appId: com.waytale.app
+name: Journey — walk to summary
+tags:
+  - smoke
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: screen-login
+    timeout: 30000
+- tapOn:
+    id: login-preview
+- assertVisible:
+    id: screen-explore
+- openLink: waytale:///walk
+- extendedWaitUntil:
+    visible:
+      id: screen-walk
+    timeout: 10000
+- tapOn:
+    id: walk-finish
+- assertVisible:
+    id: screen-summary
+- tapOn:
+    id: summary-done
+- assertVisible:
+    id: screen-explore
+# Critical variation: signing out from Profile returns to login.
+- tapOn:
+    id: tab-profile
+- tapOn:
+    id: profile-sign-out
+- assertVisible:
+    id: screen-login

@@ -18,9 +18,28 @@ This file holds project-specific facts that may change independently from the po
   `branching`.
 - Authentication is per-machine/session, not stored in the repo: run `claude /mcp` in a regular
   terminal (not an IDE extension) and authenticate the `supabase` server there.
-- Client env vars (`EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`) and the service
-  role key/DB password are separate from the MCP server — see EPIC-01.5's subtask for what each
-  is for and which ones must never enter the repo or chat.
+- App env vars live in `apps/mobile/.env.local` (gitignored; template `apps/mobile/.env.example`):
+  `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (`sb_publishable_…`, the
+  new key format — not the legacy anon key). Anything `EXPO_PUBLIC_*` ships in the bundle.
+- Sign-in is by email code only (6 digits, no passwords); phone auth is off and Google is
+  deferred. The user configured Resend SMTP, email and code templates on 2026-09-28; real email delivery/login smoke remains assigned to EPIC-04.
+- The secret key (`sb_secret_…`), personal access token (`sbp_…`) and DB password are for the
+  Supabase CLI only (`supabase/.env.local`, gitignored) — never in the app, the repo or chat.
+- Supabase CLI: not installed globally; run it as `pnpm dlx supabase@2.117.0 <command>`.
+  Migrations are in `supabase/migrations/`; `pnpm --filter @waytale/supabase test` checks RLS on
+  a local Postgres (PGlite), no Docker needed.
+
+## Firebase
+
+- Project: `waytale-36b9f` (sender `205523884817`). Android and iOS apps are both registered as
+  `com.waytale.app`. Only Android is being tested for now; iOS prebuild needs macOS (or EAS).
+- Hand-over folder `arquivos_temp/` (repo root, gitignored): new config files arrive there; move
+  them to `apps/mobile/` and empty the folder.
+- `apps/mobile/google-services.json` / `GoogleService-Info.plist` are gitignored; download them
+  from the Firebase console (Project settings › Your apps). In EAS they come from file env vars
+  (`GOOGLE_SERVICES_JSON`, `GOOGLE_SERVICE_INFO_PLIST`), set up in 01.13.
+- Test push: Firebase console › Messaging › new campaign › "Send test message", with the FCM
+  token printed in the Metro logs (`[push] FCM token:`). App Distribution is 01.13.
 
 ## Design source
 
@@ -44,3 +63,11 @@ Use event-driven checkpoints, not periodic polling:
 5. Run a final checkpoint before handoff.
 
 This policy keeps context small, makes loops deterministic, and works across Claude Code, Codex, and other tools that can read repository instructions.
+
+## CI/CD scope (2026-10-06)
+
+- Android only, including builds, Maestro and Firebase App Distribution. iOS is deferred in
+  `.user_stories/EPIC-01-setup-projeto/subtasks/01.14-pendencias-ios.md`.
+- Local quality command: `pnpm verify` (also Husky pre-commit/pre-push and CI).
+- EAS/Firebase provisioning and branch-protection verification are tracked in
+  `.user_stories/EPIC-01-setup-projeto/PENDENCIAS.md`; workflow presence is not remote execution evidence.

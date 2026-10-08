@@ -9,56 +9,345 @@
   "folders": [],
   "routes": [
     {
-      "uuid": "ae78c2db-3f57-4050-8721-850390f6be30",
+      "uuid": "94316c37-c647-45c8-be3d-18144125957e",
       "type": "http",
-      "documentation": "Rotas recomendadas para Home/Rotas recomendadas (EPIC-07, EPIC-09)",
-      "method": "get",
-      "endpoint": "routes",
+      "documentation": "Supabase Auth — pedir o código por email (signInWithOtp). Cenários pelo email: scenarios.json › auth.email.",
+      "method": "post",
+      "endpoint": "auth/v1/otp",
       "responses": [
         {
-          "uuid": "3a63f4c7-3614-492c-8e2a-e5578971c92a",
-          "body": "[]",
-          "latency": 0,
+          "uuid": "6c4db5a5-5543-4813-a43f-f314d7e4e6ff",
+          "label": "rate limited",
+          "statusCode": 429,
+          "body": "{ \"code\": \"over_email_send_rate_limit\", \"message\": \"email rate limit exceeded\" }",
+          "headers": [
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
+          ],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "rate-limited@waytale.test",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "default": false
+        },
+        {
+          "uuid": "3ba32b8e-3c50-4b4b-9428-b041735ce9c1",
+          "label": "sender refuses the address",
+          "statusCode": 400,
+          "body": "{ \"code\": \"email_address_not_authorized\", \"message\": \"Email address not authorized\" }",
+          "headers": [
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
+          ],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "not-authorized@waytale.test",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "default": false
+        },
+        {
+          "uuid": "ba2d81e9-33d3-4a41-9059-18ac80269dcc",
+          "label": "server error",
+          "statusCode": 503,
+          "body": "{ \"code\": \"unexpected_failure\", \"message\": \"Service unavailable\" }",
+          "headers": [
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
+          ],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "server-error@waytale.test",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "default": false
+        },
+        {
+          "uuid": "f6fd6882-a210-4f79-9b90-4a50a81236c3",
+          "label": "code sent",
           "statusCode": 200,
-          "label": "empty",
-          "headers": [{ "key": "Content-Type", "value": "application/json" }],
-          "bodyType": "INLINE",
+          "body": "{}",
           "default": true
         }
-      ],
-      "responseMode": null
+      ]
     },
     {
-      "uuid": "8d84e4a0-e06e-4ad1-84f8-fe96aef84c9f",
+      "uuid": "78ba2003-2b3e-4579-926d-50c57c4cea0e",
       "type": "http",
-      "documentation": "Detalhe de uma rota (EPIC-10)",
-      "method": "get",
-      "endpoint": "routes/:id",
+      "documentation": "Supabase Auth — verificar o código (verifyOtp). Qualquer código abre sessão para o email, exceto scenarios.json › auth.code.expired.",
+      "method": "post",
+      "endpoint": "auth/v1/verify",
       "responses": [
         {
-          "uuid": "7b6c3f3e-6c9f-4a3f-9e6c-9c0e6e0f5a1b",
-          "body": "{}",
-          "latency": 0,
-          "statusCode": 404,
-          "label": "not found",
-          "headers": [{ "key": "Content-Type", "value": "application/json" }],
-          "bodyType": "INLINE",
+          "uuid": "83bc9304-ad3f-4e97-875e-a91111fecb44",
+          "label": "expired or wrong code",
+          "statusCode": 403,
+          "body": "{ \"code\": \"otp_expired\", \"message\": \"Token has expired or is invalid\" }",
+          "headers": [
+            {
+              "key": "x-supabase-api-version",
+              "value": "2024-01-01"
+            }
+          ],
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "token",
+              "value": "000000",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "default": false
+        },
+        {
+          "uuid": "f969db6a-c34f-45b3-ad7e-63043985e470",
+          "label": "session",
+          "statusCode": 200,
+          "bodyType": "FILE",
+          "filePath": "./data/auth/session.json",
           "default": true
         }
-      ],
-      "responseMode": null
+      ]
+    },
+    {
+      "uuid": "6c72bcdd-5a0d-41f7-925a-503551f206d7",
+      "type": "http",
+      "documentation": "Supabase Auth — renovar a sessão (refresh token).",
+      "method": "post",
+      "endpoint": "auth/v1/token",
+      "responses": [
+        {
+          "uuid": "a7ddb9c8-6a00-4fe6-b4be-0c5251b2bab2",
+          "label": "session",
+          "statusCode": 200,
+          "bodyType": "FILE",
+          "filePath": "./data/auth/session.json",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "e8b138cd-08fe-43a6-a5e2-40a458cd9347",
+      "type": "http",
+      "documentation": "Supabase Auth — utilizador da sessão (getUser).",
+      "method": "get",
+      "endpoint": "auth/v1/user",
+      "responses": [
+        {
+          "uuid": "5b0cb1fe-c3d9-4a7a-b572-5a5d9b4da55a",
+          "label": "user",
+          "statusCode": 200,
+          "bodyType": "FILE",
+          "filePath": "./data/auth/user.json",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "8f03ea67-72cb-4518-891d-0e3267563a62",
+      "type": "http",
+      "documentation": "Supabase Auth — terminar sessão (revoga o refresh token).",
+      "method": "post",
+      "endpoint": "auth/v1/logout",
+      "responses": [
+        {
+          "uuid": "1d630ad6-5e9b-4e09-ad5e-c0ff2791d745",
+          "label": "signed out",
+          "statusCode": 204,
+          "body": "",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "3b27d351-0f64-4ac5-8ec7-a9af7c0b514d",
+      "type": "http",
+      "documentation": "PostgREST — pull do sync: as linhas de data/rest/<tabela>.json (catálogo de demonstração; tabelas do utilizador vazias). Ignora filtros e paginação: a página vem curta e o pull pára.",
+      "method": "get",
+      "endpoint": "rest/v1/:table",
+      "responses": [
+        {
+          "uuid": "1e7bcc96-629e-4530-acb9-fea4ae9daa74",
+          "label": "rows",
+          "statusCode": 200,
+          "bodyType": "FILE",
+          "filePath": "./data/rest/{{urlParam 'table'}}.json",
+          "fallbackTo404": true,
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "401ee59c-f4be-4951-a11d-a9010e34a2c3",
+      "type": "http",
+      "documentation": "PostgREST — push do sync (upsert). Aceita e não guarda.",
+      "method": "post",
+      "endpoint": "rest/v1/:table",
+      "responses": [
+        {
+          "uuid": "4c760a86-e500-4219-a3e4-c7ccc795fb4f",
+          "label": "created",
+          "statusCode": 201,
+          "body": "",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "7ac6d5e6-4065-4f0e-bdbd-2feb08f47dbb",
+      "type": "http",
+      "documentation": "PostgREST — push do sync (update / tombstone). Aceita e não guarda.",
+      "method": "patch",
+      "endpoint": "rest/v1/:table",
+      "responses": [
+        {
+          "uuid": "bc0583c3-891e-4b16-ad78-30d334b4b8bc",
+          "label": "updated",
+          "statusCode": 204,
+          "body": "",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "9f34d6ab-9376-4ec7-8ac4-dfffdc4ff43f",
+      "type": "http",
+      "documentation": "Edge Function generate-route (supabase/functions/generate-route): o plano de uma rota à volta do viajante.",
+      "method": "post",
+      "endpoint": "functions/v1/generate-route",
+      "responses": [
+        {
+          "uuid": "666f8e9e-f7a4-4336-98da-acccced31e71",
+          "label": "route plan",
+          "statusCode": 200,
+          "bodyType": "FILE",
+          "filePath": "./data/functions/generate-route.json",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "1495f535-2ad4-43b6-8ef8-cf7480ae8d12",
+      "type": "http",
+      "documentation": "PostgREST — funções RPC (register_push_token, …). Aceita e não guarda; as que devolvem void respondem 204.",
+      "method": "post",
+      "endpoint": "rest/v1/rpc/:fn",
+      "responses": [
+        {
+          "uuid": "8b754d88-ed79-4704-892b-42953c5a5c76",
+          "label": "no content",
+          "statusCode": 204,
+          "body": "",
+          "default": true
+        }
+      ]
+    },
+    {
+      "uuid": "aa6e83ba-f75b-413b-acea-48129f7a74d7",
+      "type": "http",
+      "documentation": "PostgREST — delete (ex.: push_tokens ao terminar sessão). Aceita e não guarda.",
+      "method": "delete",
+      "endpoint": "rest/v1/:table",
+      "responses": [
+        {
+          "uuid": "b39c818d-2641-40fa-85f2-41e1270923f5",
+          "label": "deleted",
+          "statusCode": 204,
+          "body": "",
+          "default": true
+        }
+      ]
     }
   ],
   "rootChildren": [
-    { "type": "route", "uuid": "ae78c2db-3f57-4050-8721-850390f6be30" },
-    { "type": "route", "uuid": "8d84e4a0-e06e-4ad1-84f8-fe96aef84c9f" }
+    {
+      "type": "route",
+      "uuid": "94316c37-c647-45c8-be3d-18144125957e"
+    },
+    {
+      "type": "route",
+      "uuid": "78ba2003-2b3e-4579-926d-50c57c4cea0e"
+    },
+    {
+      "type": "route",
+      "uuid": "6c72bcdd-5a0d-41f7-925a-503551f206d7"
+    },
+    {
+      "type": "route",
+      "uuid": "e8b138cd-08fe-43a6-a5e2-40a458cd9347"
+    },
+    {
+      "type": "route",
+      "uuid": "8f03ea67-72cb-4518-891d-0e3267563a62"
+    },
+    {
+      "type": "route",
+      "uuid": "3b27d351-0f64-4ac5-8ec7-a9af7c0b514d"
+    },
+    {
+      "type": "route",
+      "uuid": "401ee59c-f4be-4951-a11d-a9010e34a2c3"
+    },
+    {
+      "type": "route",
+      "uuid": "7ac6d5e6-4065-4f0e-bdbd-2feb08f47dbb"
+    },
+    {
+      "type": "route",
+      "uuid": "9f34d6ab-9376-4ec7-8ac4-dfffdc4ff43f"
+    },
+    {
+      "type": "route",
+      "uuid": "1495f535-2ad4-43b6-8ef8-cf7480ae8d12"
+    },
+    {
+      "type": "route",
+      "uuid": "aa6e83ba-f75b-413b-acea-48129f7a74d7"
+    }
   ],
   "proxyMode": false,
   "proxyHost": "",
   "proxyRemovePrefix": false,
-  "tlsOptions": { "enabled": false, "type": "CERT", "pfxPath": "", "certPath": "", "keyPath": "", "caPath": "", "passphrase": "" },
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
   "cors": true,
-  "headers": [],
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
   "proxyReqHeaders": [],
   "proxyResHeaders": [],
   "data": [],
