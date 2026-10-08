@@ -18,7 +18,7 @@ account ou chaves neste documento nem no chat.
       Nunca usar service role/secret key. O perfil production recusa backend ausente.
 - [x] Manter preview sem backend: o perfil fixa `EXPO_PUBLIC_BACKEND_DISABLED=true`, para os
       fluxos provisórios do Maestro. Não distribuir esse perfil como app de produção.
-- [ ] Executar o primeiro build interativo Android (`pnpm dlx eas-cli@24.11.0 build --platform
+- [x] Executar o primeiro build interativo Android (`pnpm dlx eas-cli@24.11.0 build --platform
 android --profile preview`) e criar/selecionar o keystore. Depois validar production.
       Isso provisiona o que o CI não consegue criar de forma não interativa.
 
@@ -47,14 +47,15 @@ Referência: [autenticação por service account](https://firebase.google.com/do
 
 ## 4. GitHub — proteção e ativação
 
-- [ ] Publicar este commit num branch e abrir/atualizar PR. Nenhum push ou merge é feito como
-      parte deste encerramento local.
+- [x] Publicar os commits no branch `0.1-setup` e atualizar o [PR #1](https://github.com/eugenioduarte/waytale-mobile/pull/1), direcionado a `develop`.
 - [x] Em **Settings → Branches / Rulesets**, proteger **main** e **develop**: PR obrigatório,
       checks atualizados, regras aplicadas a admins, sem force-push nem deletion.
 - [x] Exigir os checks `Lint, typecheck, test`, `EAS preview`, `Maestro Android` e
       `EPIC-01 gate`. O gate agregado falha também se uma dependência for saltada/cancelada.
       Configuração de ambas as branches aplicada e confirmada pela API GitHub em 2026-10-08.
-- [ ] Verificar em PR descartável que um teste falhando bloqueia merge; reverter a falha em seguida.
+- [x] Verificar em PR descartável que um teste falhando bloqueia merge; reverter a falha em seguida.
+      [PR #2](https://github.com/eugenioduarte/waytale-mobile/pull/2): falha real, merge BLOCKED;
+      falha revertida, PR fechado e branch temporário eliminado.
 - [x] Confirmar permissões GitHub Actions e Dependabot. Atualizações de npm/actions visam develop.
       Actions habilitado, token padrão somente leitura; alertas de dependências ativados pela API.
 - [ ] Para PRs do Dependabot/forks: revisar o diff e transportar para branch confiável do repo
@@ -62,15 +63,20 @@ Referência: [autenticação por service account](https://firebase.google.com/do
 
 ## 5. Evidência de runtime Android
 
-- [ ] Executar e guardar resultado dos três fluxos Maestro no APK preview (`auth`, `onboarding`,
+- [x] Executar e guardar resultado dos três fluxos Maestro no APK preview (`auth`, `onboarding`,
       `journey`). Esses fluxos validam navegação provisória, não OTP ou backend reais.
-- [ ] Abrir deep link `waytale://route/<id>` autenticado após cold start e verificar voltar do OTP.
-- [ ] Validar NativeWind, Storybook on-device e troca de idioma em Android.
-- [ ] Em dev client, provocar crash no Perfil, reabrir e confirmar evento no Crashlytics.
+- [x] Abrir deep link `waytale://route/<id>` autenticado após cold start e verificar voltar do OTP.
+- [x] Validar NativeWind, Storybook on-device e troca de idioma em Android.
+- [ ] Confirmar evento no Crashlytics num build de teste sem o overlay do `expo-dev-client`.
+      Botão do Perfil executado e `RuntimeException: Crash Test` registrado; app reaberta.
+      O dev client intercepta crashes nativos e impede este teste de reporting, segundo a
+      [documentação React Native Firebase](https://rnfirebase.io/). Não marcar o relatório como confirmado.
+      Evidências: `dev-crash.xml`, `native-crash.log`; API topIssues reconhece a app, mas sem issues.
 - [ ] Ativar DebugView com `adb shell setprop debug.firebase.analytics.app com.waytale.app` e
       confirmar analytics. Desativar depois com `adb shell setprop debug.firebase.analytics.app .none.`
-- [ ] Aceitar notificações no onboarding, usar o token dos logs Metro para enviar push de teste
-      na consola Firebase e confirmar recebimento com app em background.
+- [x] Aceitar notificações no onboarding, usar o token dos logs Metro para enviar push de teste
+      pela API FCM e confirmar recebimento com app em background.
+      Screenshot `arquivos_temp/runtime-evidence/push-received.png`; token mantido localmente.
 
 ## 6. Pendências já transferidas para épicos funcionais
 
@@ -93,7 +99,19 @@ A preencher em `CHECKLIST.md` após a validação final. Não marcar build EAS, 
 Firebase ou proteção de branches como concluídos sem executar/verificar nos serviços externos.
 
 - Expo: `@eugenioduarte/waytale`, project ID `3c24ec4a-df76-40d7-b270-c3da7069e19a`.
-- Primeiro preview: [build EAS](https://expo.dev/accounts/eugenioduarte/projects/waytale/builds/7e4fbe09-6770-4652-ba7d-28c0f821c1b2), em execução; keystore criado.
+- Primeiro preview: [build EAS](https://expo.dev/accounts/eugenioduarte/projects/waytale/builds/7e4fbe09-6770-4652-ba7d-28c0f821c1b2), concluído; keystore criado.
+- [Production](https://expo.dev/accounts/eugenioduarte/projects/waytale/builds/53180d88-cf46-4cee-b99f-77af3300c956) e [development](https://expo.dev/accounts/eugenioduarte/projects/waytale/builds/c58a731a-e05c-4ac2-9741-39496f8e794a): concluídos.
+- Distribuição manual ao grupo `waytale_pp`: [preview](https://appdistribution.firebase.google.com/testerapps/1:205523884817:android:0892b4349dece258b6cab0/releases/189qk8b42f7f0) e [production](https://appdistribution.firebase.google.com/testerapps/1:205523884817:android:0892b4349dece258b6cab0/releases/7jam25g36rbl0).
+  Recebimento em dispositivo do tester e distribuição automática após merge continuam pendentes.
+- Runtime no emulador Android API 36: Maestro 3/3, cold start/OTP/idiomas 1/1 e smoke
+  production 1/1 passaram. NativeWind, troca pt/en/es e persistência de es após reinício inspecionados.
+  Relatórios locais em `arquivos_temp/runtime-evidence/`: `maestro-final.xml`,
+  `runtime-extra-final.xml` e `production-smoke-final.xml` (pasta ignorada pelo Git).
+- Storybook on-device inspecionado, story `App/Screen/With Actions`; captura `storybook-device.png`.
+  A captura inclui indicador do LogBox; diagnóstico do aviso permanece por confirmar.
+- Analytics: eventos `screen_view` e upload HTTP 204 confirmados em logcat.
+  Inspeção do painel DebugView continua pendente; evidência em `analytics-upload.log`.
+  Propriedade `debug.firebase.analytics.app` desativada (`.none.`) após o teste.
 - EAS: presença das quatro variáveis de production confirmada por `env:list`; os valores não
   foram copiados para este documento. Project ID e ficheiro Android aplicados aos três ambientes.
 - Firebase: grupo existente `waytale_pp`, com tester `eugenioduartesilva@gmail.com` e atividade

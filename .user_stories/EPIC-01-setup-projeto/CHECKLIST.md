@@ -19,14 +19,16 @@ registros históricos; não representam evidência nova de execução em disposi
 - [x] **01.6 — Sync:** testes de pull/push, idempotência e persistência offline. Integração com
       Mockoon corrigida para tolerar arranque lento sem deixar processo filho aberto.
 - [x] **01.7 — Storybook:** stories renderizadas pela suite; rota desligada redireciona à Home.
-      Preview web já registrado no PR #1 pela subtask; inspeção on-device continua pendente.
+      Preview web registrado no PR #1; story on-device renderizada no development.
+      Indicador LogBox na captura ainda precisa de diagnóstico.
 - [x] **01.8 — Testes:** Jest/RNTL, Mockoon, factories e três fluxos Maestro. Gate de cobertura
       ampliado para telas, componentes, features e restante código, todas as métricas ≥60%.
 - [x] **01.9 — i18n:** pt/en/es e lint sem copy inline; testes de idioma e preferência.
 - [x] **01.10 — NativeWind:** tokens e estilos verificados por testes e bundle Android.
 - [x] **01.11 — HTTP/mocks/datas:** testes de HTTP, datas e rede usando Mockoon partilhado.
 - [x] **01.12 — Firebase:** integração e testes locais existentes; crash/push/DebugView reais
-      permanecem pendentes de dispositivo/console.
+      parcialmente verificados: push recebido em background e analytics enviado (HTTP 204).
+      Crash nativo provocado e app reaberta; confirmação do relatório e painel DebugView pendentes.
 - [x] **01.13 — Implementação CI/CD:** hooks, gates, Dependabot, EAS, Maestro e Firebase
       App Distribution exclusivamente Android. `main` e `develop` com jobs de distribuição.
 - [ ] **01.13 — Ativação/aceitação externa:** credenciais, branch protection, CI remoto verde
@@ -46,11 +48,12 @@ registros históricos; não representam evidência nova de execução em disposi
 - [x] Workflow validado por actionlint 1.7.12 e YAML parseado.
 - [x] Bundle Android e prebuild gerados localmente; configuração Expo resolvida.
 - [x] `pnpm --filter mobile storybook:build` passou (build web do Storybook).
-- [ ] Build nativo/execução Maestro Android: em validação.
+- [x] Builds Android preview, production e development concluídos. Maestro preview: 3/3;
+      cold start/OTP/idiomas: 1/1; smoke de atalhos ocultos em production: 1/1.
 - [x] Checkpoint read-only por validation-agent: sem defeito bloqueante no pipeline; limitação
       de login do APK production documentada (formulários reais são EPIC-04).
 - [x] Revisão final de diff, formatação, segredos e estado Git (checkpoint read-only em 2026-10-08).
-- [ ] Commit final do EPIC-01 sem co-author.
+- [x] Commits do EPIC-01 sem co-author publicados no branch `0.1-setup`; PR #1 para `develop`.
 
 ## Cobertura final (statements / branches / functions / lines)
 
@@ -59,7 +62,7 @@ registros históricos; não representam evidência nova de execução em disposi
 | Telas           | 92,47%     | 66,66%   | 91,30%    | 94,44% |
 | Componentes     | 88,23%     | 77,77%   | 100%      | 100%   |
 | Features        | 90,78%     | 88,54%   | 86,95%    | 94,73% |
-| Restante código | 70,04%     | 61,29%   | 62,67%    | 71,64% |
+| Restante código | 71,22%     | 64,64%   | 63,38%    | 73,01% |
 
 Todos os grupos cumprem o mínimo de 60% nas quatro métricas.
 
@@ -75,6 +78,10 @@ Todos os grupos cumprem o mínimo de 60% nas quatro métricas.
   sem force-push/deletion; environments main/develop criados sem aprovação; alertas Dependabot
   ativados. Configurações confirmadas pela API, não apenas por inspeção dos ficheiros.
 - Firebase: App Distribution/grupo/tester existentes confirmados; service account limitada ao
-  projeto e secret GitHub criados. Distribuição e instalação ainda não verificadas.
-- Builds EAS preview e production enviados; conclusão e evidência runtime ainda em validação.
+  projeto e secret GitHub criados. Preview e production distribuídos manualmente ao grupo
+  `waytale_pp`; instalação no emulador confirmada. Recebimento no Android do tester pendente.
+- Builds EAS preview, production e development concluídos. Relatórios e screenshots em
+  `arquivos_temp/runtime-evidence/`; links externos em PENDENCIAS.md.
+- PR descartável #2 confirmou que teste falhando bloqueia merge; falha revertida, PR fechado
+  e branch temporário eliminado. PR #1 permanece aberto enquanto o CI depende de `EXPO_TOKEN`.
 - `EXPO_TOKEN` aguarda cadastro pelo responsável. SonarQube removido por decisão do utilizador.
