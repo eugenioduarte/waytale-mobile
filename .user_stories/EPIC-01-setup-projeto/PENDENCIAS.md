@@ -67,11 +67,14 @@ Referência: [autenticação por service account](https://firebase.google.com/do
       `journey`). Esses fluxos validam navegação provisória, não OTP ou backend reais.
 - [x] Abrir deep link `waytale://route/<id>` autenticado após cold start e verificar voltar do OTP.
 - [x] Validar NativeWind, Storybook on-device e troca de idioma em Android.
-- [ ] Confirmar evento no Crashlytics num build de teste sem o overlay do `expo-dev-client`.
+- [x] Confirmar evento fatal no Crashlytics, provocar crash e reabrir a app.
       Botão do Perfil executado e `RuntimeException: Crash Test` registrado; app reaberta.
       O dev client intercepta crashes nativos e impede este teste de reporting, segundo a
-      [documentação React Native Firebase](https://rnfirebase.io/). Não marcar o relatório como confirmado.
-      Evidências: `dev-crash.xml`, `native-crash.log`; API topIssues reconhece a app, mas sem issues.
+      [documentação React Native Firebase](https://rnfirebase.io/). A validação foi concluída com
+      `adb shell am crash com.waytale.app`, que força uma exceção Android fora do handler React Native.
+      API topIssues confirmou o evento FATAL `CrashedByAdbException`, issue
+      `60b276352ba43b1763298aa997723cd1`, em 2026-10-08. Preview também testado com consentimento ativo.
+      Evidências: `dev-crash.xml`, `native-crash.log`, `crashlytics-report.json`, `crashlytics-upload.log`.
 - [ ] Ativar DebugView com `adb shell setprop debug.firebase.analytics.app com.waytale.app` e
       confirmar analytics. Desativar depois com `adb shell setprop debug.firebase.analytics.app .none.`
 - [x] Aceitar notificações no onboarding, usar o token dos logs Metro para enviar push de teste
@@ -107,8 +110,10 @@ Firebase ou proteção de branches como concluídos sem executar/verificar nos s
   production 1/1 passaram. NativeWind, troca pt/en/es e persistência de es após reinício inspecionados.
   Relatórios locais em `arquivos_temp/runtime-evidence/`: `maestro-final.xml`,
   `runtime-extra-final.xml` e `production-smoke-final.xml` (pasta ignorada pelo Git).
-- Storybook on-device inspecionado, story `App/Screen/With Actions`; captura `storybook-device.png`.
-  A captura inclui indicador do LogBox; diagnóstico do aviso permanece por confirmar.
+- Storybook on-device inspecionado, story `App/Screen/With Actions`; captura final `storybook-fixed.png`.
+  Corrigida atualização dos stores durante render no decorator: mocks aplicados após commit,
+  antes da pintura. Regressão comprovada (teste falha no código antigo e passa no corrigido).
+  Logcat final sem erro React; aviso de reduced motion corresponde às animações desativadas no emulador.
 - Analytics: eventos `screen_view` e upload HTTP 204 confirmados em logcat.
   Inspeção do painel DebugView continua pendente; evidência em `analytics-upload.log`.
   Propriedade `debug.firebase.analytics.app` desativada (`.none.`) após o teste.

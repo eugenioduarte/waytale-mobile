@@ -1,5 +1,5 @@
 import type { Decorator } from '@storybook/react-native';
-import { useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -22,7 +22,8 @@ export type StoreMocks = {
 
 /**
  * Resets the stores to their initial state, then applies the story's overrides — so one story's
- * state never leaks into the next. Applied once per mount, before the story subscribes.
+ * state never leaks into the next. Applied after commit, before paint: store subscribers in
+ * the app layout must not be updated while this decorator is rendering.
  */
 function StoreMocksProvider({
   stores,
@@ -31,15 +32,14 @@ function StoreMocksProvider({
   stores: StoreMocks | undefined;
   children: React.ReactNode;
 }) {
-  useState(() => {
+  useLayoutEffect(() => {
     useSyncStore.setState({ ...useSyncStore.getInitialState(), ...stores?.sync }, true);
     useSessionStore.setState({ ...useSessionStore.getInitialState(), ...stores?.session }, true);
     usePreferencesStore.setState(
       { ...usePreferencesStore.getInitialState(), ...stores?.preferences },
       true,
     );
-    return true;
-  });
+  }, [stores]);
   return children;
 }
 
@@ -84,6 +84,6 @@ const withLanguage: Decorator = (Story) => (
   </LanguageSync>
 );
 
-// Outermost last: safe area wraps everything, store mocks apply before the story mounts and
-// before the language follows them.
+// Outermost last: safe area wraps everything; store mocks settle before paint and the language
+// then follows them.
 export const decorators: Decorator[] = [withTokens, withLanguage, withStoreMocks, withSafeArea];

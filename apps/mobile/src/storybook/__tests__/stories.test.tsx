@@ -5,9 +5,11 @@ import { describe, expect, it, jest } from '@jest/globals';
 import { composeStories, setProjectAnnotations } from '@storybook/react';
 import { render } from '@testing-library/react-native';
 import type { ComponentType } from 'react';
+import { Text } from 'react-native';
 
 import * as syncStatusStories from '@/components/sync-status.stories';
 import { i18n } from '@/lib/i18n';
+import { useSyncStore } from '@/stores/sync.store';
 
 import preview from '../../../.rnstorybook/preview';
 
@@ -51,6 +53,33 @@ it('finds the stories', () => {
 });
 
 describe('store mocks (parameters.stores)', () => {
+  it('does not update an already subscribed app component during story render', () => {
+    useSyncStore.setState({ isOnline: true });
+    const Story = storiesOf(syncStatusStories).Offline!;
+    function SubscribedApp({ showStory }: { showStory: boolean }) {
+      const isOnline = useSyncStore((state) => state.isOnline);
+      return (
+        <>
+          <Text testID="app-network-state">{String(isOnline)}</Text>
+          {showStory && <Story />}
+        </>
+      );
+    }
+    const errors = jest.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      const { getByTestId, rerender } = render(<SubscribedApp showStory={false} />);
+      rerender(<SubscribedApp showStory />);
+      expect(getByTestId('app-network-state').props.children).toBe('false');
+      expect(
+        errors.mock.calls.some(([message]) =>
+          String(message).includes('Cannot update a component'),
+        ),
+      ).toBe(false);
+    } finally {
+      errors.mockRestore();
+    }
+  });
+
   it('each SyncStatusLine story shows its own state, with no leak between stories', () => {
     const stories = storiesOf(syncStatusStories);
     for (const [story, message] of [

@@ -20,7 +20,7 @@ registros históricos; não representam evidência nova de execução em disposi
       Mockoon corrigida para tolerar arranque lento sem deixar processo filho aberto.
 - [x] **01.7 — Storybook:** stories renderizadas pela suite; rota desligada redireciona à Home.
       Preview web registrado no PR #1; story on-device renderizada no development.
-      Indicador LogBox na captura ainda precisa de diagnóstico.
+      Erro React do decorator corrigido e coberto por teste; captura final sem LogBox de erro.
 - [x] **01.8 — Testes:** Jest/RNTL, Mockoon, factories e três fluxos Maestro. Gate de cobertura
       ampliado para telas, componentes, features e restante código, todas as métricas ≥60%.
 - [x] **01.9 — i18n:** pt/en/es e lint sem copy inline; testes de idioma e preferência.
@@ -28,7 +28,8 @@ registros históricos; não representam evidência nova de execução em disposi
 - [x] **01.11 — HTTP/mocks/datas:** testes de HTTP, datas e rede usando Mockoon partilhado.
 - [x] **01.12 — Firebase:** integração e testes locais existentes; crash/push/DebugView reais
       parcialmente verificados: push recebido em background e analytics enviado (HTTP 204).
-      Crash nativo provocado e app reaberta; confirmação do relatório e painel DebugView pendentes.
+      Crash nativo via ADB e app reaberta; evento FATAL confirmado pela API Crashlytics.
+      Painel DebugView ainda precisa de inspeção visual.
 - [x] **01.13 — Implementação CI/CD:** hooks, gates, Dependabot, EAS, Maestro e Firebase
       App Distribution exclusivamente Android. `main` e `develop` com jobs de distribuição.
 - [ ] **01.13 — Ativação/aceitação externa:** credenciais, branch protection, CI remoto verde
