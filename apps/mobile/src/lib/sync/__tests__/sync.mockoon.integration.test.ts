@@ -17,8 +17,8 @@ const describeWithSqlite = hasSqlite ? describe : describe.skip;
 let mock: MockServer;
 beforeAll(async () => {
   mock = await startMockServer();
-});
-afterAll(() => mock.stop());
+}, 30_000);
+afterAll(() => mock?.stop());
 
 describeWithSqlite('pull through supabase-js against the Mockoon mock', () => {
   it('brings the demo catalog (tooling/mockoon/data/rest) into SQLite', async () => {

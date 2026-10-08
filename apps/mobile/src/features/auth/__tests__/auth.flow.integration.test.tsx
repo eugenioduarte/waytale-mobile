@@ -20,6 +20,8 @@ jest.mock('@/lib/supabase/client', () => ({
   getSupabase: jest.fn(),
   isSupabaseConfigured: false,
 }));
+// Mirrors Metro's empty Storybook module when the preview flag is disabled.
+jest.mock('../../../../.rnstorybook', () => ({ __esModule: true, default: undefined }));
 
 describe('route guards (root layout)', () => {
   it('an anonymous traveller lands on login', async () => {
@@ -94,5 +96,60 @@ describe('sign-out', () => {
 
     expect(await screen.findByTestId('screen-login')).toBeTruthy();
     expect(useSessionStore.getState()).toMatchObject({ isAuthenticated: false, user: null });
+  });
+});
+
+describe('secondary routes and back navigation', () => {
+  const signedIn = {
+    session: { isAuthenticated: true, hasCompletedOnboarding: true, user: buildUser() },
+  };
+
+  it('can leave registration and recovery without creating a session', async () => {
+    renderApp('/');
+    fireEvent.press(await screen.findByTestId('login-register'));
+    expect(await screen.findByTestId('screen-register')).toBeTruthy();
+    fireEvent.press(await screen.findByTestId('register-back'));
+    fireEvent.press(await screen.findByTestId('login-recover'));
+    expect(await screen.findByTestId('screen-recover-account')).toBeTruthy();
+    fireEvent.press(await screen.findByTestId('recover-account-back'));
+    expect(await screen.findByTestId('screen-login')).toBeTruthy();
+    expect(useSessionStore.getState().isAuthenticated).toBe(false);
+  });
+
+  it('registration preview starts onboarding', async () => {
+    renderApp('/register');
+    fireEvent.press(await screen.findByTestId('register-submit'));
+    expect(await screen.findByTestId('screen-interests')).toBeTruthy();
+  });
+
+  it('leaving verification returns to login without authenticating', async () => {
+    renderApp('/');
+    fireEvent.press(await screen.findByTestId('login-continue'));
+    fireEvent.press(await screen.findByTestId('verify-back'));
+    expect(await screen.findByTestId('screen-login')).toBeTruthy();
+    expect(useSessionStore.getState().isAuthenticated).toBe(false);
+  });
+
+  it('finishes a walk, shows its summary and returns to Explore', async () => {
+    renderApp('/walk', { stores: signedIn });
+    fireEvent.press(await screen.findByTestId('walk-finish'));
+    expect(await screen.findByTestId('screen-summary')).toBeTruthy();
+    fireEvent.press(await screen.findByTestId('summary-done'));
+    expect(await screen.findByTestId('screen-explore')).toBeTruthy();
+  });
+
+  it('redirects a Storybook deep link when the preview flag is disabled', async () => {
+    renderApp('/storybook', { stores: signedIn });
+    expect(await screen.findByTestId('screen-explore')).toBeTruthy();
+  });
+
+  it.each([
+    ['/route/demo-route', 'screen-route'],
+    ['/place/demo-place', 'screen-place'],
+    ['/saved', 'screen-saved'],
+    ['/journeys', 'screen-journeys'],
+  ])('opens the authenticated deep link %s', async (url, testID) => {
+    renderApp(url, { stores: signedIn });
+    expect(await screen.findByTestId(testID)).toBeTruthy();
   });
 });

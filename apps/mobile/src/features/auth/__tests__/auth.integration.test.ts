@@ -57,9 +57,9 @@ function clientAt(url: string): SupabaseClient {
 
 beforeAll(async () => {
   mock = await startMockServer();
-});
-afterEach(() => mock.clearRequests());
-afterAll(() => mock.stop());
+}, 30_000);
+afterEach(() => mock?.clearRequests());
+afterAll(() => mock?.stop());
 
 beforeEach(() => {
   storage = memoryStorage();

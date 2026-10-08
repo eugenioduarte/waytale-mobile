@@ -35,23 +35,28 @@
 
 - **Fluxos críticos**: `onboarding.yaml`, `auth.yaml`, `journey.yaml` (ver EPIC-01.8)
 - **Apenas happy path + 1 variação crítica por fluxo**
-- **Sem mock de API** — usa ambiente dev/staging real
+- **EPIC-01:** smoke de navegação em APK preview sem backend. Integração de rede usa Mockoon
+  nos testes Jest; OTP/backend real nos E2E depende dos formulários do EPIC-04.
 
 ## Cobertura
 
-| Alvo                                   | Mínimo |
-| -------------------------------------- | ------ |
-| Global                                 | ≥ 80%  |
-| Hooks e Services                       | ≥ 90%  |
-| Screens                                | ≥ 70%  |
-| `src/features` (gate de CI, EPIC-01.8) | ≥ 60%  |
+| Grupo (gate EPIC-01.13)                                                | Mínimo nas quatro métricas |
+| ---------------------------------------------------------------------- | -------------------------- |
+| Telas `src/app`                                                        | 60%                        |
+| Componentes `src/components`                                           | 60%                        |
+| Features `src/features`                                                | 60%                        |
+| Restante código da app (`global` do Jest após retirar os grupos acima) | 60%                        |
+
+Stories, suporte do Storybook, declarações e migrações geradas não entram no denominador.
+Os testes de stories e migrações continuam obrigatórios. Metas maiores serão decididas nos
+épicos funcionais; o limite vigente é 60%, conforme decisão do utilizador.
 
 ## Como rodar
 
 ```bash
 pnpm test                          # turbo run test — todas as camadas, todo o monorepo
 pnpm --filter mobile test          # apenas apps/mobile
-pnpm --filter mobile test:cov      # com cobertura — falha abaixo de 60% em src/features (gate do CI)
+pnpm --filter mobile test:cov      # com cobertura — falha abaixo de 60% em qualquer grupo/métrica
 pnpm --filter mobile e2e           # todos os fluxos Maestro (.maestro/)
 pnpm --filter mobile e2e:smoke     # só os marcados `smoke`
 ```
@@ -92,9 +97,13 @@ Tudo em `apps/mobile/tests/`, importado com o alias `@tests/...` (só existe no 
 - Instalar: Java 17+ e `curl -fsSL "https://get.maestro.mobile.dev" | bash` (Windows: WSL ou o zip
   do release); correr com um emulador/simulador aberto e a app instalada.
 - Por agora usam o **login de pré-visualização** dos ecrãs provisórios: correm contra um build **sem**
-  env do Supabase (`canUsePreviewAuth`). Com o ecrã real de código (EPIC-04), o `auth.yaml` passa
+  backend Supabase (`EXPO_PUBLIC_BACKEND_DISABLED=true` no perfil preview, `canUsePreviewAuth`). Com o ecrã real de código (EPIC-04), o `auth.yaml` passa
   a ler o código do email de teste (Supabase local: Mailpit).
-- No CI entram com 01.13 (build EAS de preview + emulador).
+- `.github/workflows/ci.yml` liga EAS preview ao Maestro num emulador Android API 36.
+  A execução remota depende da configuração em EPIC-01/PENDENCIAS.md.
+- `pnpm verify` é o comando comum ao CI e aos dois hooks Husky.
+- O arranque do Mockoon tem limite interno de 25 s e hooks `beforeAll` de 30 s; falhas
+  encerram o processo filho, evitando que um timeout deixe Jest pendurado.
 
 ## Estrutura de arquivos
 

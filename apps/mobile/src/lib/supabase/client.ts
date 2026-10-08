@@ -6,8 +6,11 @@ import { AppState, Platform } from 'react-native';
 import { secureSessionStorage } from './secure-session-storage';
 
 // Read statically so Expo inlines them at build time (see apps/mobile/.env.example).
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
-const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const isBackendDisabled = process.env.EXPO_PUBLIC_BACKEND_DISABLED === 'true';
+const supabaseUrl = isBackendDisabled ? undefined : process.env.EXPO_PUBLIC_SUPABASE_URL;
+const supabasePublishableKey = isBackendDisabled
+  ? undefined
+  : process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 /** False until `apps/mobile/.env.local` is filled in — the app then stays in preview mode. */
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabasePublishableKey);

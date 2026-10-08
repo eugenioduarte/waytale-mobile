@@ -12,7 +12,7 @@ const path = require("node:path");
  *   await mock.requests();                // what reached it, for assertions
  *   await mock.stop();
  */
-function startMockServer() {
+function startMockServer({ startupTimeoutMs = 25_000 } = {}) {
   const child = fork(path.join(__dirname, "child.js"), [], {
     stdio: ["ignore", "ignore", "inherit", "ipc"],
   });
@@ -32,12 +32,27 @@ function startMockServer() {
   }
 
   return new Promise((resolve, reject) => {
-    child.once("exit", (code) =>
-      reject(new Error(`Mockoon exited before starting (${code})`)),
+    const fail = (error) => {
+      clearTimeout(timer);
+      child.kill();
+      reject(error);
+    };
+    const timer = setTimeout(
+      () =>
+        fail(
+          new Error(`Mockoon startup timed out after ${startupTimeoutMs}ms`),
+        ),
+      startupTimeoutMs,
     );
+    child.once("error", fail);
+    child.once("exit", (code) => {
+      clearTimeout(timer);
+      reject(new Error(`Mockoon exited before starting (${code})`));
+    });
     child.once("message", (message) => {
+      clearTimeout(timer);
       if (message.type !== "ready") {
-        reject(new Error(`Mockoon failed to start: ${message.message}`));
+        fail(new Error(`Mockoon failed to start: ${message.message}`));
         return;
       }
       child.removeAllListeners("exit");

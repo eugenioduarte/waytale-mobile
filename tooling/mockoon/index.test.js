@@ -3,6 +3,13 @@ const { it } = require("node:test");
 
 const { startMockServer } = require("./index");
 
+it("rejects a stalled startup and releases the child process", async () => {
+  await assert.rejects(
+    startMockServer({ startupTimeoutMs: 1 }),
+    /startup timed out/,
+  );
+});
+
 it("runs the mock in a child process and reports its requests over IPC", async () => {
   const mock = await startMockServer();
   try {

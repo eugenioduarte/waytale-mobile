@@ -22,7 +22,7 @@ This file holds project-specific facts that may change independently from the po
   `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (`sb_publishable_…`, the
   new key format — not the legacy anon key). Anything `EXPO_PUBLIC_*` ships in the bundle.
 - Sign-in is by email code only (6 digits, no passwords); phone auth is off and Google is
-  deferred. Real users only get the code once a custom SMTP sender is set in the dashboard.
+  deferred. The user configured Resend SMTP, email and code templates on 2026-09-28; real email delivery/login smoke remains assigned to EPIC-04.
 - The secret key (`sb_secret_…`), personal access token (`sbp_…`) and DB password are for the
   Supabase CLI only (`supabase/.env.local`, gitignored) — never in the app, the repo or chat.
 - Supabase CLI: not installed globally; run it as `pnpm dlx supabase@2.117.0 <command>`.
@@ -63,3 +63,11 @@ Use event-driven checkpoints, not periodic polling:
 5. Run a final checkpoint before handoff.
 
 This policy keeps context small, makes loops deterministic, and works across Claude Code, Codex, and other tools that can read repository instructions.
+
+## CI/CD scope (2026-10-06)
+
+- Android only, including builds, Maestro and Firebase App Distribution. iOS is deferred in
+  `.user_stories/EPIC-01-setup-projeto/subtasks/01.14-pendencias-ios.md`.
+- Local quality command: `pnpm verify` (also Husky pre-commit/pre-push and CI).
+- EAS/Sonar/Firebase provisioning and branch-protection verification are tracked in
+  `.user_stories/EPIC-01-setup-projeto/PENDENCIAS.md`; workflow presence is not remote execution evidence.

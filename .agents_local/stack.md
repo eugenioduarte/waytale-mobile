@@ -5,28 +5,28 @@ que já está montado no repositório vs. o que ainda falta instalar/configurar.
 
 ## App Mobile
 
-| Item                        | Escolha                                                                                        | Estado                                                                                           |
-| --------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Runtime                     | Expo SDK ~57 · React Native 0.86 · TypeScript strict                                           | ✅ scaffolded                                                                                    |
-| Navegação                   | `expo-router` (file-based, typed routes)                                                       | ✅ scaffolded                                                                                    |
-| Estado cliente              | Zustand (5 stores globais) + AsyncStorage                                                      | ✅ montado (EPIC-01.3)                                                                           |
-| Base local                  | SQLite (`expo-sqlite`) + Drizzle ORM (11 tabelas, migrações, seed)                             | ✅ montado (EPIC-01.4)                                                                           |
-| Backend                     | Supabase (Postgres, Auth, Storage, Edge Functions, RLS)                                        | 🟡 schema/RLS/storage/Edge Function + cliente prontos (EPIC-01.5); falta email/SMTP no dashboard |
-| Sync                        | Offline-first: escrita local → outbox → push/pull para Supabase                                | ✅ montado (EPIC-01.6)                                                                           |
-| Estilo                      | NativeWind 4 (Tailwind CSS 3) com o tema gerado dos tokens do EPIC-02                          | ✅ montado (EPIC-01.10)                                                                          |
-| i18n                        | i18next + `react-i18next` + `expo-localization` — pt, en, es                                   | ✅ montado (EPIC-01.9)                                                                           |
-| HTTP client                 | Axios — instância única em `src/lib/http.ts` (Edge Functions)                                  | ✅ montado (EPIC-01.11)                                                                          |
-| Datas                       | date-fns — tudo em `src/lib/date.ts` (lint proíbe `Date`/`Intl` fora dele)                     | ✅ montado (EPIC-01.11)                                                                          |
-| Mock de API                 | Mockoon — fonte única de dados mock, com os caminhos do Supabase; dev e testes                 | ✅ montado (EPIC-01.11): `pnpm mockoon`, `start:mock`, testes contra ele                         |
-| Crash / Push / Analytics    | Firebase — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*` 26)             | ✅ montado (EPIC-01.12) para Android; validação no dispositivo com os testes de UI               |
-| Testes de UI/lógica         | React Native Testing Library + Jest                                                            | ✅ montado (EPIC-01.8): RNTL, Mockoon (01.11), `tests/`, gate 60% em `src/features`              |
-| Testes E2E                  | Maestro (fluxos em YAML)                                                                       | 🟡 fluxos em `.maestro/` (EPIC-01.8); correm no CI com 01.13                                     |
-| Documentação de componentes | Storybook (react-native + web)                                                                 | ✅ montado (EPIC-01.7); preview por PR no GitHub Pages                                           |
-| CI                          | GitHub Actions — lint/typecheck/testes bloqueantes, SonarQube, Dependabot                      | 🟡 lint/typecheck/testes + cobertura (EPIC-01.8); EAS, Maestro e Sonar em 01.13                  |
-| CD                          | EAS Build + EAS Submit — Android apenas por agora                                              | ⬜ a configurar                                                                                  |
-| Monorepo                    | pnpm workspaces + Turborepo                                                                    | ✅ montado                                                                                       |
-| Gestor de pacotes           | pnpm                                                                                           | ✅ em uso                                                                                        |
-| Lint / format               | ESLint flat config (Expo + `import-x/order`) + Prettier; `husky` + `lint-staged` no pre-commit | ✅ montado (EPIC-01.1)                                                                           |
+| Item                        | Escolha                                                                                        | Estado                                                                                                            |
+| --------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Runtime                     | Expo SDK ~57 · React Native 0.86 · TypeScript strict                                           | ✅ scaffolded                                                                                                     |
+| Navegação                   | `expo-router` (file-based, typed routes)                                                       | ✅ scaffolded                                                                                                     |
+| Estado cliente              | Zustand (5 stores globais) + AsyncStorage                                                      | ✅ montado (EPIC-01.3)                                                                                            |
+| Base local                  | SQLite (`expo-sqlite`) + Drizzle ORM (11 tabelas, migrações, seed)                             | ✅ montado (EPIC-01.4)                                                                                            |
+| Backend                     | Supabase (Postgres, Auth, Storage, Edge Functions, RLS)                                        | 🟡 schema/RLS/storage/Edge Function + cliente prontos (EPIC-01.5); SMTP/email configurados; smoke real no EPIC-04 |
+| Sync                        | Offline-first: escrita local → outbox → push/pull para Supabase                                | ✅ montado (EPIC-01.6)                                                                                            |
+| Estilo                      | NativeWind 4 (Tailwind CSS 3) com o tema gerado dos tokens do EPIC-02                          | ✅ montado (EPIC-01.10)                                                                                           |
+| i18n                        | i18next + `react-i18next` + `expo-localization` — pt, en, es                                   | ✅ montado (EPIC-01.9)                                                                                            |
+| HTTP client                 | Axios — instância única em `src/lib/http.ts` (Edge Functions)                                  | ✅ montado (EPIC-01.11)                                                                                           |
+| Datas                       | date-fns — tudo em `src/lib/date.ts` (lint proíbe `Date`/`Intl` fora dele)                     | ✅ montado (EPIC-01.11)                                                                                           |
+| Mock de API                 | Mockoon — fonte única de dados mock, com os caminhos do Supabase; dev e testes                 | ✅ montado (EPIC-01.11): `pnpm mockoon`, `start:mock`, testes contra ele                                          |
+| Crash / Push / Analytics    | Firebase — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*` 26)             | ✅ montado (EPIC-01.12) para Android; validação no dispositivo com os testes de UI                                |
+| Testes de UI/lógica         | React Native Testing Library + Jest                                                            | ✅ montado (EPIC-01.8): RNTL, Mockoon (01.11), `tests/`, gates 60% em telas, componentes, features e restante app |
+| Testes E2E                  | Maestro (fluxos em YAML)                                                                       | 🟡 fluxos e job Android prontos; execução nativa em validação                                                     |
+| Documentação de componentes | Storybook (react-native + web)                                                                 | ✅ montado (EPIC-01.7); preview por PR no GitHub Pages                                                            |
+| CI                          | GitHub Actions — lint/typecheck/testes bloqueantes, SonarQube, Dependabot                      | 🟡 gates, Sonar, EAS e Maestro implementados (01.13); contas pendentes                                            |
+| CD                          | EAS Build + Firebase App Distribution — Android apenas                                         | 🟡 implementado (01.13); ativação externa pendente                                                                |
+| Monorepo                    | pnpm workspaces + Turborepo                                                                    | ✅ montado                                                                                                        |
+| Gestor de pacotes           | pnpm                                                                                           | ✅ em uso                                                                                                         |
+| Lint / format               | ESLint flat config (Expo + `import-x/order`) + Prettier; `husky` + `lint-staged` no pre-commit | ✅ montado (EPIC-01.1)                                                                                            |
 
 ## Estrutura atual do repositório (monorepo)
 
@@ -224,8 +224,21 @@ a sessão Supabase fica cifrada (01.5, `src/lib/supabase/`).
   buckets privados `audio`/`images`) e a Edge Function `generate-route`. O cliente
   (`apps/mobile/src/lib/supabase/`) guarda a sessão cifrada: chave AES-256 no SecureStore, sessão
   AES-GCM no AsyncStorage. Login só por email (código de 6 dígitos, sem senha); sem
-  telefone e, por agora, sem Google. Migrações aplicadas no projeto `iqmnbzgsqmmalqzdyxjg`; falta
-  no dashboard: SMTP próprio, ligar o email e os templates com código, e autenticar o MCP. Ver
+  telefone e, por agora, sem Google. Migrações aplicadas no projeto `iqmnbzgsqmmalqzdyxjg`; SMTP Resend, email e templates
+  configurados pelo utilizador em 28/09. Smoke real de login transferido ao EPIC-04.
+  Autenticação MCP é local e independente da app. Ver
   `agentic.md` › Backend / Supabase.
-- **iOS**: CD (EAS Submit) cobre só Android no MVP (EPIC-01.13); iOS fica para quando houver conta
+- **iOS**: todo CI/CD cobre só Android via Firebase (EPIC-01.13); iOS fica para quando houver conta
   de developer Apple — não assumir distribuição iOS em nenhum outro épico entretanto.
+
+## CI/CD — EPIC-01.13
+
+- `pnpm verify`: lint, typecheck, testes de todos os pacotes e cobertura da app. É chamado
+  por pre-commit (depois de lint-staged), pre-push e GitHub Actions.
+- Jest exige 60% nas quatro métricas, por grupo: `src/app`, `src/components`, `src/features`
+  e restante código. Exclui stories, suporte Storybook, declarações e migrações geradas.
+- CI: checks → SonarQube com quality gate → EAS preview APK → Maestro Android → gate agregado.
+- Push após merge em develop distribui preview; em main constrói production e distribui pelo
+  Firebase App Distribution. Sem EAS Submit/EAS Update e sem jobs iOS.
+- Perfis EAS em `apps/mobile/eas.json`; contas, secrets, proteção de branches e evidências
+  remotas em `.user_stories/EPIC-01-setup-projeto/PENDENCIAS.md`.

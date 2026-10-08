@@ -4,8 +4,17 @@ const base = require('@waytale/jest-config');
 
 module.exports = {
   ...base,
-  // `pnpm test:cov` fails below this (EPIC-01.8 gate, run in CI). Aggregated over the folder.
+  // Separate groups prevent well-covered services from hiding untested screens/components.
+  collectCoverageFrom: [
+    ...base.collectCoverageFrom,
+    '!src/**/*.stories.tsx',
+    '!src/storybook/**',
+    '!src/db/migrations/**',
+  ],
   coverageThreshold: {
+    global: { statements: 60, branches: 60, functions: 60, lines: 60 },
+    './src/components/': { statements: 60, branches: 60, functions: 60, lines: 60 },
+    './src/app/': { statements: 60, branches: 60, functions: 60, lines: 60 },
     './src/features/': { statements: 60, branches: 60, functions: 60, lines: 60 },
   },
   moduleNameMapper: {

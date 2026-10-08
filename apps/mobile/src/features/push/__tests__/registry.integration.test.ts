@@ -17,9 +17,9 @@ jest.mock('@/lib/supabase/client', () => ({ getSupabase: jest.fn() }));
 let mock: MockServer;
 beforeAll(async () => {
   mock = await startMockServer();
-});
-afterEach(() => mock.clearRequests());
-afterAll(() => mock.stop());
+}, 30_000);
+afterEach(() => mock?.clearRequests());
+afterAll(() => mock?.stop());
 
 /** The first request that reached the mock. */
 async function firstRequest(): Promise<MockRequest['request']> {

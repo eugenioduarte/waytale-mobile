@@ -18,13 +18,13 @@
 | i18n                     | **i18next** + `react-i18next` + `expo-localization`                                 |
 | HTTP client              | **Axios**                                                                           |
 | Datas                    | **date-fns**                                                                        |
-| Mock de API              | **Mockoon** (`infra/mockoon/waytale.json`)                                          |
+| Mock de API              | **Mockoon** (`tooling/mockoon/waytale.json`)                                        |
 | Crash / Push / Analytics | **Firebase** — Crashlytics, Cloud Messaging, Analytics (`@react-native-firebase/*`) |
 | Testes de UI             | **React Native Testing Library** + Jest                                             |
 | Testes E2E               | **Maestro** (fluxos em YAML)                                                        |
 | Documentação             | **Storybook** (react-native + web para revisão de design)                           |
 | CI                       | **GitHub Actions** — lint/typecheck/testes bloqueantes, SonarQube, Dependabot       |
-| CD                       | **EAS Build** + **EAS Submit** — apenas Android por agora                           |
+| CD                       | **EAS Build** + **Firebase App Distribution** — apenas Android por agora            |
 
 ## Histórias
 
@@ -114,10 +114,10 @@ Como designer, quero ver os componentes isolados, para validar o design system s
 
 Como equipa, queremos rede de segurança antes das features.
 
-- RNTL: render helper com providers, factories de dados, `msw` para rede.
+- RNTL: render helper com providers, factories de dados, Mockoon partilhado para rede.
 - Maestro: fluxos `onboarding.yaml`, `auth.yaml`, `journey.yaml`; `testID` obrigatório em elementos interativos.
 - CI: lint → typecheck → unit → build EAS preview → Maestro no emulador.
-- **Aceitação:** pipeline verde e bloqueante no merge; cobertura mínima 60% em `src/features`.
+- **Aceitação:** pipeline verde e bloqueante no merge; cobertura mínima 60% em componentes, telas, features e restante código da app.
 
 ### 01.9 — Internacionalização (i18n)
 
@@ -159,9 +159,19 @@ Como equipa, quero crashes, notificações e analytics de produto desde o dia 1,
 Como equipa, quero um pipeline que bloqueia merges quebrados e distribui builds sem passos manuais.
 
 - **CI** (GitHub Actions, em PR): lint → typecheck → testes unitários/integração (bloqueante — nenhum PR passa com testes vermelhos) → SonarQube (qualidade/segurança de código) → Dependabot (PRs automáticos de dependências).
-- **CD** (EAS Build + EAS Submit): build automático ao mergear em `main`; distribuição **apenas Android** por agora (internal track / EAS Update — decidir em EPIC-20); iOS fica para quando houver conta de developer Apple.
+- **CD** (EAS Build + Firebase App Distribution): build automático ao mergear em `main`;
+  preview de testes em `develop`. Todo CI/CD é **apenas Android**; iOS permanece pendente
+  em 01.14, conforme decisão do utilizador em 2026-10-06.
 - Ligar o required status check ao branch protection de `main` (já configurado sem check obrigatório — ver `AGENTS.md` › Workflow) assim que o workflow de CI existir.
 - **Aceitação:** um PR com teste a falhar não pode ser mergeado; merge em `main` dispara build EAS e disponibiliza o artefacto Android sem passo manual.
+
+### 01.14 — Pendências iOS (adiada)
+
+Como equipa, queremos um inventário do trabalho futuro de iOS, mantendo todo CI/CD atual em Android.
+
+- Conta Apple, assinatura, APNs/Firebase, configuração EAS, build macOS, testes e distribuição.
+- Checklist em `subtasks/01.14-pendencias-ios.md`; ativação depende de decisão futura.
+- **Aceitação futura:** build iOS validado e distribuído pelo canal escolhido. Não bloqueia Android.
 
 ## Riscos
 
@@ -169,3 +179,9 @@ Como equipa, quero um pipeline que bloqueia merges quebrados e distribui builds 
 - Consumo de bateria da localização: definir orçamento e medir já nesta fase.
 - NativeWind + design system próprio (EPIC-02): definir cedo onde termina um e começa o outro, para não duplicar tokens.
 - Distribuição só-Android no MVP: validar que nenhuma decisão de EPIC-01–20 fica presa a APIs iOS-only.
+
+## Encerramento
+
+Checklist e evidências em [CHECKLIST.md](CHECKLIST.md). Dependências externas em
+[PENDENCIAS.md](PENDENCIAS.md). A implementação local não encerra automaticamente a aceitação
+de serviços remotos. A task 01.14 inventaria o iOS adiado e não ativa pipeline iOS.

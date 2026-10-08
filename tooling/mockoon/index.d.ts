@@ -19,4 +19,6 @@ export type MockServer = {
 };
 
 /** Starts the Waytale mock (`waytale.json`) in its own process, on a free port. */
-export declare function startMockServer(): Promise<MockServer>;
+export declare function startMockServer(options?: {
+  startupTimeoutMs?: number;
+}): Promise<MockServer>;

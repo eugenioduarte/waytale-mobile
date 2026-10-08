@@ -20,9 +20,9 @@ jest.mock('@/lib/supabase/client', () => ({
 let mock: MockServer;
 beforeAll(async () => {
   mock = await startMockServer();
-});
-afterEach(() => mock.clearRequests());
-afterAll(() => mock.stop());
+}, 30_000);
+afterEach(() => mock?.clearRequests());
+afterAll(() => mock?.stop());
 
 const client = (baseURL: string, token: string | null = null) =>
   createHttpClient({ baseURL, apiKey: MOCK_API_KEY, getAccessToken: async () => token });
